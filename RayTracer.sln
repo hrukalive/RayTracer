@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27703.2047
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracerGUI", "RayTracer\RayTracer\RayTracerGUI.fsproj", "{939CAC06-1C84-44EF-9759-838E545198CF}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD} = {A882145D-CF37-44F1-AE8E-0E3E039C87BD}
+	EndProjectSection
+EndProject
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Desktop", "RayTracer\RayTracer.Desktop\RayTracer.Desktop.fsproj", "{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RayTracerBase", "RayTracerBase\RayTracerBase.fsproj", "{A882145D-CF37-44F1-AE8E-0E3E039C87BD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Debug|x64.Build.0 = Debug|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Release|x64.ActiveCfg = Release|Any CPU
+		{939CAC06-1C84-44EF-9759-838E545198CF}.Release|x64.Build.0 = Release|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Debug|x64.Build.0 = Debug|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|x64.ActiveCfg = Release|Any CPU
+		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|x64.Build.0 = Release|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|x64.Build.0 = Debug|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|x64.ActiveCfg = Release|Any CPU
+		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|x64.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D3F4B384-BEA6-4F30-81F4-3270250F3BC3}
+	EndGlobalSection
+EndGlobal

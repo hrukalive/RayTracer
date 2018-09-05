@@ -1,0 +1,32 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="Utility\BaseTypes.fs" />
+    <Compile Include="Utility\BaseFunctions.fs" />
+    <Compile Include="GeometricObjects\GeometricObject.fs" />
+    <Compile Include="GeometricObjects\Sphere.fs" />
+    <Compile Include="Materials\Material.fs" />
+    <Compile Include="Materials\Dielectirc.fs" />
+    <Compile Include="Materials\Metal.fs" />
+    <Compile Include="Materials\LambertianMetal.fs" />
+    <Compile Include="Materials\Lambertian.fs" />
+    <Compile Include="Cameras\Camera.fs" />
+    <Compile Include="Tracers\Tracer.fs" />
+    <Compile Include="World\ViewPlane.fs" />
+    <Compile Include="World\World.fs" />
+    <Compile Include="Library.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="FSharp.Collections.ParallelSeq" Version="1.1.2" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.5.2" />
+  </ItemGroup>
+
+</Project>

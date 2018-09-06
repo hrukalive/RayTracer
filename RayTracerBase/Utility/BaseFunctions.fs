@@ -1,4 +1,4 @@
-﻿namespace RayTracerBase
+﻿namespace RayTracer
 
 module BaseFunctions = 
     open System

@@ -1,8 +1,8 @@
-﻿namespace RayTracerBase
+﻿namespace RayTracer
 
+open System
 open System.Threading
 open FSharp.Collections.ParallelSeq
-open System
 
 module BaseTypes = 
     type Vec3 = class

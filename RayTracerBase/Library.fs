@@ -1,5 +1,6 @@
-namespace RayTracerBase
+namespace RayTracer
 
-module Say =
+module Say = 
+    open World
     let hello name =
         printfn "Hello %s" name

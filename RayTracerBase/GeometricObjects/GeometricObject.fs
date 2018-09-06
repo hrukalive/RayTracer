@@ -1,6 +1,6 @@
-﻿namespace RayTracerBase.GeometricObjects
+﻿namespace RayTracer.GeometricObjects
 
-open RayTracerBase.BaseTypes
+open RayTracer.BaseTypes
 
 [<Struct>]
 type HitRecord = {

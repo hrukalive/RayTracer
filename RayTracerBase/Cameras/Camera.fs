@@ -1,4 +1,4 @@
-﻿namespace RayTracerBase
+﻿namespace RayTracer
 
 open System
 open BaseTypes

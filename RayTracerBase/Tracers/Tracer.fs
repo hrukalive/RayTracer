@@ -1,10 +1,10 @@
-﻿namespace RayTracerBase
+﻿namespace RayTracer
 
-module RayTracer = 
+module Tracer = 
     open System
     open BaseTypes
-    open RayTracerBase.GeometricObjects
-    open RayTracerBase.Material
+    open RayTracer.GeometricObjects
+    open RayTracer.Material
 
     type TraceRecord = { 
         HitRecord : HitRecord

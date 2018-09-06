@@ -1,8 +1,8 @@
-﻿namespace RayTracerBase.Material
+﻿namespace RayTracer.Material
 
-open RayTracerBase.BaseTypes
-open RayTracerBase.GeometricObjects
-open RayTracerBase.Material.MaterialFuncs
+open RayTracer.BaseTypes
+open RayTracer.GeometricObjects
+open RayTracer.Material.MaterialFuncs
 
 type LambertianMetal(albedo : Vec3, fuzz : float) = 
     let metal = Metal(albedo) :> IMaterial

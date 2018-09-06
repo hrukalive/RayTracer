@@ -1,8 +1,8 @@
-﻿namespace RayTracerBase.Material
+﻿namespace RayTracer.Material
 
-open RayTracerBase.BaseTypes
-open RayTracerBase.GeometricObjects
-open RayTracerBase.Material.MaterialFuncs
+open RayTracer.BaseTypes
+open RayTracer.GeometricObjects
+open RayTracer.Material.MaterialFuncs
 
 type Dielectirc(albedo : Vec3, refIdx : float) =
     interface IMaterial with

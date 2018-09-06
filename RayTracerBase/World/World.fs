@@ -1,4 +1,4 @@
-﻿namespace RayTracerBase
+﻿namespace RayTracer
 
 module World = 
     open System
@@ -6,10 +6,9 @@ module World =
     open FSharp.Collections.ParallelSeq
     open BaseTypes
     open BaseFunctions
-    open RayTracerBase.GeometricObjects
-    open RayTracerBase.Material
-    open RayTracer
-    open ViewPlane
+    open RayTracer.GeometricObjects
+    open RayTracer.Material
+    open Tracer
 
     type World = 
         struct
@@ -101,8 +100,8 @@ module World =
             printfn "Error: %s" ex.Message
             printfn "%s" ex.StackTrace
             // MessageBox.Show("Error: " + ex.Message + "\n" + ex.StackTrace, "Ray Tracer", MessageBoxButtons.OK, MessageBoxIcon.Error) |> ignore
-    
-        ResetRenderedImage world.ViewPlane
+
+        world.ViewPlane.ResetRenderedImage()
         printfn "Reset viewplane image"
     
         let worker = new AsyncWorker<_>(GenerateRenderTasks world, completeCallback, exceptionContinuation, cancelCallback, cts)

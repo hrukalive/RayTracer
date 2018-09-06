@@ -1,8 +1,8 @@
-﻿namespace RayTracerBase.Material
+﻿namespace RayTracer.Material
 
 open System
-open RayTracerBase.BaseTypes
-open RayTracerBase.GeometricObjects
+open RayTracer.BaseTypes
+open RayTracer.GeometricObjects
 
 type IMaterial = 
     abstract member Scatter : Ray * HitRecord -> (Ray option * Vec3)

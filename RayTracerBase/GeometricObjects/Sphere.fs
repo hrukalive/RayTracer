@@ -1,6 +1,6 @@
-﻿namespace RayTracerBase.GeometricObjects
+﻿namespace RayTracer.GeometricObjects
 
-open RayTracerBase.BaseTypes
+open RayTracer.BaseTypes
 
 type Sphere(center : Vec3, radius : float) =
     interface GeometricObject with

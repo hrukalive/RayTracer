@@ -7,45 +7,68 @@ open Eto.Drawing
 type MainFormBase () = 
     inherit Form()
     member this.InitializeComponent() =
-        base.Title <- "My Eto Form"
+        base.Title <- "Ray Tracer"
         base.ClientSize <- new Size(400, 350)
+        
+        // MENU
 
-        // table with three rows
-        let layout = new StackLayout()
-        layout.Items.Add(new StackLayoutItem(new Label(Text = "Hello World!")))
-        // Add more controls here
-
-        base.Content <- layout;
-
-        // create a few commands that can be used for the menu and toolbar
-        let clickMe = new Command(MenuText = "Click Me!", ToolBarText = "Click Me!")
-        clickMe.Executed.Add(fun e -> MessageBox.Show(this, "I was clicked!") |> ignore)
+        base.Menu <- new MenuBar()
+        
+        let openCommand = new Command(MenuText = "Open")
+        openCommand.Shortcut <- Application.Instance.CommonModifier ||| Keys.O
+        openCommand.Executed.Add(fun e -> MessageBox.Show(this, "file open") |> ignore)
 
         let quitCommand = new Command(MenuText = "Quit")
         quitCommand.Shortcut <- Application.Instance.CommonModifier ||| Keys.Q
         quitCommand.Executed.Add(fun e -> Application.Instance.Quit())
 
-        let aboutCommand = new Command(MenuText = "About...")
-        aboutCommand.Executed.Add(fun e -> 
-            let dlg = new AboutDialog()
-            dlg.ShowDialog(this) |> ignore
-            )
-
-        base.Menu <- new MenuBar()
         let fileItem = new ButtonMenuItem(Text = "&File")
-        fileItem.Items.Add(clickMe) |> ignore
+        fileItem.Items.Add(openCommand) |> ignore
         base.Menu.Items.Add(fileItem)
-
-        (* add more menu items to the main menu...
-        let editItem = new ButtonMenuItem(Text = "&Edit")
-        base.Menu.Items.Add(editItem)
-        let viewItem = new ButtonMenuItem(Text = "&View")
-        base.Menu.Items.Add(viewItem)
-        *)
-
-        base.Menu.ApplicationItems.Add(new ButtonMenuItem(Text = "&Preferences..."))
         base.Menu.QuitItem <- quitCommand.CreateMenuItem()
-        base.Menu.AboutItem <- aboutCommand.CreateMenuItem()
+        
+        // World menu
 
-        base.ToolBar <- new ToolBar()
-        base.ToolBar.Items.Add(clickMe)
+        let worldSettingCommand = new Command(MenuText = "World")
+        worldSettingCommand.Executed.Add(fun e -> MessageBox.Show(this, "setting") |> ignore)
+        let viewplaneSettingCommand = new Command(MenuText = "Viewplane")
+        viewplaneSettingCommand.Executed.Add(fun e -> MessageBox.Show(this, "setting") |> ignore)
+        let cameraSettingCommand = new Command(MenuText = "Camera")
+        cameraSettingCommand.Executed.Add(fun e -> MessageBox.Show(this, "setting") |> ignore)
+        let objectsSettingCommand = new Command(MenuText = "Objects")
+        objectsSettingCommand.Executed.Add(fun e -> MessageBox.Show(this, "setting") |> ignore)
+        let lightsSettingCommand = new Command(MenuText = "Lights")
+        lightsSettingCommand.Executed.Add(fun e -> MessageBox.Show(this, "setting") |> ignore)
+
+        let settingItem = new ButtonMenuItem(Text = "&Setting")
+        settingItem.Items.Add(worldSettingCommand) |> ignore
+        settingItem.Items.Add(viewplaneSettingCommand) |> ignore
+        settingItem.Items.Add(cameraSettingCommand) |> ignore
+        settingItem.Items.Add(objectsSettingCommand) |> ignore
+        settingItem.Items.Add(lightsSettingCommand) |> ignore
+        base.Menu.Items.Add(settingItem)
+        
+        // Render menu
+
+        let renderStartCommand = new Command(MenuText = "Start")
+        renderStartCommand.Shortcut <- Application.Instance.CommonModifier ||| Keys.R
+        renderStartCommand.Executed.Add(fun e -> MessageBox.Show(this, "Start render") |> ignore)
+
+        let renderStopCommand = new Command(MenuText = "Stop")
+        renderStopCommand.Executed.Add(fun e -> MessageBox.Show(this, "Stop render") |> ignore)
+
+        let renderItem = new ButtonMenuItem(Text = "&Render")
+        renderItem.Items.Add(renderStartCommand) |> ignore
+        renderItem.Items.Add(renderStopCommand) |> ignore
+        base.Menu.Items.Add(renderItem)
+        
+        // table with three rows
+        let layout = new StackLayout()
+        let imageView = new ImageView()
+        imageView.Image <- new Bitmap(Size(100, 100), PixelFormat.Format24bppRgb);
+        let progressBar = new ProgressBar()
+        progressBar.MaxValue <- 1000
+        layout.Items.Add(new StackLayoutItem(imageView))
+        layout.Items.Add(new StackLayoutItem(progressBar))
+
+        base.Content <- layout;

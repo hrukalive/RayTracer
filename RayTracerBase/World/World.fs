@@ -6,9 +6,8 @@ module World =
     open FSharp.Collections.ParallelSeq
     open BaseTypes
     open BaseFunctions
-    open GeometricObjects
-    open Material
-    open Camera
+    open RayTracerBase.GeometricObjects
+    open RayTracerBase.Material
     open RayTracer
     open ViewPlane
 
@@ -101,7 +100,7 @@ module World =
         let exceptionContinuation (ex : exn) = 
             printfn "Error: %s" ex.Message
             printfn "%s" ex.StackTrace
-            MessageBox.Show("Error: " + ex.Message + "\n" + ex.StackTrace, "Ray Tracer", MessageBoxButtons.OK, MessageBoxIcon.Error) |> ignore
+            // MessageBox.Show("Error: " + ex.Message + "\n" + ex.StackTrace, "Ray Tracer", MessageBoxButtons.OK, MessageBoxIcon.Error) |> ignore
     
         ResetRenderedImage world.ViewPlane
         printfn "Reset viewplane image"

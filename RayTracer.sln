@@ -5,12 +5,12 @@ VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracerGUI", "RayTracer\RayTracer\RayTracerGUI.fsproj", "{939CAC06-1C84-44EF-9759-838E545198CF}"
 	ProjectSection(ProjectDependencies) = postProject
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD} = {A882145D-CF37-44F1-AE8E-0E3E039C87BD}
+		{1002E2E3-828F-4660-8552-764105612B24} = {1002E2E3-828F-4660-8552-764105612B24}
 	EndProjectSection
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Desktop", "RayTracer\RayTracer.Desktop\RayTracer.Desktop.fsproj", "{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "RayTracerBase", "RayTracerBase\RayTracerBase.fsproj", "{A882145D-CF37-44F1-AE8E-0E3E039C87BD}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracerBase", "RayTracerBase\RayTracerBase.fsproj", "{1002E2E3-828F-4660-8552-764105612B24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,14 +36,14 @@ Global
 		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|x64.ActiveCfg = Release|Any CPU
 		{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}.Release|x64.Build.0 = Release|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Debug|x64.Build.0 = Debug|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|Any CPU.Build.0 = Release|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|x64.ActiveCfg = Release|Any CPU
-		{A882145D-CF37-44F1-AE8E-0E3E039C87BD}.Release|x64.Build.0 = Release|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Debug|x64.Build.0 = Debug|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Release|x64.ActiveCfg = Release|Any CPU
+		{1002E2E3-828F-4660-8552-764105612B24}.Release|x64.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

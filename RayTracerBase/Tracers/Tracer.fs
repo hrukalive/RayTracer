@@ -3,8 +3,8 @@
 module RayTracer = 
     open System
     open BaseTypes
-    open GeometricObjects
-    open Material
+    open RayTracerBase.GeometricObjects
+    open RayTracerBase.Material
 
     type TraceRecord = { 
         HitRecord : HitRecord

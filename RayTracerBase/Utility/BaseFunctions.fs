@@ -1,9 +1,9 @@
 ﻿namespace RayTracerBase
 
-open BaseTypes
-
 module BaseFunctions = 
     open System
+    open Eto.Drawing
+    open BaseTypes
 
     let Clamp min max (x : float) = 
         match x with
@@ -17,6 +17,6 @@ module BaseFunctions =
         let clamp x = Clamp 0.0 255.0 x
         let (cr, cg, cb) = (clamp r, clamp g, clamp b)
     
-        System.Drawing.Color.FromArgb(255, int cr, int cg, int cb)
+        Color.FromArgb(255, int cr, int cg, int cb)
         
     let Gamma (col:Vec3) = Vec3(Math.Sqrt(col.X), Math.Sqrt(col.Y), Math.Sqrt(col.Z))

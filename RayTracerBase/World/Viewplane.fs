@@ -2,8 +2,7 @@
 
 module ViewPlane = 
     open System
-    open System.Drawing
-    open FSharp.Collections.ParallelSeq
+    open Eto.Drawing
     open BaseTypes
     open BaseFunctions
 
@@ -25,7 +24,7 @@ module ViewPlane =
                 Gamma = gamma;
                 InvGamma = 1.0 / gamma;
                 RenderedData = ((Array2D.init width height (fun _ _ -> Vec3.Zero)), (Array2D.init width height (fun _ _ -> 0)), new Object());
-                RenderedImage = new Bitmap(width, height)
+                RenderedImage = new Bitmap(Size(width, height), PixelFormat.Format24bppRgb)
             }
         end
 
@@ -35,7 +34,7 @@ module ViewPlane =
             for j in 0 .. imageArray.GetLength(1) - 1 do
                 imageArray.[i, j] <- Vec3.Zero
                 countArray.[i, j] <- 0
-                viewplane.RenderedImage.SetPixel(i, j, Color.Black)
+                viewplane.RenderedImage.SetPixel(i, j, Color.FromRgb(0))
     
     let inline SetPixel (viewplane : ViewPlane) (x : int, y : int, color : Vec3) = 
         let (imageArray, countArray, _) = viewplane.RenderedData

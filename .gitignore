@@ -1,6 +1,6 @@
 .vs/
-RayTracerBase/bin
-RayTracerBase/obj
+RayTracer/RayTracer.Base/bin
+RayTracer/RayTracer.Base/obj
 RayTracer/RayTracer/bin
 RayTracer/RayTracer.Desktop/bin
 RayTracer/RayTracer/obj

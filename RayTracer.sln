@@ -3,14 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27703.2047
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracerGUI", "RayTracer\RayTracer\RayTracerGUI.fsproj", "{939CAC06-1C84-44EF-9759-838E545198CF}"
-	ProjectSection(ProjectDependencies) = postProject
-		{1002E2E3-828F-4660-8552-764105612B24} = {1002E2E3-828F-4660-8552-764105612B24}
-	EndProjectSection
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "RayTracerGUI", "RayTracer\RayTracer\RayTracerGUI.fsproj", "{939CAC06-1C84-44EF-9759-838E545198CF}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracer.Desktop", "RayTracer\RayTracer.Desktop\RayTracer.Desktop.fsproj", "{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "RayTracer.Desktop", "RayTracer\RayTracer.Desktop\RayTracer.Desktop.fsproj", "{ADB9F2F5-7187-4B7D-87A2-A5278041D30D}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "RayTracerBase", "RayTracerBase\RayTracerBase.fsproj", "{1002E2E3-828F-4660-8552-764105612B24}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "RayTracer.Base", "RayTracer\RayTracer.Base\RayTracer.Base.fsproj", "{1002E2E3-828F-4660-8552-764105612B24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

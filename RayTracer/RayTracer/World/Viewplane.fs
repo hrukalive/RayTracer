@@ -1,9 +1,10 @@
 ﻿namespace RayTracer
 
 open System
-open Eto.Drawing
+open System.Drawing
 open BaseTypes
 open BaseFunctions
+open FreeImageAPI
 
 type ViewPlane = 
     struct
@@ -16,7 +17,7 @@ type ViewPlane =
         val RenderedArray : Vec3[,]
         val RenderedCount : int[,]
         val RenderLock : Object
-        val RenderedImage : Bitmap
+        val RenderedImage : FreeImageBitmap
         new (width : int, height : int, pixelSize : float, numSamples : int, gamma : float) = {
             Width = width;
             Height = height;
@@ -27,16 +28,16 @@ type ViewPlane =
             RenderedArray = (Array2D.init width height (fun _ _ -> Vec3.Zero));
             RenderedCount = (Array2D.init width height (fun _ _ -> 0));
             RenderLock = new Object();
-            RenderedImage = new Bitmap(Size(width, height), PixelFormat.Format24bppRgb)
+            RenderedImage = new FreeImageBitmap(width, height)
         }
         member inline self.ResetRenderedImage () = 
             for i in 0 .. self.RenderedArray.GetLength(0) - 1 do
                 for j in 0 .. self.RenderedArray.GetLength(1) - 1 do
                     self.RenderedArray.[i, j] <- Vec3.Zero
                     self.RenderedCount.[i, j] <- 0
-                    self.RenderedImage.SetPixel(i, j, Color.FromRgb(0))
+                    self.RenderedImage.SetPixel(i, j, Color.FromArgb(1, 0, 0, 0))
         member inline self.SetPixel (x : int, y : int, color : Vec3) = 
-           self.RenderedArray.[x, y] <-self.RenderedArray.[x, y] + color
-           self.RenderedCount.[x, y] <- self.RenderedCount.[x, y] + 1
-           self.RenderedImage.SetPixel(x, y, Vec3ToDrawingColor (self.RenderedArray.[x, y] / float self.RenderedCount.[x, y]))
+            self.RenderedArray.[x, y] <-self.RenderedArray.[x, y] + color
+            self.RenderedCount.[x, y] <- self.RenderedCount.[x, y] + 1
+            self.RenderedImage.SetPixel(x, y, Vec3ToDrawingColor (self.RenderedArray.[x, y] / float self.RenderedCount.[x, y]))
     end

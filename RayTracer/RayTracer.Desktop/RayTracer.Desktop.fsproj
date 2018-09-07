@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\RayTracer\RayTracerGUI.fsproj" />
+    <ProjectReference Include="..\RayTracer\RayTracer.fsproj" />
   </ItemGroup>
 
 

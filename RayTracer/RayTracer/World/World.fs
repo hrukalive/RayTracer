@@ -24,7 +24,7 @@ module World =
             }
         end
 
-    let GenerateRenderTasks (world : World) = 
+    let GenerateRenderTasks (world : World) (cts : SynchronizationContext) = 
         let size = new Drawing.Size(world.ViewPlane.Width, world.ViewPlane.Height)
         let spp = world.ViewPlane.NumSamples
         let objs = world.Objects
@@ -42,11 +42,36 @@ module World =
                 arr.[pos] <- arr.[i]
                 arr.[i] <- tmp
                 arr
-   
             [|0..max|] |> Array.fold randomSwap arr
-    
+
+        let mutable renderedPixel = ref 0
         printfn "Generating rendering tasks"
-        //let tasks = 
+
+        // let tasks = Seq.init (world.ViewPlane.NumSamples * size.Width * size.Height) (fun rid -> 
+        //     async {
+        //         let random = System.Random()
+        //         let x = (rid % (size.Width * size.Height)) % size.Width
+        //         let y = (rid % (size.Width * size.Height)) / size.Width
+        //         let xNorm = float x / float size.Width
+        //         let yNorm = 1.0 - float y / float size.Height
+
+        //         let xTrace = xNorm + random.NextDouble() * xRecip
+        //         let yTrace = yNorm + random.NextDouble() * yRecip
+        //         let ray = camera.CreateRay(xTrace, yTrace)
+        //         let col = TraceRay ray objs 0 1
+
+        //         Threading.Interlocked.Increment(renderedPixel) |> ignore
+        //         if !renderedPixel % (100 * world.ViewPlane.NumSamples) = 0 then
+        //             printfn "RenderedPixels:%A  Percent:%A"
+        //                     (!renderedPixel / world.ViewPlane.NumSamples)
+        //                     (float !renderedPixel / float (size.Width * size.Height * world.ViewPlane.NumSamples))
+
+        //         do! Async.SwitchToContext cts
+        //         lock world.ViewPlane.RenderLock (fun () -> world.ViewPlane.SetPixel(x, y, col |> Gamma))
+
+        //         return (x, y, col |> Gamma) 
+        //     })
+        // let tasks = 
         //    [| 1 .. world.ViewPlane.NumSamples |]
         //    |> PSeq.map (fun _ ->
         //        [| 0 .. (size.Height * size.Width - 1) |]
@@ -73,29 +98,36 @@ module World =
         let tasks = 
             [| 0 .. (size.Height * size.Width - 1) |]
             |> PSeq.map (fun pxid ->
-                async {
-                    let random = System.Random()
-                    let x = pxid % size.Width
-                    let y = pxid / size.Width
-                    let xNorm = float x / float size.Width
-                    let yNorm = 1.0 - float y / float size.Height
+               async {
+                   let random = System.Random()
+                   let x = pxid % size.Width
+                   let y = pxid / size.Width
+                   let xNorm = float x / float size.Width
+                   let yNorm = 1.0 - float y / float size.Height
 
-                    let mutable col = Vec3.Zero
+                   let mutable col = Vec3.Zero
 
-                    for _ in 1 .. spp do
-                        let xTrace = xNorm + random.NextDouble() * xRecip
-                        let yTrace = yNorm + random.NextDouble() * yRecip
-                        let ray = camera.CreateRay(xTrace,yTrace)
-                        col <- col + colWeigth * (TraceRay ray objs 0 5)
-                
-                    return (x, y, col |> Gamma) 
-                })
+                   for _ in 1 .. spp do
+                       let xTrace = xNorm// + random.NextDouble() * xRecip
+                       let yTrace = yNorm// + random.NextDouble() * yRecip
+                       let ray = camera.CreateRay(xTrace,yTrace)
+                       col <- col + colWeigth * (TraceRay ray objs 0 1)
+                   Threading.Interlocked.Increment(renderedPixel) |> ignore
+                   if !renderedPixel % 100 = 0 then
+                       printfn "RenderedPixels:%A  Percent:%A"
+                               !renderedPixel
+                               (float !renderedPixel / float (size.Width * size.Height))
+
+                   do! Async.SwitchToContext cts
+                   lock world.ViewPlane.RenderLock (fun () -> world.ViewPlane.SetPixel(x, y, col |> Gamma))
+                   // return (x, y, col |> Gamma) 
+               })
             |> PSeq.toArray
             |> Shuffle
         printfn "Rendering tasks generated"
         tasks
 
-    let RenderScene (world : World) cts jobCompleted completeCallback cancelCallback = 
+    let RenderScene (world : World) cts = // jobCompleted completeCallback cancelCallback = 
         let exceptionContinuation (ex : exn) = 
             printfn "Error: %s" ex.Message
             printfn "%s" ex.StackTrace
@@ -103,7 +135,10 @@ module World =
 
         world.ViewPlane.ResetRenderedImage()
         printfn "Reset viewplane image"
+
+        let task = (GenerateRenderTasks world cts) |> Async.Parallel |> Async.StartAsTask
+        task.Wait()
     
-        let worker = new AsyncWorker<_>(GenerateRenderTasks world, completeCallback, exceptionContinuation, cancelCallback, cts)
-        worker.JobCompleted.Add(jobCompleted)
-        async { worker.Start() } |> Async.Start
+        //let worker = new AsyncWorker<_>(GenerateRenderTasks world, completeCallback, exceptionContinuation, cancelCallback, cts)
+        //worker.JobCompleted.Add(jobCompleted)
+        //async { worker.Start() } |> Async.Start

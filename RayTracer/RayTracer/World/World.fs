@@ -9,14 +9,17 @@ module World =
     open RayTracer.GeometricObjects
     open RayTracer.Material
     open Tracer
+    open Camera
+    open System.Threading.Tasks
+    open System.Drawing
 
     type World = 
         struct
             val ViewPlane : ViewPlane
             val BgColor : Vec3
             val Objects : list<GeometricObject * IMaterial>
-            val Camera : Camera
-            new (viewplane : ViewPlane, bgColor : Vec3, objects : list<GeometricObject * IMaterial>, camera : Camera) = {
+            val Camera : ICamera
+            new (viewplane : ViewPlane, bgColor : Vec3, objects : list<GeometricObject * IMaterial>, camera : ICamera) = {
                 ViewPlane = viewplane;
                 BgColor = bgColor;
                 Objects = objects;
@@ -24,7 +27,7 @@ module World =
             }
         end
 
-    let GenerateRenderTasks (world : World) (cts : SynchronizationContext) = 
+    let GenerateRenderTasks (world : World) (syncContext : SynchronizationContext) (jobCompleteCallback : (int * int * Vec3) -> unit)= 
         let size = new Drawing.Size(world.ViewPlane.Width, world.ViewPlane.Height)
         let spp = world.ViewPlane.NumSamples
         let objs = world.Objects
@@ -32,8 +35,8 @@ module World =
         let (xRecip, yRecip) = (1.0 / float size.Width, 1.0 / float size.Height)
         let colWeigth = 1.0 / float spp
     
-        let rng = new Random()
         let Shuffle (org:_[]) = 
+            let rng = new Random()
             let arr = Array.copy org
             let max = (arr.Length - 1)
             let randomSwap (arr:_[]) i =
@@ -46,98 +49,62 @@ module World =
 
         let mutable renderedPixel = ref 0
         printfn "Generating rendering tasks"
-
-        // let tasks = Seq.init (world.ViewPlane.NumSamples * size.Width * size.Height) (fun rid -> 
-        //     async {
-        //         let random = System.Random()
-        //         let x = (rid % (size.Width * size.Height)) % size.Width
-        //         let y = (rid % (size.Width * size.Height)) / size.Width
-        //         let xNorm = float x / float size.Width
-        //         let yNorm = 1.0 - float y / float size.Height
-
-        //         let xTrace = xNorm + random.NextDouble() * xRecip
-        //         let yTrace = yNorm + random.NextDouble() * yRecip
-        //         let ray = camera.CreateRay(xTrace, yTrace)
-        //         let col = TraceRay ray objs 0 1
-
-        //         Threading.Interlocked.Increment(renderedPixel) |> ignore
-        //         if !renderedPixel % (100 * world.ViewPlane.NumSamples) = 0 then
-        //             printfn "RenderedPixels:%A  Percent:%A"
-        //                     (!renderedPixel / world.ViewPlane.NumSamples)
-        //                     (float !renderedPixel / float (size.Width * size.Height * world.ViewPlane.NumSamples))
-
-        //         do! Async.SwitchToContext cts
-        //         lock world.ViewPlane.RenderLock (fun () -> world.ViewPlane.SetPixel(x, y, col |> Gamma))
-
-        //         return (x, y, col |> Gamma) 
-        //     })
-        // let tasks = 
-        //    [| 1 .. world.ViewPlane.NumSamples |]
-        //    |> PSeq.map (fun _ ->
-        //        [| 0 .. (size.Height * size.Width - 1) |]
-        //        |> PSeq.map (fun pxid ->
-        //            async {
-        //                let random = System.Random()
-        //                let x = pxid % size.Width
-        //                let y = pxid / size.Width
-        //                let xNorm = float x / float size.Width
-        //                let yNorm = 1.0 - float y / float size.Height
-                    
-        //                let xTrace = xNorm + random.NextDouble() * xRecip
-        //                let yTrace = yNorm + random.NextDouble() * yRecip
-        //                let ray = camera.CreateRay(xTrace, yTrace)
-        //                let col = TraceRay ray objs 0 5
-                
-        //                return (x, y, col |> Gamma) 
-        //            })
-        //        |> PSeq.toArray
-        //        |> Shuffle
-        //        )
-        //    |> PSeq.concat
-        //    |> PSeq.toArray
+        
+        let blockSize = 128
+        let xBlockCount = int (Math.Ceiling (float size.Width / float blockSize))
+        let yBlockCount = int (Math.Ceiling (float size.Height / float blockSize))
+        let RayCreator = camera.CreateRay world.ViewPlane
         let tasks = 
-            [| 0 .. (size.Height * size.Width - 1) |]
-            |> PSeq.map (fun pxid ->
-               async {
-                   let random = System.Random()
-                   let x = pxid % size.Width
-                   let y = pxid / size.Width
-                   let xNorm = float x / float size.Width
-                   let yNorm = 1.0 - float y / float size.Height
+            Seq.init (spp) (fun sid ->
+                [| 0 .. (xBlockCount * yBlockCount - 1) |]
+                |> PSeq.map (fun blockId -> 
+                    let xBlock = blockId % xBlockCount
+                    let yBlock = blockId / xBlockCount
+                    let xStart, xEnd = xBlock * blockSize, Math.Min((xBlock + 1) * blockSize, size.Width)
+                    let yStart, yEnd = yBlock * blockSize, Math.Min((yBlock + 1) * blockSize, size.Height)
+                    let xSize, ySize = xEnd - xStart, yEnd - yStart
+                    [| 0 .. (xSize * ySize - 1) |]
+                    |> PSeq.map (fun pxid ->
+                        async {
+                            let random = System.Random()
+                            let c = pxid % xSize + xStart
+                            let r = pxid / xSize + yStart
 
-                   let mutable col = Vec3.Zero
+                            let ray = RayCreator (c, r, sid)
+                            let col = TraceRay ray objs 0 5
 
-                   for _ in 1 .. spp do
-                       let xTrace = xNorm// + random.NextDouble() * xRecip
-                       let yTrace = yNorm// + random.NextDouble() * yRecip
-                       let ray = camera.CreateRay(xTrace,yTrace)
-                       col <- col + colWeigth * (TraceRay ray objs 0 1)
-                   Threading.Interlocked.Increment(renderedPixel) |> ignore
-                   if !renderedPixel % 100 = 0 then
-                       printfn "RenderedPixels:%A  Percent:%A"
-                               !renderedPixel
-                               (float !renderedPixel / float (size.Width * size.Height))
-
-                   do! Async.SwitchToContext cts
-                   lock world.ViewPlane.RenderLock (fun () -> world.ViewPlane.SetPixel(x, y, col |> Gamma))
-                   // return (x, y, col |> Gamma) 
-               })
-            |> PSeq.toArray
-            |> Shuffle
+                            do! Async.SwitchToContext syncContext
+                            lock world.ViewPlane.RenderLock (fun () -> 
+                                jobCompleteCallback(c, r, col |> Gamma)
+                            )
+                        }
+                    )
+                    |> PSeq.toArray
+                    |> Shuffle
+                    |> Async.Parallel
+                )
+                |> PSeq.toArray
+                |> Async.Parallel
+            )
         printfn "Rendering tasks generated"
         tasks
 
-    let RenderScene (world : World) cts = // jobCompleted completeCallback cancelCallback = 
+    let RenderScene (world : World) jobCompleted = // completeCallback cancelCallback = 
         let exceptionContinuation (ex : exn) = 
             printfn "Error: %s" ex.Message
             printfn "%s" ex.StackTrace
             // MessageBox.Show("Error: " + ex.Message + "\n" + ex.StackTrace, "Ray Tracer", MessageBoxButtons.OK, MessageBoxIcon.Error) |> ignore
-
+        let syncContext = match SynchronizationContext.Current with
+                          | null -> new SynchronizationContext()
+                          | ctxt -> ctxt
         world.ViewPlane.ResetRenderedImage()
         printfn "Reset viewplane image"
-
-        let task = (GenerateRenderTasks world cts) |> Async.Parallel |> Async.StartAsTask
-        task.Wait()
+        
+        async {
+            let taskSeq = GenerateRenderTasks world syncContext jobCompleted
+            Seq.iter (fun task -> task |> Async.Ignore |> Async.RunSynchronously) taskSeq
+        } |> Async.Start
+        //task.ContinueWith(completeCallback, TaskContinuationOptions.OnlyOnRanToCompletion)
     
         //let worker = new AsyncWorker<_>(GenerateRenderTasks world, completeCallback, exceptionContinuation, cancelCallback, cts)
         //worker.JobCompleted.Add(jobCompleted)

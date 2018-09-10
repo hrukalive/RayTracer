@@ -11,19 +11,20 @@ module Tracer =
         Material : IMaterial
     }
 
-    let HitObjects (ray : Ray) (tmin : float) (tmax: float) (objs : list<GeometricObject * IMaterial>) : TraceRecord option =
+    let HitObjects (ray : Ray) (tmax: float) (objs : list<GeometricObject * IMaterial>) : TraceRecord option =
         let mutable closest = tmax
         let mutable record : TraceRecord option = None
         for (geometricObject, material) in objs do
-            match geometricObject.Hit(ray, tmin, closest) with
+            match geometricObject.Hit(ray) with
             | Some(hitRecord) -> 
-                closest <- hitRecord.RayT
-                record <- Some({ HitRecord = hitRecord; Material = material })
+                if hitRecord.RayT < closest then
+                    closest <- hitRecord.RayT
+                    record <- Some({ HitRecord = hitRecord; Material = material })
             | None -> ()
         record
 
     let rec TraceRay (ray : Ray) (objs : list<GeometricObject * IMaterial>) depth maxDepth : Vec3 =
-        match HitObjects ray 0.0000001 Double.MaxValue objs with
+        match HitObjects ray Double.MaxValue objs with
         | Some(record) -> 
             let (ray, atten) = record.Material.Scatter(ray, record.HitRecord)
             if ray.IsSome && depth < maxDepth then

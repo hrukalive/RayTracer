@@ -7,7 +7,7 @@ open RayTracer.Material.MaterialFuncs
 type Metal(albedo : Vec3) = 
     interface IMaterial with
         member this.Scatter(ray : Ray, record : HitRecord) : (Ray option * Vec3) =
-            let reflected = Reflect ray.DirectionNorm record.Normal
+            let reflected = Reflect ray.Direction record.Normal
             let scattered = Ray(record.Position, reflected)
 
             if (Vec3Ops.Dot scattered.Direction record.Normal) > 0.0 then

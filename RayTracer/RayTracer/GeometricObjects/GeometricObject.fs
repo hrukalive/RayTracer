@@ -10,4 +10,4 @@ type HitRecord = {
 }
 
 type GeometricObject = 
-    abstract member Hit : Ray * float * float -> HitRecord option
+    abstract member Hit : Ray -> HitRecord option

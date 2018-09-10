@@ -16,6 +16,6 @@ type LambertianMetal(albedo : Vec3, fuzz : float) =
             | Some(ray) -> 
                 let metalDir = ray.Direction
                 let dir = metalDir + GetDiffuseDirection(rand) * fuzz
-                (Some(Ray(ray.Orginal, dir)), albedo)
+                (Some(Ray(ray.Origin, dir)), albedo)
 
         member this.Emitted with get() = Vec3.Zero

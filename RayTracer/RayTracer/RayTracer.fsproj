@@ -8,18 +8,40 @@
     <Description>Description of RayTracer</Description>
   </PropertyGroup>
   <ItemGroup>
+    <None Remove="Cameras\Viewplane.fs" />
+    <None Remove="Cameras\Camera.fs" />
+    <None Remove="GeometricObjects\GeometricObject.fs" />
+    <None Remove="GeometricObjects\Sphere.fs" />
+    <None Remove="GeometricObjects\Plane.fs" />
+    <None Remove="GeometricObjects\Triangle.fs" />
+    <None Remove="Samplers\Sampler.fs" />
+    <None Remove="MainForm.fs" />
+    <None Remove="Materials\Dielectirc.fs" />
+    <None Remove="Materials\Lambertian.fs" />
+    <None Remove="Materials\LambertianMetal.fs" />
+    <None Remove="Materials\Material.fs" />
+    <None Remove="Materials\Metal.fs" />
+    <None Remove="Tracers\Tracer.fs" />
+    <None Remove="Utility\BaseFunctions.fs" />
+    <None Remove="Utility\BaseTypes.fs" />
+    <None Remove="World\World.fs" />
+  </ItemGroup>
+  <ItemGroup>
     <Compile Include="Utility\BaseTypes.fs" />
     <Compile Include="Utility\BaseFunctions.fs" />
     <Compile Include="GeometricObjects\GeometricObject.fs" />
     <Compile Include="GeometricObjects\Sphere.fs" />
+    <Compile Include="GeometricObjects\Plane.fs" />
+    <Compile Include="GeometricObjects\Triangle.fs" />
+    <Compile Include="Samplers\Sampler.fs" />
     <Compile Include="Materials\Material.fs" />
     <Compile Include="Materials\Dielectirc.fs" />
+    <Compile Include="Materials\Lambertian.fs" />
     <Compile Include="Materials\Metal.fs" />
     <Compile Include="Materials\LambertianMetal.fs" />
-    <Compile Include="Materials\Lambertian.fs" />
+    <Compile Include="Cameras\Viewplane.fs" />
     <Compile Include="Cameras\Camera.fs" />
     <Compile Include="Tracers\Tracer.fs" />
-    <Compile Include="World\ViewPlane.fs" />
     <Compile Include="World\World.fs" />
     <Compile Include="MainForm.fs" />
   </ItemGroup>

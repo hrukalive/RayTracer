@@ -12,10 +12,10 @@ type Dielectirc(albedo : Vec3, refIdx : float) =
                 match (Vec3Ops.Dot ray.Direction record.Normal) > 0.0 with
                 | true -> (-record.Normal, 
                             refIdx, 
-                            refIdx * (Vec3Ops.Dot ray.DirectionNorm record.Normal))
+                            refIdx * (Vec3Ops.Dot ray.Direction record.Normal))
                 | false -> (record.Normal, 
                             1.0/refIdx, 
-                            -(Vec3Ops.Dot ray.DirectionNorm record.Normal))
+                            -(Vec3Ops.Dot ray.Direction record.Normal))
 
             let (reflectProb, refracted) = match Refract ray.Direction normal niNo with
                                            | Some(refracted) -> (Schlick cos refIdx, Some(refracted))

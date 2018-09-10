@@ -5,6 +5,9 @@ open System.Threading
 open FSharp.Collections.ParallelSeq
 
 module BaseTypes = 
+    [<Literal>]
+    let kEpsilon = 0.001
+
     type Vec3 = class
         val X : float
         val Y : float
@@ -41,12 +44,8 @@ module BaseTypes =
                                                 u.X * v.Y - u.Y * v.X)
 
     type Ray(org : Vec3, dir : Vec3) = 
-        let dirNorm = Vec3Ops.Normalize dir
-
         member this.GetPoint (t : float) = org + t * dir
-
-        member this.DirectionNorm with get() = dirNorm
-        member this.Orginal with get() = org
+        member this.Origin with get() = org
         member this.Direction with get() = dir
 
     type AsyncWorker<'T> (jobs : seq<Async<'T>>, continuation : 'T [] -> unit, exnCont : exn -> unit, cancelCont : OperationCanceledException -> unit, cts : CancellationTokenSource) =  

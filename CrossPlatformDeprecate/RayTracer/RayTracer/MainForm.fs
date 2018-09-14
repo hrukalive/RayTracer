@@ -3,6 +3,15 @@ namespace RayTracer
 open System
 open Eto.Forms
 open Eto.Drawing
+open RayTracer
+open RayTracer.BaseTypes
+open RayTracer.BaseFunctions
+open RayTracer.GeometricObjects
+open RayTracer.Material
+open RayTracer.Tracer
+open RayTracer.World
+open RayTracer.Camera
+open RayTracer.Light
 
 type MainForm () as this =
     inherit Form()
@@ -11,7 +20,30 @@ type MainForm () as this =
 
     member this.InitializeComponent() =
         base.Title <- "Ray Tracer"
-        base.ClientSize <- new Size(400, 350)
+        let (width, height) = (128 * 5, 72 * 4)
+
+        let hitableList : list<GeometricObject* IMaterial> = [
+            (Sphere(Vec3(0.0, 0.0, -2.0), 0.5) :> GeometricObject, Lambertian(Vec3(0.0, 1.0, 0.0), 1.0) :> IMaterial)
+            (Sphere(Vec3(-1.0, 0.0, -1.0), 0.5) :> GeometricObject, Lambertian(Vec3(1.0, 0.0, 0.0), 1.0) :> IMaterial)
+            (Sphere(Vec3(1.0, 0.0, -1.0), 0.5) :> GeometricObject, Lambertian(Vec3(0.0, 0.0, 1.0), 1.0) :> IMaterial)
+        
+            //(InfPlane(Vec3(0.0, -0.5, -1.0), Vec3(0.0, 1.0, 0.0)) :> GeometricObject, Lambertian(Vec3(0.5, 0.5, 0.5), 1.0) :> IMaterial)
+            //(Plane(Vec3(-1.0, -0.5, 1.0), Vec3(2.0, 0.0, 0.0), Vec3(0.0, 0.0, -2.0)) :> GeometricObject, Lambertian(Vec3(0.8, 0.8, 0.0), 1.0) :> IMaterial)
+            //(Plane(Vec3(-1.5, -1.0, 1.0), Vec3(0.0, 0.0, -2.0), Vec3(0.0, 2.0, 0.0)) :> GeometricObject, Lambertian(Vec3(0.0, 0.8, 0.8), 1.0) :> IMaterial)
+            //(Plane(Vec3(1.5, -1.0, 1.0), Vec3(0.0, 0.0, -2.0), Vec3(0.0, 2.0, 0.0)) :> GeometricObject, Lambertian(Vec3(0.0, 0.8, 0.8), 1.0) :> IMaterial)
+        
+            (Plane(Vec3(-2.0, -0.6, 0.0), Vec3(4.0, 0.0, 0.0), Vec3(0.0, 0.0, -3.5)) :> GeometricObject, Lambertian(Vec3(0.5, 0.5, 0.5), 0.6) :> IMaterial)
+            (Triangle(Vec3(0.0, -0.5, -1.0), Vec3(1.5, -0.3, -2.5), Vec3(0.5, 0.8, -1.5)) :> GeometricObject, Lambertian(Vec3(0.8, 0.8, 0.0), 1.0) :> IMaterial)
+        ]
+
+        let lightList : list<ILight> = [
+            (AmbientLight(Vec3(0.03, 0.03, 0.03)) :> ILight)
+            (ParallelLight(Vec3(-1.0, -1.0, 0.0), Vec3(0.5, 0.5, 0.5)) :> ILight)
+        ]
+
+        let vp = ViewPlane(width, height, 12.0 / float height, 1, 1.0)
+        let camera = PinholeCamera(Vec3(0.0, 3.0, 3.0), Vec3(0.0, 0.0, -1.0), Vec3(0.0, 1.0, 0.0), 30.0)
+        let world = World(vp, Vec3.Zero, hitableList, lightList, camera :> ICamera)
 
         // MENU
 
@@ -67,10 +99,12 @@ type MainForm () as this =
         // table with three rows
         let layout = new StackLayout()
         let imageView = new ImageView()
-        imageView.Image <- new Bitmap(Size(100, 100), PixelFormat.Format24bppRgb);
+        imageView.Image <- new Bitmap(Size(width, height), PixelFormat.Format24bppRgb);
         let progressBar = new ProgressBar()
         progressBar.MaxValue <- 1000
         layout.Items.Add(new StackLayoutItem(imageView))
         layout.Items.Add(new StackLayoutItem(progressBar))
-
+        
+        let he = progressBar.Height
+        base.ClientSize <- new Size(width, height + progressBar.Height * 2)
         base.Content <- layout;

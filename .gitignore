@@ -1,7 +1,10 @@
 .vs/
-RayTracer/RayTracer.Base/bin
-RayTracer/RayTracer.Base/obj
+CrossPlatformDeprecate/RayTracer/RayTracer.Base/bin
+CrossPlatformDeprecate/RayTracer/RayTracer.Base/obj
+CrossPlatformDeprecate/RayTracer/RayTracer/bin
+CrossPlatformDeprecate/RayTracer/RayTracer/obj
+CrossPlatformDeprecate/RayTracer/RayTracer.Desktop/bin
+CrossPlatformDeprecate/RayTracer/RayTracer.Desktop/obj
 RayTracer/RayTracer/bin
-RayTracer/RayTracer.Desktop/bin
 RayTracer/RayTracer/obj
-RayTracer/RayTracer.Desktop/obj
+RayTracer/packages

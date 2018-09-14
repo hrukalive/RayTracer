@@ -1,0 +1,51 @@
+﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>net45</TargetFramework>
+    <RootNamespace>RayTracer</RootNamespace>
+    <PackageVersion>1.0</PackageVersion>
+    <Title>RayTracer</Title>
+    <Copyright>Copyright © 2018</Copyright>
+    <Description>Description of RayTracer</Description>
+  </PropertyGroup>
+  <ItemGroup>
+    <None Remove="Cameras\Viewplane.fs" />
+    <None Remove="Cameras\Camera.fs" />
+    <None Remove="GeometricObjects\GeometricObject.fs" />
+    <None Remove="GeometricObjects\Sphere.fs" />
+    <None Remove="GeometricObjects\Plane.fs" />
+    <None Remove="GeometricObjects\Triangle.fs" />
+    <None Remove="Samplers\Sampler.fs" />
+    <None Remove="Lights\Light.fs" />
+    <None Remove="MainForm.fs" />
+    <None Remove="Materials\Lambertian.fs" />
+    <None Remove="Materials\Material.fs" />
+    <None Remove="Tracers\Tracer.fs" />
+    <None Remove="Utility\BaseFunctions.fs" />
+    <None Remove="Utility\BaseTypes.fs" />
+    <None Remove="World\World.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Utility\BaseTypes.fs" />
+    <Compile Include="Utility\BaseFunctions.fs" />
+    <Compile Include="GeometricObjects\GeometricObject.fs" />
+    <Compile Include="GeometricObjects\Sphere.fs" />
+    <Compile Include="GeometricObjects\Plane.fs" />
+    <Compile Include="GeometricObjects\Triangle.fs" />
+    <Compile Include="Samplers\Sampler.fs" />
+    <Compile Include="Lights\Light.fs" />
+    <Compile Include="Materials\Material.fs" />
+    <Compile Include="Materials\Lambertian.fs" />
+    <Compile Include="Cameras\Viewplane.fs" />
+    <Compile Include="Cameras\Camera.fs" />
+    <Compile Include="Tracers\Tracer.fs" />
+    <Compile Include="World\World.fs" />
+    <Compile Include="MainForm.fs" />
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.5" PrivateAssets="All" />
+    <PackageReference Include="FSharp.Core" Version="4.5.2" />
+    <PackageReference Include="Eto.Forms" Version="2.4.1" />
+    <PackageReference Include="FSharp.Collections.ParallelSeq" Version="1.1.2" />
+    <PackageReference Include="FreeImage-dotnet-core" Version="4.3.6" />
+  </ItemGroup>
+</Project>

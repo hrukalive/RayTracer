@@ -4,6 +4,7 @@ open System
 open System.Drawing
 open BaseTypes
 open BaseFunctions
+open FreeImageAPI
 open Sampler
 
 type ViewPlane = 
@@ -18,7 +19,7 @@ type ViewPlane =
         val RenderedArray : Vec3[,]
         val RenderedCount : int[,]
         val RenderLock : Object
-        val RenderedImage : Bitmap
+        val RenderedImage : FreeImageBitmap
         new (width : int, height : int, pixelSize : float, numSamples : int, gamma : float) = {
             Width = width;
             Height = height;
@@ -30,7 +31,7 @@ type ViewPlane =
             RenderedArray = (Array2D.init width height (fun _ _ -> Vec3.Zero));
             RenderedCount = (Array2D.init width height (fun _ _ -> 0));
             RenderLock = new Object();
-            RenderedImage = new Bitmap(width, height)
+            RenderedImage = new FreeImageBitmap(width, height)
         }
         member inline self.GetPixelCenter (x : int, y : int) = 
             (self.PixelSize * (float x - (float self.Width / 2.0)),

@@ -3,6 +3,7 @@
 module Tracer = 
     open System
     open BaseTypes
+    open BaseFunctions
     open RayTracer.GeometricObjects
     open RayTracer.Material
     open RayTracer.Light
@@ -35,7 +36,10 @@ module Tracer =
                     | :? ParallelLight as pl -> 
                         match HitObjects (Ray (record.HitRecord.Position, -(Vec3Ops.Normalize pl.Direction))) Double.MaxValue objs with
                         | Some(_) -> Vec3.Zero
-                        | None -> light.Color * Math.Max(0.0, Vec3Ops.Dot record.HitRecord.Normal -(Vec3Ops.Normalize pl.Direction))
-                    | _ -> light.Color
-            albeto * illumination
+                        | None -> albeto * light.Color * Math.Max(0.0, Vec3Ops.Dot record.HitRecord.Normal -(Vec3Ops.Normalize pl.Direction)) +
+                                  match Vec3Ops.Dot pl.Direction record.HitRecord.Normal < -0.2 with
+                                  | true -> Vec3.One * Math.Pow((Vec3Ops.Dot (Vec3Ops.Normalize -ray.Direction) (Vec3Ops.Normalize (Reflect pl.Direction record.HitRecord.Normal))), 50.0)
+                                  | false -> Vec3.Zero
+                    | _ -> albeto * light.Color
+            illumination
         | None -> Vec3.Zero

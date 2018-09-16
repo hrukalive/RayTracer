@@ -3,7 +3,6 @@
 module Camera = 
     open System
     open BaseTypes
-    open Material.MaterialFuncs
     open Sampler
     
     type ICamera = 
@@ -19,7 +18,7 @@ module Camera =
                 override this.CreateRay (viewplane : ViewPlane) (c : int, r : int, dp : float * float) : Ray = 
                     let spx, spy = (viewplane.GetPixelCenter (c, r))
                     let dpx, dpy = dp
-                    let ray = Ray((spx + dpx * viewplane.PixelSize) * u + (spy + dpy * viewplane.PixelSize) * v, -w)
+                    let ray = Ray((spx + dpx * viewplane.PixelSize) * u + (spy + dpy * viewplane.PixelSize) * v + eyePoint, -w)
                     ray
         end
     type PinholeCamera(eyePoint : Vec3, lookAt : Vec3, up : Vec3, dist : float) = 

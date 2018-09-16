@@ -1,11 +1,11 @@
 ﻿namespace RayTracer
 
 open System
-open System.Drawing
 open BaseTypes
 open BaseFunctions
 open FreeImageAPI
 open Sampler
+open Eto.Drawing
 
 type ViewPlane = 
     struct
@@ -19,7 +19,7 @@ type ViewPlane =
         val RenderedArray : Vec3[,]
         val RenderedCount : int[,]
         val RenderLock : Object
-        val RenderedImage : FreeImageBitmap
+        val RenderedImage : Bitmap
         new (width : int, height : int, pixelSize : float, numSamples : int, gamma : float) = {
             Width = width;
             Height = height;
@@ -31,7 +31,7 @@ type ViewPlane =
             RenderedArray = (Array2D.init width height (fun _ _ -> Vec3.Zero));
             RenderedCount = (Array2D.init width height (fun _ _ -> 0));
             RenderLock = new Object();
-            RenderedImage = new FreeImageBitmap(width, height)
+            RenderedImage = new Bitmap(width, height, PixelFormat.Format24bppRgb)
         }
         member inline self.GetPixelCenter (x : int, y : int) = 
             (self.PixelSize * (float x - (float self.Width / 2.0)),
@@ -41,9 +41,13 @@ type ViewPlane =
                 for j in 0 .. self.RenderedArray.GetLength(1) - 1 do
                     self.RenderedArray.[i, j] <- Vec3.Zero
                     self.RenderedCount.[i, j] <- 0
-                    self.RenderedImage.SetPixel(i, j, Color.Black)
+                    self.RenderedImage.SetPixel(i, j, Color.FromRgb(0))
         member inline self.SetPixel (x : int, y : int, color : Vec3) = 
             self.RenderedArray.[x, y] <-self.RenderedArray.[x, y] + color
             self.RenderedCount.[x, y] <- self.RenderedCount.[x, y] + 1
-            self.RenderedImage.SetPixel(x, y, Vec3ToDrawingColor (self.RenderedArray.[x, y] / float self.RenderedCount.[x, y]))
+            let color = Vec3ToDrawingColor (self.RenderedArray.[x, y] / float self.RenderedCount.[x, y])
+            using (self.RenderedImage.Lock()) (fun img -> 
+                img.SetPixel(x, y, color)
+                img
+            ) |> ignore
     end

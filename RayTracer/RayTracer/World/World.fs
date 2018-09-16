@@ -60,41 +60,8 @@ module World =
         let RayCreator = camera.CreateRay world.ViewPlane
         let Sampler = MultiJittered(world.ViewPlane.NumSamples, 1) :> ISampler
 
-        //let tasks = 
-        //    Seq.init (xBlockCount * yBlockCount) (fun blockId ->
-        //        let xBlock = blockId % xBlockCount
-        //        let yBlock = blockId / xBlockCount
-        //        let xStart, xEnd = xBlock * blockSize, Math.Min((xBlock + 1) * blockSize, size.Width)
-        //        let yStart, yEnd = yBlock * blockSize, Math.Min((yBlock + 1) * blockSize, size.Height)
-        //        let xSize, ySize = xEnd - xStart, yEnd - yStart
-        //        [| 0 .. (xSize * ySize - 1) |]
-        //        |> PSeq.map (fun pxid ->
-        //            Sampler.GenerateSample()
-        //            [| 0 .. (spp - 1) |]
-        //            |> PSeq.map (fun sid ->
-        //                async {
-        //                    let c = pxid % xSize + xStart
-        //                    let r = pxid / xSize + yStart
-
-        //                    let ray = RayCreator (c, r, Sampler.Sample(0, sid))
-        //                    let col = TraceRay ray objs lights 0 5
-
-        //                    do! Async.SwitchToContext syncContext
-        //                    lock world.ViewPlane.RenderLock (fun () -> 
-        //                        jobCompleteCallback(c, r, col |> Gamma)
-        //                    )
-        //                }
-        //            )
-        //            |> PSeq.toArray
-        //            |> Async.Parallel
-        //        )
-        //        |> PSeq.toArray
-        //        |> Shuffle
-        //        |> Async.Parallel
-        //    )
         let tasks = 
-            [| 0 .. (xBlockCount * yBlockCount - 1) |]
-            |> PSeq.map (fun blockId -> 
+            Seq.init (xBlockCount * yBlockCount) (fun blockId ->
                 let xBlock = blockId % xBlockCount
                 let yBlock = blockId / xBlockCount
                 let xStart, xEnd = xBlock * blockSize, Math.Min((xBlock + 1) * blockSize, size.Width)
@@ -102,29 +69,62 @@ module World =
                 let xSize, ySize = xEnd - xStart, yEnd - yStart
                 [| 0 .. (xSize * ySize - 1) |]
                 |> PSeq.map (fun pxid ->
-                    async {
-                        let c = pxid % xSize + xStart
-                        let r = pxid / xSize + yStart
+                    Sampler.GenerateSample()
+                    [| 0 .. (spp - 1) |]
+                    |> PSeq.map (fun sid ->
+                        async {
+                            let c = pxid % xSize + xStart
+                            let r = pxid / xSize + yStart
 
-                        let ray = RayCreator (c, r, (0.5, 0.5))
-                        let col = TraceRay ray objs lights 0 5
+                            let ray = RayCreator (c, r, Sampler.Sample(0, sid))
+                            let col = TraceRay ray objs lights 0 5
 
-                        do! Async.SwitchToContext syncContext
-                        lock world.ViewPlane.RenderLock (fun () -> 
-                            jobCompleteCallback(c, r, col |> Gamma)
-                        )
-                    }
+                            do! Async.SwitchToContext syncContext
+                            lock world.ViewPlane.RenderLock (fun () -> 
+                                jobCompleteCallback(c, r, col |> Gamma)
+                            )
+                        }
+                    )
+                    |> PSeq.toArray
+                    |> Async.Parallel
                 )
                 |> PSeq.toArray
                 |> Shuffle
                 |> Async.Parallel
             )
-            |> PSeq.toArray
-            |> Async.Parallel
+        //let tasks = 
+        //    [| 0 .. (xBlockCount * yBlockCount - 1) |]
+        //    |> PSeq.map (fun blockId -> 
+        //        let xBlock = blockId % xBlockCount
+        //        let yBlock = blockId / xBlockCount
+        //        let xStart, xEnd = xBlock * blockSize, Math.Min((xBlock + 1) * blockSize, size.Width)
+        //        let yStart, yEnd = yBlock * blockSize, Math.Min((yBlock + 1) * blockSize, size.Height)
+        //        let xSize, ySize = xEnd - xStart, yEnd - yStart
+        //        [| 0 .. (xSize * ySize - 1) |]
+        //        |> PSeq.map (fun pxid ->
+        //            async {
+        //                let c = pxid % xSize + xStart
+        //                let r = pxid / xSize + yStart
+
+        //                let ray = RayCreator (c, r, (0.5, 0.5))
+        //                let col = TraceRay ray objs lights 0 5
+
+        //                do! Async.SwitchToContext syncContext
+        //                lock world.ViewPlane.RenderLock (fun () -> 
+        //                    jobCompleteCallback(c, r, col |> Gamma)
+        //                )
+        //            }
+        //        )
+        //        |> PSeq.toArray
+        //        |> Shuffle
+        //        |> Async.Parallel
+        //    )
+        //    |> PSeq.toArray
+        //    |> Async.Parallel
         printfn "Rendering tasks generated"
         tasks
 
-    let RenderScene (world : World) jobCompleted = // completeCallback cancelCallback = 
+    let RenderScene (world : World) jobCompleted (cts : CancellationTokenSource) = // completeCallback cancelCallback = 
         let exceptionContinuation (ex : exn) = 
             printfn "Error: %s" ex.Message
             printfn "%s" ex.StackTrace
@@ -135,11 +135,12 @@ module World =
         world.ViewPlane.ResetRenderedImage()
         printfn "Reset viewplane image"
         
-        async {
+        Async.Start(async {
             let taskSeq = GenerateRenderTasks world syncContext jobCompleted
-            //Seq.iter (fun task -> task |> Async.Ignore |> Async.RunSynchronously) taskSeq
-            taskSeq |> Async.Ignore |> Async.RunSynchronously
-        } |> Async.Start
+            Seq.iter (fun task -> if not cts.IsCancellationRequested then Async.Start(task |> Async.Ignore, cts.Token)) taskSeq
+            //taskSeq |> Async.Ignore |> Async.RunSynchronously
+        }, cts.Token)
+        
         //task.ContinueWith(completeCallback, TaskContinuationOptions.OnlyOnRanToCompletion)
     
         //let worker = new AsyncWorker<_>(GenerateRenderTasks world, completeCallback, exceptionContinuation, cancelCallback, cts)

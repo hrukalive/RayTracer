@@ -44,6 +44,21 @@ type MainForm () as this =
         let vp = ViewPlane(width, height, 12.0 / float height, 1, 1.0)
         let camera = PinholeCamera(Vec3(0.0, 3.0, 3.0), Vec3(0.0, 0.0, -1.0), Vec3(0.0, 1.0, 0.0), 30.0)
         let world = World(vp, Vec3.Zero, hitableList, lightList, camera :> ICamera)
+        
+        // table with three rows
+        let layout = new StackLayout()
+        let imageView = new ImageView()
+        imageView.Image <- new Bitmap(Size(width, height), PixelFormat.Format24bppRgb);
+        let progressBar = new ProgressBar()
+        progressBar.MaxValue <- 1000
+        progressBar.Width <- width
+        layout.Items.Add(new StackLayoutItem(imageView))
+        layout.Items.Add(new StackLayoutItem(progressBar))
+
+        let timer = new UITimer()
+        timer.Interval <- 1.0
+        timer.Elapsed.Add(fun _ -> imageView.Image <- world.ViewPlane.RenderedImage)
+        timer.Start()
 
         // MENU
 
@@ -85,8 +100,25 @@ type MainForm () as this =
         // Render menu
 
         let renderStartCommand = new Command(MenuText = "Start")
+        let startToolStripMenuItemClicked = fun _ ->
+            //cts <- new CancellationTokenSource()
+            this.ClientSize <- new Size(world.ViewPlane.Width, world.ViewPlane.Height + progressBar.Height)
+            progressBar.Visible <- true
+            
+            let size = new Drawing.Size(world.ViewPlane.Width, world.ViewPlane.Height)
+            let mutable renderedRay = 0
+            let jobCompleted = fun (x, y, col) -> 
+                world.ViewPlane.SetPixel(x, y, col)
+                renderedRay <- renderedRay + 1
+                if renderedRay % (1000 * world.ViewPlane.NumSamples) = 0 then
+                    let renderedPixel = int (floor (float renderedRay / float world.ViewPlane.NumSamples))
+                    printfn "RenderedPixels:%A  Percent:%.2f%%"
+                            renderedPixel
+                            (float renderedPixel * 100.0 / float (size.Width * size.Height))
+                progressBar.Value <- int (float renderedRay / float world.ViewPlane.NumSamples * float progressBar.MaxValue / float (size.Width * size.Height))
+            do RenderScene world jobCompleted
         renderStartCommand.Shortcut <- Application.Instance.CommonModifier ||| Keys.R
-        renderStartCommand.Executed.Add(fun e -> MessageBox.Show(this, "Start render") |> ignore)
+        renderStartCommand.Executed.Add(fun _ -> startToolStripMenuItemClicked() |> ignore)
 
         let renderStopCommand = new Command(MenuText = "Stop")
         renderStopCommand.Executed.Add(fun e -> MessageBox.Show(this, "Stop render") |> ignore)
@@ -96,15 +128,5 @@ type MainForm () as this =
         renderItem.Items.Add(renderStopCommand) |> ignore
         base.Menu.Items.Add(renderItem)
         
-        // table with three rows
-        let layout = new StackLayout()
-        let imageView = new ImageView()
-        imageView.Image <- new Bitmap(Size(width, height), PixelFormat.Format24bppRgb);
-        let progressBar = new ProgressBar()
-        progressBar.MaxValue <- 1000
-        layout.Items.Add(new StackLayoutItem(imageView))
-        layout.Items.Add(new StackLayoutItem(progressBar))
-        
-        let he = progressBar.Height
-        base.ClientSize <- new Size(width, height + progressBar.Height * 2)
+        base.ClientSize <- new Size(width, imageView.Height + progressBar.Height)
         base.Content <- layout;

@@ -8,7 +8,7 @@ type InfPlane(a : Vec3, n : Vec3) =
             let t = (Vec3Ops.Dot (a - ray.Origin) n) / (Vec3Ops.Dot ray.Direction n)
             match t > kEpsilon with
             | true -> 
-                Some({ Normal = n
+                Some({ Normal = Vec3Ops.Normalize n
                        Position = ray.GetPoint(t)
                        RayT = t })
             | false -> None
@@ -24,7 +24,7 @@ type Plane(a : Vec3, u : Vec3, v: Vec3) =
 
             match t > kEpsilon && tu >= 0.0 && tu <= 1.0 && tv >= 0.0 && tv <= 1.0 with
             | true -> 
-                Some({ Normal = n
+                Some({ Normal = Vec3Ops.Normalize n
                        Position = p
                        RayT = t })
             | false -> None

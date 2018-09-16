@@ -2,8 +2,8 @@
 
 module BaseFunctions = 
     open System
-    open System.Drawing
     open BaseTypes
+    open Eto.Drawing
 
     let Clamp min max (x : float) = 
         match x with

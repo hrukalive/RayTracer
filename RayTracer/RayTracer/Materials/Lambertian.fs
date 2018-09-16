@@ -2,7 +2,6 @@
 
 open RayTracer.BaseTypes
 open RayTracer.GeometricObjects
-open RayTracer.Material.MaterialFuncs
 
 type Lambertian(albedo : Vec3, diffuseCoeff : float) = 
     interface IMaterial with

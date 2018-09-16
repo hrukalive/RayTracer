@@ -111,7 +111,7 @@ type RayTracerMainGUI (world : World) as self =
             progressBar.Visible <- false
             this.ClientSize <- new Size(world.ViewPlane.Width, world.ViewPlane.Height + menuStrip.Height)
         let startToolStripMenuItemClicked = fun _ ->
-            //cts <- new CancellationTokenSource()
+            cts <- new CancellationTokenSource()
             this.ClientSize <- new Size(world.ViewPlane.Width, world.ViewPlane.Height + menuStrip.Height + progressBar.Height)
             progressBar.Visible <- true
             
@@ -128,7 +128,7 @@ type RayTracerMainGUI (world : World) as self =
                 progressBar.Style <- ProgressBarStyle.Continuous
                 progressBar.Value <- int (float renderedRay / float world.ViewPlane.NumSamples * float progressBar.Maximum / float (size.Width * size.Height))
             progressBar.Style <- ProgressBarStyle.Marquee
-            do RenderScene world jobCompleted
+            do RenderScene world jobCompleted cts
         startToolStripMenuItem.Name <- "startToolStripMenuItem";
         startToolStripMenuItem.Size <- new System.Drawing.Size(180, 22);
         startToolStripMenuItem.Text <- "Start";

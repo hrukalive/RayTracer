@@ -11,6 +11,12 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+    menuBar.reset(new MenuBarComponent(this));
+    addAndMakeVisible(menuBar.get());
+    setApplicationCommandManagerToWatch(&commandManager);
+    commandManager.registerAllCommandsForTarget(this);
+    addKeyListener(commandManager.getKeyMappings());
+    
     setSize (600, 400);
 }
 

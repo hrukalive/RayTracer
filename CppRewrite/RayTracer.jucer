@@ -91,6 +91,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="1" windowsTargetPlatformVersion="10.0.17134.0"/>
+    <OSX buildEnabled="1"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS/>
 </JUCERPROJECT>

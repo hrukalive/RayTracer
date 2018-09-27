@@ -8,3 +8,5 @@ CrossPlatformDeprecate/RayTracer/RayTracer.Desktop/obj
 RayTracer/RayTracer/bin
 RayTracer/RayTracer/obj
 RayTracer/packages
+CppRewrite/JuceLibraryCode
+CppRewrite/Builds

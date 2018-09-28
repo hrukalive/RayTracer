@@ -9,6 +9,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
+#include "Core/Utility.h"
 
 //==============================================================================
 /*

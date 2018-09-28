@@ -118,15 +118,15 @@ type RayTracerMainGUI (world : World) as self =
             let size = new Drawing.Size(world.ViewPlane.Width, world.ViewPlane.Height)
             let mutable renderedRay = 0
             let jobCompleted = fun (x, y, col) -> 
-                world.ViewPlane.SetPixel(x, y, col)
+                //world.ViewPlane.SetPixel(x, y, col)
                 renderedRay <- renderedRay + 1
                 if renderedRay % (1000 * world.ViewPlane.NumSamples) = 0 then
                     let renderedPixel = int (floor (float renderedRay / float world.ViewPlane.NumSamples))
                     printfn "RenderedPixels:%A  Percent:%.2f%%"
                             renderedPixel
                             (float renderedPixel * 100.0 / float (size.Width * size.Height))
-                progressBar.Style <- ProgressBarStyle.Continuous
-                progressBar.Value <- int (float renderedRay / float world.ViewPlane.NumSamples * float progressBar.Maximum / float (size.Width * size.Height))
+                //progressBar.Style <- ProgressBarStyle.Continuous
+                //progressBar.Value <- int (float renderedRay / float world.ViewPlane.NumSamples * float progressBar.Maximum / float (size.Width * size.Height))
             progressBar.Style <- ProgressBarStyle.Marquee
             do RenderScene world jobCompleted cts
         startToolStripMenuItem.Name <- "startToolStripMenuItem";

@@ -49,23 +49,29 @@ module BaseTypes =
         member this.Origin with get() = org
         member this.Direction with get() = dir
 
-    type AsyncWorker<'T> (jobs : seq<Async<'T>>, continuation : 'T [] -> unit, exnCont : exn -> unit, cancelCont : OperationCanceledException -> unit, cts : CancellationTokenSource) =  
-        let jobCompleted  = new Event<'T>()
+    type AsyncWorker (jobs : seq<Async<unit>>, cts : CancellationTokenSource) = //, continuation : unit -> unit, exnCont : exn -> unit, cancelCont : OperationCanceledException -> unit, cts : CancellationTokenSource) =  
+        let jobCompleted  = new Event<unit>()
         let syncContext = match SynchronizationContext.Current with
                             | null -> new SynchronizationContext()
                             | ctxt -> ctxt
         member x.Start() =
             let work = 
-                jobs
-                |> PSeq.map (fun job ->
-                    async {
-                        let! result = job
-                        syncContext.Post((fun _ -> jobCompleted.Trigger result), state = null)
-                        return result
-                    })
-                |> Async.Parallel
+                async {
+                    for job in jobs do
+                        if not cts.IsCancellationRequested then
+                            do! job
+                }
+                //jobs
+                //|> PSeq.map (fun job ->
+                //    async {
+                //        let! result = job
+                //        syncContext.Post((fun _ -> jobCompleted.Trigger result), state = null)
+                //        return result
+                //    })
+                //|> Async.Parallel
             printfn "Preparing to start raytracing"
-            Async.StartWithContinuations(work, continuation, exnCont, cancelCont, cts.Token)
+            Async.Start(work, cts.Token)
+            //Async.StartWithContinuations(work, continuation, exnCont, cancelCont, cts.Token)
             printfn "Workers started"
         member x.JobCompleted  = jobCompleted.Publish
         member x.Cancel() = cts.Cancel()

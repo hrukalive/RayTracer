@@ -40,3 +40,15 @@ module BaseFunctions =
         Color.FromArgb(255, int cr, int cg, int cb)
         
     let Gamma (col:Vec3) = Vec3(Math.Sqrt(col.X), Math.Sqrt(col.Y), Math.Sqrt(col.Z))
+    
+    let Shuffle (org : _[]) = 
+        let rng = new Random()
+        let arr = Array.copy org
+        let max = (arr.Length - 1)
+        let randomSwap (arr : _[]) i =
+            let pos = rng.Next(max)
+            let tmp = arr.[pos]
+            arr.[pos] <- arr.[i]
+            arr.[i] <- tmp
+            arr
+        [| 0 .. max |] |> Array.fold randomSwap arr

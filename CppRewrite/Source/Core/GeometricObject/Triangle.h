@@ -9,3 +9,6 @@
 */
 
 #pragma once
+
+#include "../Utility.h"
+#include "GeometricObject.h"

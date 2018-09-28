@@ -10,6 +10,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Core/Utility.h"
+#include "Core/World.h"
 
 //==============================================================================
 /*

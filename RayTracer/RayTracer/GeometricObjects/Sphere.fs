@@ -15,7 +15,7 @@ type Sphere(center : Vec3, radius : float) =
             | true -> None
             | false ->
                 let t1 = (-b - sqrt(disc)) / a * 0.5;
-                let t2 = ((-b + sqrt(disc)) / a * 0.5);
+                let t2 = (-b + sqrt(disc)) / a * 0.5;
                 let t = (t1, t2)
 
                 match t with

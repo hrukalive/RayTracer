@@ -9,3 +9,11 @@
 */
 
 #pragma once
+
+#include "Utility.h"
+#include "GeometricObject/GeometricObject.h"
+
+class World
+{
+	
+};

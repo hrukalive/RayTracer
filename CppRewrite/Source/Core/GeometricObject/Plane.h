@@ -15,14 +15,13 @@
 
 class InfPlane : public GeometricObject
 {
-	Vector3D<FP_TYPE> a;
-	Vector3D<FP_TYPE> n;
+	Vector3D<FP_TYPE> a, n;
 public:
 	InfPlane(Vector3D<FP_TYPE> origin, Vector3D<FP_TYPE> normal) : a(origin), n(normal) {}
 	void setOrigin(Vector3D<FP_TYPE> origin) { a = origin; }
 	void setNormal(Vector3D<FP_TYPE> normal) { n = normal; }
 	Vector3D<FP_TYPE> getOrigin() { return a; }
-	Vector3D<FP_TYPE> getNormal() { return n; }
+	Vector3D<FP_TYPE> getNormal() { return n.normalised(); }
 
 	virtual bool Hit(Ray& ray, HitRecord& record)
 	{
@@ -40,10 +39,7 @@ public:
 
 class Plane : public GeometricObject
 {
-	Vector3D<FP_TYPE> a;
-	Vector3D<FP_TYPE> u;
-	Vector3D<FP_TYPE> v;
-	Vector3D<FP_TYPE> n;
+	Vector3D<FP_TYPE> a, u, v, n;
 public:
 	Plane(Vector3D<FP_TYPE> origin, Vector3D<FP_TYPE> uDirection, Vector3D<FP_TYPE> vDirection)
 		: a(origin), u(uDirection), v(vDirection)
@@ -57,6 +53,7 @@ public:
 	Vector3D<FP_TYPE> getOrigin() { return a; }
 	Vector3D<FP_TYPE> getU() { return u; }
 	Vector3D<FP_TYPE> getV() { return v; }
+	Vector3D<FP_TYPE> getNormal() { return n.normalised(); }
 
 	virtual bool Hit(Ray& ray, HitRecord& record)
 	{

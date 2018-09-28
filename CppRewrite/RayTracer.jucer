@@ -3,6 +3,39 @@
 <JUCERPROJECT id="BSMskS" name="RayTracer" projectType="guiapp" jucerVersion="5.3.2">
   <MAINGROUP id="WkbGml" name="RayTracer">
     <GROUP id="{589F4DE8-C9B3-F48E-8155-AEEF7A468CFB}" name="Source">
+      <GROUP id="{7A267AD0-4BE3-D2CF-027D-6CFF1B1A60AA}" name="Core">
+        <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
+          <FILE id="R6qogT" name="GeometricObject.cpp" compile="1" resource="0"
+                file="Source/Core/GeometricObject/GeometricObject.cpp"/>
+          <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
+                file="Source/Core/GeometricObject/GeometricObject.h"/>
+          <FILE id="zuqCUC" name="Plane.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Plane.cpp"/>
+          <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
+          <FILE id="utrM1V" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Sphere.cpp"/>
+          <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
+          <FILE id="E6lBPu" name="Triangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Triangle.cpp"/>
+          <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
+        </GROUP>
+        <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
+          <FILE id="ngxy7i" name="Lambertian.cpp" compile="1" resource="0" file="Source/Core/Materials/Lambertian.cpp"/>
+          <FILE id="GWO8y9" name="Lambertian.h" compile="0" resource="0" file="Source/Core/Materials/Lambertian.h"/>
+          <FILE id="mSKYEE" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
+          <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
+        </GROUP>
+        <FILE id="zYCM1q" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility.h"/>
+        <FILE id="j7lyGp" name="World.cpp" compile="1" resource="0" file="Source/Core/World.cpp"/>
+        <FILE id="TErAPK" name="World.h" compile="0" resource="0" file="Source/Core/World.h"/>
+        <FILE id="LTIfwl" name="Viewplane.cpp" compile="1" resource="0" file="Source/Core/Viewplane.cpp"/>
+        <FILE id="LqX6nC" name="Viewplane.h" compile="0" resource="0" file="Source/Core/Viewplane.h"/>
+        <FILE id="pe0J2K" name="Camera.cpp" compile="1" resource="0" file="Source/Core/Camera.cpp"/>
+        <FILE id="krQKRc" name="Camera.h" compile="0" resource="0" file="Source/Core/Camera.h"/>
+        <FILE id="cyUYZX" name="Light.cpp" compile="1" resource="0" file="Source/Core/Light.cpp"/>
+        <FILE id="qLTDxy" name="Light.h" compile="0" resource="0" file="Source/Core/Light.h"/>
+        <FILE id="qaF6cr" name="Sampler.cpp" compile="1" resource="0" file="Source/Core/Sampler.cpp"/>
+        <FILE id="bzmdNw" name="Sampler.h" compile="0" resource="0" file="Source/Core/Sampler.h"/>
+        <FILE id="So80cU" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer.cpp"/>
+        <FILE id="U1xv86" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer.h"/>
+      </GROUP>
       <FILE id="tygI0U" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="jYwEwz" name="MainComponent.cpp" compile="1" resource="0"
             file="Source/MainComponent.cpp"/>

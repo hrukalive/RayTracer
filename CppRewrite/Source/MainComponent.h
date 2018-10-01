@@ -61,7 +61,7 @@ private:
     std::unique_ptr<MenuBarComponent> menuBar;
     std::unique_ptr<ImageComponent> image;
     std::unique_ptr<ProgressBar> progressBar;
-    double* progress = new double;
+    double progress;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

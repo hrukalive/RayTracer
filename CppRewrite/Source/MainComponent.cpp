@@ -11,11 +11,11 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    *progress = 0.5;
+    progress = 0.5;
     
     menuBar.reset(new MenuBarComponent(this));
     image.reset(new ImageComponent());
-    progressBar.reset(new ProgressBar(*progress));
+    progressBar.reset(new ProgressBar(progress));
     
     progressBar->setSize(0, 25);
     
@@ -39,6 +39,11 @@ MainComponent::MainComponent()
 #else
     setSize(600, 400 + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
+
+	//World world;
+	//FileOutputStream stream(File("D:\\text.png"));
+	//PNGImageFormat pngWriter;
+	//pngWriter.writeImageToStream(*world.GetViewPlane().RenderedImage, stream);
 }
 
 MainComponent::~MainComponent()

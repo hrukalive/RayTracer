@@ -15,17 +15,18 @@
 
 class Sphere : public GeometricObject
 {
-	Vector3D<FP_TYPE> Center;
+	Point3D Center;
 	FP_TYPE Radius = 1.0f;
 public:
-	Sphere(Vector3D<FP_TYPE> center, FP_TYPE radius) : Center(center), Radius(radius) {}
-	void setCenter(Vector3D<FP_TYPE> center) { Center = center; }
+	Sphere(Point3D center, FP_TYPE radius) : Center(center), Radius(radius) {}
+	void setCenter(Point3D center) { Center = center; }
 	void setRadius(FP_TYPE radius) { Radius = radius; }
-	Vector3D<FP_TYPE> getCenter() { return Center; }
+	Point3D getCenter() { return Center; }
 	FP_TYPE getRadius() { return Radius; }
 
-	virtual bool Hit(Ray& ray, HitRecord& record)
+	virtual HitRecord Hit(const Ray& ray)
 	{
+		HitRecord record;
 		auto temp = ray.Origin - Center;
 		auto a = ray.Direction * ray.Direction;
 		auto b = 2.0 * (temp * ray.Direction);
@@ -40,21 +41,21 @@ public:
 			if (t1 > kEpsilon)
 			{
 				auto p = ray.GetPoint(t1);
+				record.Hit = true;
 				record.Normal = (p - Center).normalised();
-				record.Position = p;
+				record.HitPoint = p;
 				record.T = t1;
-				return true;
 			}
 			else if (t2 > kEpsilon) 
 			{
 				auto p = ray.GetPoint(t2);
+				record.Hit = true;
 				record.Normal = (p - Center).normalised();
-				record.Position = p;
+				record.HitPoint = p;
 				record.T = t2;
-				return true;
 			}
 		}
 
-		return false;
+		return record;
 	}
 };

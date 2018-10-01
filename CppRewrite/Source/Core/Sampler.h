@@ -9,3 +9,9 @@
 */
 
 #pragma once
+#include "Utility.h"
+
+class Sampler
+{
+
+};

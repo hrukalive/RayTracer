@@ -15,7 +15,7 @@
 class GeometricObject
 {
 public:
-	virtual bool Hit(Ray& ray, HitRecord& record) = 0;
+	virtual HitRecord Hit(const Ray& ray) = 0;
 };
 
 #include "Sphere.h"

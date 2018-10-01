@@ -12,8 +12,20 @@
 
 #include "Utility.h"
 #include "GeometricObject/GeometricObject.h"
+#include "Viewplane.h"
+#include "Camera.h"
+#include "Light.h"
 
 class World
 {
-	
+	ViewPlane viewPlane;
+	Camera camera;
+	Light ambientLight;
+	RGBColor backgroundColor;
+	std::vector<GeometricObject*> objects;
+	std::vector<Light*> lights;
+public:
+	ViewPlane& GetViewPlane() { return viewPlane; }
+	RGBColor& GetBackgroundColor() { return backgroundColor; }
+	HitRecord HitObjects(const Ray& ray);
 };

@@ -15,48 +15,52 @@
 
 class InfPlane : public GeometricObject
 {
-	Vector3D<FP_TYPE> a, n;
+	Point3D a;
+	Vec3D n;
 public:
-	InfPlane(Vector3D<FP_TYPE> origin, Vector3D<FP_TYPE> normal) : a(origin), n(normal) {}
-	void setOrigin(Vector3D<FP_TYPE> origin) { a = origin; }
-	void setNormal(Vector3D<FP_TYPE> normal) { n = normal; }
-	Vector3D<FP_TYPE> getOrigin() { return a; }
-	Vector3D<FP_TYPE> getNormal() { return n.normalised(); }
+	InfPlane(Point3D origin, Vec3D normal) : a(origin), n(normal) {}
+	void setOrigin(Point3D origin) { a = origin; }
+	void setNormal(Vec3D normal) { n = normal; }
+	Point3D getOrigin() { return a; }
+	Vec3D getNormal() { return n.normalised(); }
 
-	virtual bool Hit(Ray& ray, HitRecord& record)
+	virtual HitRecord Hit(const Ray& ray)
 	{
+		HitRecord record;
 		FP_TYPE t = ((a - ray.Origin) * n) / (ray.Direction * n);
 		if (t > kEpsilon)
 		{
+			record.Hit = true;
 			record.Normal = n.normalised();
-			record.Position = ray.GetPoint(t);
+			record.HitPoint = ray.GetPoint(t);
 			record.T = t;
-			return true;
 		}
-		return false;
+		return record;
 	}
 };
 
 class Plane : public GeometricObject
 {
-	Vector3D<FP_TYPE> a, u, v, n;
+	Point3D a;
+	Vec3D u, v, n;
 public:
-	Plane(Vector3D<FP_TYPE> origin, Vector3D<FP_TYPE> uDirection, Vector3D<FP_TYPE> vDirection)
+	Plane(Point3D origin, Vec3D uDirection, Vec3D vDirection)
 		: a(origin), u(uDirection), v(vDirection)
 	{
 		n = u ^ v;
 	}
 
-	void setOrigin(Vector3D<FP_TYPE> origin) { a = origin; }
-	void setU(Vector3D<FP_TYPE> uDirection) { u = uDirection; n = u ^ v; }
-	void setV(Vector3D<FP_TYPE> vDirection) { v = vDirection; n = u ^ v; }
-	Vector3D<FP_TYPE> getOrigin() { return a; }
-	Vector3D<FP_TYPE> getU() { return u; }
-	Vector3D<FP_TYPE> getV() { return v; }
-	Vector3D<FP_TYPE> getNormal() { return n.normalised(); }
+	void setOrigin(Point3D origin) { a = origin; }
+	void setU(Vec3D uDirection) { u = uDirection; n = u ^ v; }
+	void setV(Vec3D vDirection) { v = vDirection; n = u ^ v; }
+	Point3D getOrigin() { return a; }
+	Vec3D getU() { return u; }
+	Vec3D getV() { return v; }
+	Vec3D getNormal() { return n.normalised(); }
 
-	virtual bool Hit(Ray& ray, HitRecord& record)
+	virtual HitRecord Hit(Ray& ray)
 	{
+		HitRecord record;
 		FP_TYPE t = ((a - ray.Origin) * n) / (ray.Direction * n);
 		auto p = ray.GetPoint(t);
 		auto tu = (p - a) * u.normalised() / u.length();
@@ -64,11 +68,11 @@ public:
 
 		if (t > kEpsilon && tu >= 0.0 && tu <= 1.0 && tv >= 0.0 && tv <= 1.0)
 		{
+			record.Hit = true;
 			record.Normal = n.normalised();
-			record.Position = p;
+			record.HitPoint = p;
 			record.T = t;
-			return true;
 		}
-		return false;
+		return record;
 	}
 };

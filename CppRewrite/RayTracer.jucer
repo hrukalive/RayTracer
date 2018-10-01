@@ -12,6 +12,7 @@
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
         </GROUP>
         <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
+          <FILE id="DiLnP3" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/BRDF.h"/>
           <FILE id="GWO8y9" name="Lambertian.h" compile="0" resource="0" file="Source/Core/Materials/Lambertian.h"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
         </GROUP>

@@ -14,23 +14,37 @@
 
 #define FP_TYPE double
 #define kEpsilon 0.001
+#define PI 3.14159265359
+#define INV_PI 0.31830988618
+
+typedef Vector3D<FP_TYPE> Vec3D;
+typedef Vec3D Point3D;
+typedef Vec3D RGBColor;
 
 struct Ray
 {
-    Vector3D<FP_TYPE> Origin;
-    Vector3D<FP_TYPE> Direction;
-    Ray(Vector3D<FP_TYPE> origin, Vector3D<FP_TYPE> direction) : Origin(origin), Direction(direction) {}
-	Vector3D<FP_TYPE> GetPoint(FP_TYPE t)
+	Point3D Origin;
+	Vec3D Direction;
+	Ray() {}
+    Ray(Vec3D origin, Vec3D direction) : Origin(origin), Direction(direction) {}
+	Point3D GetPoint(FP_TYPE t) const
 	{
 		return Origin + (Direction * t);
 	}
 };
 
+class Material;
 struct HitRecord
 {
-	Vector3D<FP_TYPE> Normal;
-	Vector3D<FP_TYPE> Position;
+	bool Hit = false;
+	Vec3D Normal;
+	Vec3D HitPoint;
 	FP_TYPE T = 0.0f;
-	HitRecord(Vector3D<FP_TYPE> normal, Vector3D<FP_TYPE> position, FP_TYPE t) 
-		: Normal(normal), Position(position), T(t) {}
+	std::shared_ptr<Material> MaterialPtr;
+	Ray Ray;
+	Vec3D Dir;
+
+	HitRecord() {}
+	HitRecord(Vec3D normal, Vec3D hitPoint, FP_TYPE t)
+		: Normal(normal), HitPoint(hitPoint), T(t) {}
 };

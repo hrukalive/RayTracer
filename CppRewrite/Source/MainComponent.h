@@ -11,6 +11,10 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Core/Utility.h"
 #include "Core/World.h"
+#include "Core/Sampler.h"
+#include "Core/Tracer.h"
+#include "Core/Camera.h"
+#include "Core/Viewplane.h"
 
 //==============================================================================
 /*
@@ -62,6 +66,12 @@ private:
     std::unique_ptr<ImageComponent> image;
     std::unique_ptr<ProgressBar> progressBar;
     double progress;
+    
+    std::shared_ptr<World> world;
+    std::shared_ptr<Tracer> tracer;
+    std::shared_ptr<Sampler> sampler;
+    std::shared_ptr<ViewPlane> viewPlane;
+    std::shared_ptr<Camera> camera;
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

@@ -16,7 +16,7 @@ class Light
 protected:
     bool Shadows;
 public:
-    virtual ~Light();
+    virtual ~Light() {}
     virtual Vec3D GetDirection(const HitRecord& record) = 0;
     virtual RGBColor L(const HitRecord& record) = 0;
 };
@@ -27,7 +27,7 @@ class Ambient : public Light
     RGBColor color = Vec3D(1.0, 1.0, 1.0);
 public:
     Ambient(float ls, RGBColor color) : ls(ls), color(color) {}
-    virtual ~Ambient();
+    virtual ~Ambient() {}
     inline Vec3D GetDirection(const HitRecord& record)
     {
         return Vec3D(0.0, 0.0, 0.0);
@@ -45,7 +45,7 @@ class PointLight : public Light
     Point3D location;
 public:
     PointLight(float ls, RGBColor color, Point3D location) : ls(ls), color(color), location(location) {}
-    virtual ~PointLight();
+    virtual ~PointLight() {}
     inline Vec3D GetDirection(const HitRecord& record)
     {
         return (location - record.HitPoint).normalised();

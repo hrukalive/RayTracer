@@ -11,6 +11,20 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
+    auto vpWidth = 128 * 5, vpHeight = 72 * 5;
+    world.reset(new World());
+    tracer.reset(new RayCast(world));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight));
+    sampler.reset(new MultiJittered());
+    
+    auto r = 3.0;
+    auto theta = 110.0 / 180.0 * 3.1416;
+    auto phi = 45.0 / 180.0 * 3.1416;
+    auto roll = 0.0 / 180.0 * 3.1416;
+    auto lookat = Vec3D(0.0, -0.6, -1.5);
+    auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
+    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    
     progress = 0.5;
     
     menuBar.reset(new MenuBarComponent(this));

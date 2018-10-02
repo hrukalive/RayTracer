@@ -16,7 +16,7 @@
 class Material
 {
 public:
-    virtual ~Material();
+    virtual ~Material() {}
 	virtual RGBColor Shade(const HitRecord& record);
 	virtual RGBColor AreaLightShade(const HitRecord& record);
 	virtual RGBColor PathShade(const HitRecord& record);
@@ -31,7 +31,7 @@ public:
 		ambientBRDF.reset(new Lambertian());
 		diffuseBRDF.reset(new Lambertian());
 	}
-    virtual ~Matte();
+    virtual ~Matte() {}
 	void SetKa(const float ka)
 	{
 		ambientBRDF->SetKd(ka);

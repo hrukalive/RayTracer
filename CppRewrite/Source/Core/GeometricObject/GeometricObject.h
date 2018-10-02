@@ -15,7 +15,7 @@
 class GeometricObject
 {
 public:
-    virtual ~GeometricObject();
+    virtual ~GeometricObject() {}
 	virtual HitRecord Hit(const Ray& ray) = 0;
 };
 

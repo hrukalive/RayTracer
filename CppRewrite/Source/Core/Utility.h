@@ -20,6 +20,7 @@
 typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;
 typedef Vec3D RGBColor;
+typedef Point<FP_TYPE> Point2D;
 
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {

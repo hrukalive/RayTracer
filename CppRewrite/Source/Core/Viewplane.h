@@ -17,7 +17,7 @@ class ViewPlane
 public:
     int Width = 512, Height = 512;
     float PixelSize = 1.0f;
-	int NumSamplePixels = 64, NumSampleLens = 1;
+	int NumPixelSamples = 64, NumLensSamples = 1;
 	int SqrtNumSamplePixel, SqrtNumSampleLens;
 	float Gamma = 1.0f;
 	std::shared_ptr<Image> RenderedImage;
@@ -28,8 +28,8 @@ private:
 
 	inline void initialize()
 	{
-		SqrtNumSamplePixel = (int)sqrt(NumSamplePixels);
-		SqrtNumSampleLens = (int)sqrt(NumSampleLens);
+		SqrtNumSamplePixel = (int)sqrt(NumPixelSamples);
+		SqrtNumSampleLens = (int)sqrt(NumLensSamples);
 
 		renderedArray.resize(Height);
 		for (auto& row : renderedArray)
@@ -48,14 +48,14 @@ public:
 		initialize();
 	}
 	ViewPlane(int width, int height, float pixelSize, int numSamplePixels, int numSampleLens)
-		: Width(width), Height(height), PixelSize(pixelSize), NumSamplePixels(numSamplePixels), NumSampleLens(numSampleLens)
+		: Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels), NumLensSamples(numSampleLens)
 	{
 		initialize();
 	}
 
-	inline Point<FP_TYPE> GetPixelCenter(int x, int y)
+	inline Point2D GetPixelCenter(int x, int y)
 	{
-		return Point<FP_TYPE>(PixelSize * (x - Width / 2.0), PixelSize * (Height / 2.0 - y));
+		return Point2D(PixelSize * (x - Width / 2.0), PixelSize * (Height / 2.0 - y));
 	}
 
 	void Reset()

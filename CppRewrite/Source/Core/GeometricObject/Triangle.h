@@ -26,6 +26,7 @@ public:
 	{
 		updateNormal();
 	}
+    virtual ~Triangle();
 	void setA(Vec3D vertexA) { a = vertexA; updateNormal(); }
 	void setB(Vec3D vertexB) { b = vertexB; updateNormal(); }
 	void setC(Vec3D vertexC) { c = vertexC; updateNormal(); }

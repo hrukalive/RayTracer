@@ -21,28 +21,35 @@ typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;
 typedef Vec3D RGBColor;
 
+inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
+{
+    return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);
+}
+
 struct Ray
 {
 	Point3D Origin;
 	Vec3D Direction;
 	Ray() {}
     Ray(Vec3D origin, Vec3D direction) : Origin(origin), Direction(direction) {}
-	Point3D GetPoint(FP_TYPE t) const
+	inline Point3D GetPoint(FP_TYPE t) const
 	{
 		return Origin + (Direction * t);
 	}
 };
 
 class Material;
+class World;
 struct HitRecord
 {
 	bool Hit = false;
 	Vec3D Normal;
 	Vec3D HitPoint;
 	FP_TYPE T = 0.0f;
-	std::shared_ptr<Material> MaterialPtr;
+	std::shared_ptr<Material> MaterialPtr = nullptr;
 	Ray Ray;
 	Vec3D Dir;
+    std::shared_ptr<World> WorldPtr = nullptr;
 
 	HitRecord() {}
 	HitRecord(Vec3D normal, Vec3D hitPoint, FP_TYPE t)

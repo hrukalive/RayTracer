@@ -23,6 +23,7 @@ HitRecord World::HitObjects(const Ray& ray)
 		{
 			tmin = tmp.T;
 			record = tmp;
+            record.WorldPtr.reset(this);
 		}
 	}
 	return record;

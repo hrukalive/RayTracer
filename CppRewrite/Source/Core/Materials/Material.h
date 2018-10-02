@@ -10,11 +10,13 @@
 
 #pragma once
 #include "../Utility.h"
+#include "../World.h"
 #include "BRDF.h"
 
 class Material
 {
 public:
+    virtual ~Material();
 	virtual RGBColor Shade(const HitRecord& record);
 	virtual RGBColor AreaLightShade(const HitRecord& record);
 	virtual RGBColor PathShade(const HitRecord& record);
@@ -29,6 +31,7 @@ public:
 		ambientBRDF.reset(new Lambertian());
 		diffuseBRDF.reset(new Lambertian());
 	}
+    virtual ~Matte();
 	void SetKa(const float ka)
 	{
 		ambientBRDF->SetKd(ka);
@@ -45,6 +48,17 @@ public:
 	RGBColor Shade(const HitRecord& record)
 	{
 		Vec3D wo = -record.Ray.Direction;
-		RGBColor L = ambientBRDF->rho(sr, wo) * 
+        RGBColor L = ElemMul(ambientBRDF->rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
+        auto& lights = record.WorldPtr->GetLights();
+        for (int i = 0; i < lights.size(); i++)
+        {
+            auto wi = lights[i]->GetDirection(record);
+            auto ndotwi = record.Normal * wi;
+            if (ndotwi > 0.0)
+            {
+                L += ElemMul(diffuseBRDF->f(record, wo, wi), lights[i]->L(record) * ndotwi);
+            }
+        }
+        return L;
 	}
 };

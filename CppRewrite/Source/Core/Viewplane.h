@@ -15,10 +15,10 @@
 class ViewPlane
 {
 public:
-	int Width = 512, Height = 512;
+    int Width = 512, Height = 512;
+    float PixelSize = 1.0f;
 	int NumSamplePixels = 64, NumSampleLens = 1;
 	int SqrtNumSamplePixel, SqrtNumSampleLens;
-	float PixelSize = 1.0f;
 	float Gamma = 1.0f;
 	std::shared_ptr<Image> RenderedImage;
 private:
@@ -26,7 +26,7 @@ private:
 	std::vector<std::vector<RGBColor>> renderedArray;
 	std::vector<std::vector<int>> renderedCount;
 
-	void initialize()
+	inline void initialize()
 	{
 		SqrtNumSamplePixel = (int)sqrt(NumSamplePixels);
 		SqrtNumSampleLens = (int)sqrt(NumSampleLens);
@@ -53,7 +53,7 @@ public:
 		initialize();
 	}
 
-	Point<FP_TYPE> GetPixelCenter(int x, int y)
+	inline Point<FP_TYPE> GetPixelCenter(int x, int y)
 	{
 		return Point<FP_TYPE>(PixelSize * (x - Width / 2.0), PixelSize * (Height / 2.0 - y));
 	}

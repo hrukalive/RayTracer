@@ -19,6 +19,7 @@ class Sphere : public GeometricObject
 	FP_TYPE Radius = 1.0f;
 public:
 	Sphere(Point3D center, FP_TYPE radius) : Center(center), Radius(radius) {}
+    virtual ~Sphere();
 	void setCenter(Point3D center) { Center = center; }
 	void setRadius(FP_TYPE radius) { Radius = radius; }
 	Point3D getCenter() { return Center; }

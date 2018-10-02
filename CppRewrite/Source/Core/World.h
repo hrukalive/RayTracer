@@ -19,13 +19,15 @@
 class World
 {
 	ViewPlane viewPlane;
-	Camera camera;
-	Light ambientLight;
+    std::shared_ptr<Light> ambientLightPtr = nullptr;
 	RGBColor backgroundColor;
 	std::vector<GeometricObject*> objects;
 	std::vector<Light*> lights;
 public:
 	ViewPlane& GetViewPlane() { return viewPlane; }
+    std::shared_ptr<Light>& GetAmbientLightPtr() { return ambientLightPtr; }
 	RGBColor& GetBackgroundColor() { return backgroundColor; }
+    std::vector<GeometricObject*>& GetObjects() { return objects; }
+    std::vector<Light*>& GetLights() { return lights; }
 	HitRecord HitObjects(const Ray& ray);
 };

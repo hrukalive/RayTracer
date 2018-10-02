@@ -19,6 +19,7 @@ class InfPlane : public GeometricObject
 	Vec3D n;
 public:
 	InfPlane(Point3D origin, Vec3D normal) : a(origin), n(normal) {}
+    virtual ~InfPlane();
 	void setOrigin(Point3D origin) { a = origin; }
 	void setNormal(Vec3D normal) { n = normal; }
 	Point3D getOrigin() { return a; }
@@ -49,6 +50,7 @@ public:
 	{
 		n = u ^ v;
 	}
+    virtual ~Plane();
 
 	void setOrigin(Point3D origin) { a = origin; }
 	void setU(Vec3D uDirection) { u = uDirection; n = u ^ v; }

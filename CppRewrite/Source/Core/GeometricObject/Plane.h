@@ -34,6 +34,7 @@ public:
 			record.Hit = true;
 			record.Normal = n.normalised();
 			record.HitPoint = ray.GetPoint(t);
+            record.MaterialPtr = materialPtr;
 			record.T = t;
 		}
 		return record;
@@ -73,6 +74,7 @@ public:
 			record.Hit = true;
 			record.Normal = n.normalised();
 			record.HitPoint = p;
+            record.MaterialPtr = materialPtr;
 			record.T = t;
 		}
 		return record;

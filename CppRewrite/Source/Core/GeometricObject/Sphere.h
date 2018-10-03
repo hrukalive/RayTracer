@@ -45,6 +45,7 @@ public:
 				record.Hit = true;
 				record.Normal = (p - Center).normalised();
 				record.HitPoint = p;
+                record.MaterialPtr = materialPtr;
 				record.T = t1;
 			}
 			else if (t2 > kEpsilon) 
@@ -53,6 +54,7 @@ public:
 				record.Hit = true;
 				record.Normal = (p - Center).normalised();
 				record.HitPoint = p;
+                record.MaterialPtr = materialPtr;
 				record.T = t2;
 			}
 		}

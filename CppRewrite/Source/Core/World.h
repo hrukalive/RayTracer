@@ -27,5 +27,23 @@ public:
 	RGBColor& GetBackgroundColor() { return backgroundColor; }
     std::vector<GeometricObject*>& GetObjects() { return objects; }
     std::vector<Light*>& GetLights() { return lights; }
-	HitRecord HitObjects(const Ray& ray);
+    void AddLight(Light* light) { lights.push_back(light); }
+    void AddObject(GeometricObject* obj) { objects.push_back(obj); }
+	HitRecord HitObjects(const Ray& ray)
+    {
+        HitRecord record;
+        FP_TYPE tmin = INFINITY;
+        
+        for (int i = 0; i < objects.size(); i++)
+        {
+            HitRecord tmp = objects[i]->Hit(ray);
+            if (tmp.Hit && tmp.T < tmin)
+            {
+                tmin = tmp.T;
+                record = tmp;
+                record.WorldPtr.reset(this);
+            }
+        }
+        return record;
+    }
 };

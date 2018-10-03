@@ -14,8 +14,11 @@
 
 class GeometricObject
 {
+protected:
+    std::shared_ptr<Material> materialPtr;
 public:
     virtual ~GeometricObject() {}
+    void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }
 	virtual HitRecord Hit(const Ray& ray) = 0;
 };
 

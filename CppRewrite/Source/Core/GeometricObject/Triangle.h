@@ -51,6 +51,7 @@ public:
 				record.Hit = true;
 				record.Normal = n.normalised();
 				record.HitPoint = p;
+                record.MaterialPtr = materialPtr;
 				record.T = temp;
 			}
 		}

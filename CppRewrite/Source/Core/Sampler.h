@@ -40,7 +40,7 @@ public:
             for (int j = 0; j < n; j++)
             {
                 sampleX.push_back((i * n + j) * subCellWidth + random.nextDouble() * subCellWidth);
-                sampleX.push_back((j * n + i) * subCellWidth + random.nextDouble() * subCellWidth);
+                sampleY.push_back((j * n + i) * subCellWidth + random.nextDouble() * subCellWidth);
             }
         }
         for (int i = 0; i < n; i++)
@@ -79,9 +79,6 @@ public:
         {
             for (int j = 0; j < n; j++)
             {
-                sampleX.push_back((i * n + j) * subCellWidth + random.nextDouble() * subCellWidth);
-                sampleX.push_back((j * n + i) * subCellWidth + random.nextDouble() * subCellWidth);
-            
                 auto spx = 2.0 * (float (i * n + j) * subCellWidth + random.nextDouble() * subCellWidth) - 1.0;
                 auto spy = 2.0 * (float (j * n + i) * subCellWidth + random.nextDouble() * subCellWidth) - 1.0;
                 if (spx > -spy)

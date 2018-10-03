@@ -39,6 +39,12 @@ private:
 			row.resize(Width);
 
 		RenderedImage = std::make_shared<Image>(Image(Image::PixelFormat::RGB, Width, Height, true));
+        for (int i = 0; i < Width; i++) {
+            for (int j = 0; j < Height; j++)
+            {
+                RenderedImage->setPixelAt(i, j, Colour::fromFloatRGBA(1.0, 0.0, 0.0, 1.0));
+            }
+        }
 	}
 public:
 	ViewPlane() { initialize(); }
@@ -46,7 +52,12 @@ public:
 		: Width(width), Height(height), PixelSize(pixelSize)
 	{
 		initialize();
-	}
+    }
+    ViewPlane(int width, int height, float pixelSize, int numSamplePixels)
+    : Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels)
+    {
+        initialize();
+    }
 	ViewPlane(int width, int height, float pixelSize, int numSamplePixels, int numSampleLens)
 		: Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels), NumLensSamples(numSampleLens)
 	{

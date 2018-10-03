@@ -11,10 +11,10 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    auto vpWidth = 128 * 5, vpHeight = 72 * 5;
+    auto vpWidth = 400, vpHeight = 400;
     world.reset(new World());
     tracer.reset(new RayCast(world));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0, 16));
     sampler.reset(new MultiJittered());
     
     auto r = 3.0;
@@ -23,7 +23,32 @@ MainComponent::MainComponent()
     auto roll = 0.0 / 180.0 * 3.1416;
     auto lookat = Vec3D(0.0, -0.6, -1.5);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    camera.reset(new PinholeCamera(Vec3D(0.0, 0.0, 500.0), Vec3D(-5.0, 0.0, 0.0), Vec3D(0.0, 1.0, 0.0), 850.0, viewPlane, sampler));
+    
+    PointLight* l1 = new PointLight(3.0, RGBColor(1.0, 1.0, 1.0), Point3D(100.0, 50.0, 150.0));
+    world->AddLight(l1);
+    
+    std::shared_ptr<Material> mat = std::make_shared<Matte>(Matte());
+    mat->SetKa(0.25);
+    mat->SetKd(0.65);
+    mat->SetCd(RGBColor(1.0, 1.0, 0.0));
+    
+    Sphere* sp = new Sphere(Vec3D(10.0, -5.0, 0.0), 27);
+    sp->SetMaterial(mat);
+    world->AddObject(sp);
+    
+    for (int r = 0; r < vpHeight; r++)
+    {
+        for (int c = 0; c < vpWidth; c++)
+        {
+            auto rays = camera->CreateRay(c, r);
+            for (auto& ray : rays)
+            {
+                viewPlane->SetPixel(c, r, tracer->Trace(ray));
+            }
+        }
+        DBG(r);
+    }
     
     progress = 0.5;
     
@@ -32,6 +57,7 @@ MainComponent::MainComponent()
     progressBar.reset(new ProgressBar(progress));
     
     progressBar->setSize(0, 25);
+    image->setImage(*viewPlane->RenderedImage);
     
     addAndMakeVisible(menuBar.get());
     addAndMakeVisible(image.get());
@@ -49,15 +75,15 @@ MainComponent::MainComponent()
     commandManager.registerAllCommandsForTarget(this);
     addKeyListener(commandManager.getKeyMappings());
 #if JUCE_MAC
-    setSize(600, 400 + progressBar->getHeight());
+    setSize(vpWidth, vpHeight + progressBar->getHeight());
 #else
-    setSize(600, 400 + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+    setSize(vpWidth, vpHeight + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 
 	//World world;
-	//FileOutputStream stream(File("D:\\text.png"));
-	//PNGImageFormat pngWriter;
-	//pngWriter.writeImageToStream(*world.GetViewPlane().RenderedImage, stream);
+    FileOutputStream stream(File("/Volumes/Document/RayTracer/test.png"));
+    PNGImageFormat pngWriter;
+    pngWriter.writeImageToStream(*viewPlane->RenderedImage, stream);
 }
 
 MainComponent::~MainComponent()
@@ -200,7 +226,6 @@ void MainComponent::paint (Graphics& g)
 
     g.setFont (Font (16.0f));
     g.setColour (Colours::white);
-    g.drawText ("Hello World!", getLocalBounds(), Justification::centred, true);
 }
 
 void MainComponent::resized()
@@ -212,6 +237,6 @@ void MainComponent::resized()
 #if !JUCE_MAC
     menuBar->setBounds (b.removeFromTop (LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()));
 #endif
-    image->setBounds(b.withHeight(400));
     progressBar->setBounds(b.removeFromBottom(progressBar->getHeight()));
+    image->setBounds(b);
 }

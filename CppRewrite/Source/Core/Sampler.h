@@ -22,6 +22,22 @@ public:
     virtual std::vector<Point2D> SampleCircle(int count) = 0;
 };
 
+class PreviewSampler : public Sampler
+{
+public:
+    virtual ~PreviewSampler() {}
+    inline std::vector<Point2D> SampleSquare(int count)
+    {
+        std::vector<Point2D> ret;
+        ret.push_back(Point2D(0.5, 0.5));
+        return ret;
+    }
+    inline std::vector<Point2D> SampleCircle(int count)
+    {
+        return SampleSquare(count);
+    }
+};
+
 class MultiJittered : public Sampler
 {
 public:

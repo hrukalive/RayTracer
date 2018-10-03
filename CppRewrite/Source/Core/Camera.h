@@ -65,6 +65,10 @@ public:
         for (auto& shift : shifts)
         {
             auto tmp = centerPos + shift * viewPlane->PixelSize;
+            
+            auto ttt = u * tmp.x + v * tmp.y + eye;
+            DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
+            
             ret.push_back(Ray(u * tmp.x + v * tmp.y + eye, -w));
         }
         return ret;
@@ -86,7 +90,8 @@ public:
         for (auto& shift : shifts)
         {
             auto tmp = centerPos + shift * viewPlane->PixelSize;
-			// DBG((std::to_string(tmp.x) + ", " + std::to_string(tmp.y)));
+            auto ttt = (u * tmp.x + v * tmp.y + eye - w * dist).normalised();
+            DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
             ret.push_back(Ray(eye, (u * tmp.x + v * tmp.y + eye - w * dist).normalised()));
         }
         return ret;

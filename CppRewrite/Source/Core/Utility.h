@@ -25,6 +25,12 @@ typedef Point<FP_TYPE> Point2D;
 #define BLACK (RGBColor(0.0, 0.0, 0.0))
 #define RED (RGBColor(1.0, 0.0, 0.0))
 
+//std::ostream& operator<<(std::ostream& o, const Vec3D& vec)
+//{
+//    o << vec.x << ", " << vec.y << ", " << vec.z;
+//    return o;
+//}
+
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {
     return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);

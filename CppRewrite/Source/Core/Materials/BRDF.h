@@ -1,7 +1,6 @@
 #pragma once
 #include "../Utility.h"
 #include "../Sampler.h"
-#include "../World.h"
 
 class BRDF
 {

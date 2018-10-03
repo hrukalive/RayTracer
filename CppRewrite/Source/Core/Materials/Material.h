@@ -16,10 +16,10 @@
 class Material
 {
 public:
-    virtual ~Material() {}
-	virtual RGBColor Shade(const HitRecord& record);
-	virtual RGBColor AreaLightShade(const HitRecord& record);
-	virtual RGBColor PathShade(const HitRecord& record);
+	virtual ~Material() = default;
+	virtual RGBColor Shade(const HitRecord& record) { return BLACK; }
+	virtual RGBColor AreaLightShade(const HitRecord& record) { return BLACK; }
+	virtual RGBColor PathShade(const HitRecord& record) { return BLACK; }
 };
 
 class Matte : public Material

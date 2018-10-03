@@ -10,9 +10,6 @@
 
 #pragma once
 
-#include "../Utility.h"
-#include "GeometricObject.h"
-
 class Triangle : public GeometricObject
 {
 	Vec3D a, b, c, n;

@@ -12,6 +12,7 @@
 #include "Utility.h"
 #include "Viewplane.h"
 #include "Sampler.h"
+#include <string>
 
 class Camera
 {
@@ -85,6 +86,7 @@ public:
         for (auto& shift : shifts)
         {
             auto tmp = centerPos + shift * viewPlane->PixelSize;
+			// DBG((std::to_string(tmp.x) + ", " + std::to_string(tmp.y)));
             ret.push_back(Ray(eye, (u * tmp.x + v * tmp.y + eye - w * dist).normalised()));
         }
         return ret;

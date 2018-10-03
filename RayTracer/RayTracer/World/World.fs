@@ -52,7 +52,7 @@ module World =
     //let vp = ViewPlane(width, height, 3.0 / float height, 64, 1.0) // Ortho config
     let vp = ViewPlane(width, height, 1.0 / float height, 64, 1.0) // Persp config
     let r = 3.0
-    let theta = 110.0 / 180.0 * 3.1416
+    let theta = 0.0 / 180.0 * 3.1416
     let phi = 45.0 / 180.0 * 3.1416
     let roll = 0.0 / 180.0 * 3.1416
     let lookat = Vec3(0.0, -0.6, -1.5)
@@ -157,7 +157,7 @@ module World =
                                   | ctxt -> ctxt
             let vp2 = ViewPlane(width, height, 1.0 / float height, 64, 1.0)
             let world2 = World(vp2, Vec3.Zero, hitableList, lightList, camera :> ICamera)
-            let taskSeq = GenerateRenderTasks false world2 poolSyncContext jobCompleted
+            let taskSeq = GenerateRenderTasks true world2 poolSyncContext jobCompleted
             let worker = new AsyncWorker(taskSeq, cts)
             //Seq.iter (fun task -> Async.RunSynchronously(task |> Async.Ignore)) taskSeq
             worker.Start()

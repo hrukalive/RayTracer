@@ -26,6 +26,7 @@ class Ambient : public Light
     float ls = 1.0;
     RGBColor color = Vec3D(1.0, 1.0, 1.0);
 public:
+	Ambient() = default;
     Ambient(float ls, RGBColor color) : ls(ls), color(color) {}
     virtual ~Ambient() {}
     inline Vec3D GetDirection(const HitRecord& record)
@@ -54,4 +55,22 @@ public:
     {
         return color * ls;
     }
+};
+
+class ParallelLight : public Light
+{
+	float ls;
+	RGBColor color;
+	Vec3D direction;
+public:
+	ParallelLight(float ls, RGBColor color, Vec3D direction) : ls(ls), color(color), direction(direction) {}
+	virtual ~ParallelLight() {}
+	inline Vec3D GetDirection(const HitRecord& record)
+	{
+		return direction.normalised();
+	}
+	inline RGBColor L(const HitRecord& record)
+	{
+		return color * ls;
+	}
 };

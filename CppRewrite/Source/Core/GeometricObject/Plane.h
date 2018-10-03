@@ -10,9 +10,6 @@
 
 #pragma once
 
-#include "../Utility.h"
-#include "GeometricObject.h"
-
 class InfPlane : public GeometricObject
 {
 	Point3D a;

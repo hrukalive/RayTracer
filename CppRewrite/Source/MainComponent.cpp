@@ -11,10 +11,10 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    auto vpWidth = 400, vpHeight = 400;
+    auto vpWidth = 128 * 5, vpHeight = 72 * 5;
     world.reset(new World());
     tracer.reset(new RayCast(world));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0, 16));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight, 16));
     sampler.reset(new MultiJittered());
     
     auto r = 3.0;
@@ -23,19 +23,38 @@ MainComponent::MainComponent()
     auto roll = 0.0 / 180.0 * 3.1416;
     auto lookat = Vec3D(0.0, -0.6, -1.5);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-    camera.reset(new PinholeCamera(Vec3D(0.0, 0.0, 500.0), Vec3D(-5.0, 0.0, 0.0), Vec3D(0.0, 1.0, 0.0), 850.0, viewPlane, sampler));
+    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
     
-    PointLight* l1 = new PointLight(3.0, RGBColor(1.0, 1.0, 1.0), Point3D(100.0, 50.0, 150.0));
+	std::shared_ptr<Light> l1{ new ParallelLight(0.5, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(l1);
+
+	std::shared_ptr<Light> amb{ new Ambient(0.05, RGBColor(1.0, 1.0, 1.0)) };
+	world->SetAmbient(amb);
     
-    std::shared_ptr<Material> mat = std::make_shared<Matte>(Matte());
-    mat->SetKa(0.25);
-    mat->SetKd(0.65);
-    mat->SetCd(RGBColor(1.0, 1.0, 0.0));
     
-    Sphere* sp = new Sphere(Vec3D(10.0, -5.0, 0.0), 27);
-    sp->SetMaterial(mat);
-    world->AddObject(sp);
+	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -2.0), 0.5) };
+	std::shared_ptr<Material> mat1{ new Matte() };
+	std::dynamic_pointer_cast<Matte>(mat1)->SetKa(0.25);
+	std::dynamic_pointer_cast<Matte>(mat1)->SetKd(1.0);
+	std::dynamic_pointer_cast<Matte>(mat1)->SetCd(RGBColor(0.0, 1.0, 0.0));
+    sp1->SetMaterial(mat1);
+    world->AddObject(sp1);
+
+	std::shared_ptr<GeometricObject> sp2{ new Sphere(Vec3D(-1.0, 0.0, -1.0), 0.5) };
+	std::shared_ptr<Material> mat2{ new Matte() };
+	std::dynamic_pointer_cast<Matte>(mat2)->SetKa(0.25);
+	std::dynamic_pointer_cast<Matte>(mat2)->SetKd(1.0);
+	std::dynamic_pointer_cast<Matte>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
+	sp2->SetMaterial(mat2);
+	world->AddObject(sp2);
+
+	std::shared_ptr<GeometricObject> sp3{ new Sphere(Vec3D(1.0, 0.0, -1.0), 0.5) };
+	std::shared_ptr<Material> mat3{ new Matte() };
+	std::dynamic_pointer_cast<Matte>(mat3)->SetKa(0.25);
+	std::dynamic_pointer_cast<Matte>(mat3)->SetKd(1.0);
+	std::dynamic_pointer_cast<Matte>(mat3)->SetCd(RGBColor(0.0, 0.0, 1.0));
+	sp3->SetMaterial(mat3);
+	world->AddObject(sp3);
     
     for (int r = 0; r < vpHeight; r++)
     {
@@ -81,9 +100,9 @@ MainComponent::MainComponent()
 #endif
 
 	//World world;
-    FileOutputStream stream(File("/Volumes/Document/RayTracer/test.png"));
-    PNGImageFormat pngWriter;
-    pngWriter.writeImageToStream(*viewPlane->RenderedImage, stream);
+    //FileOutputStream stream(File("/Volumes/Document/RayTracer/test.png"));
+    //PNGImageFormat pngWriter;
+    //pngWriter.writeImageToStream(*viewPlane->RenderedImage, stream);
 }
 
 MainComponent::~MainComponent()

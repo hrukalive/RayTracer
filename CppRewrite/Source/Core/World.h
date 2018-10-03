@@ -19,16 +19,17 @@
 class World
 {
     std::shared_ptr<Light> ambientLightPtr = nullptr;
-	RGBColor backgroundColor;
-	std::vector<GeometricObject*> objects;
-	std::vector<Light*> lights;
+	RGBColor backgroundColor = BLACK;
+	std::vector<std::shared_ptr<GeometricObject>> objects;
+	std::vector<std::shared_ptr<Light>> lights;
 public:
     std::shared_ptr<Light>& GetAmbientLightPtr() { return ambientLightPtr; }
 	RGBColor& GetBackgroundColor() { return backgroundColor; }
-    std::vector<GeometricObject*>& GetObjects() { return objects; }
-    std::vector<Light*>& GetLights() { return lights; }
-    void AddLight(Light* light) { lights.push_back(light); }
-    void AddObject(GeometricObject* obj) { objects.push_back(obj); }
+    auto& GetObjects() { return objects; }
+	auto& GetLights() { return lights; }
+	void SetAmbient(std::shared_ptr<Light>& ambient) { ambientLightPtr = ambient; }
+    void AddLight(std::shared_ptr<Light>& light) { lights.push_back(light); }
+    void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
 	HitRecord HitObjects(const Ray& ray)
     {
         HitRecord record;

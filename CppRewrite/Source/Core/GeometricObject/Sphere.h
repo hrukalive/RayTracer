@@ -10,9 +10,6 @@
 
 #pragma once
 
-#include "../Utility.h"
-#include "GeometricObject.h"
-
 class Sphere : public GeometricObject
 {
 	Point3D Center;
@@ -58,7 +55,6 @@ public:
 				record.T = t2;
 			}
 		}
-
 		return record;
 	}
 };

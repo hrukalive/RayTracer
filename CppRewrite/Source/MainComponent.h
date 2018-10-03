@@ -10,6 +10,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Core/Utility.h"
+#include "Core/Materials/BRDF.h"
+#include "Core/Materials/Material.h"
 #include "Core/World.h"
 #include "Core/Sampler.h"
 #include "Core/Tracer.h"

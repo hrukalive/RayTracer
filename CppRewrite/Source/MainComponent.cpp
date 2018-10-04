@@ -26,7 +26,7 @@ MainComponent::MainComponent()
     //camera.reset(new OrthographicCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), viewPlane, sampler));
 	camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
     
-	std::shared_ptr<Light> l1{ new ParallelLight(1.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
+	std::shared_ptr<Light> l1{ new ParallelLight(2.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(l1);
     
     std::shared_ptr<Light> l2{ new PointLight(3.0, WHITE, Point3D(0.0, 0.0, 0.0)) };
@@ -37,18 +37,24 @@ MainComponent::MainComponent()
     
     
 	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -2.0), 0.5) };
-	std::shared_ptr<Material> mat1{ new Matte() };
-	std::dynamic_pointer_cast<Matte>(mat1)->SetKa(0.25);
-	std::dynamic_pointer_cast<Matte>(mat1)->SetKd(1.0);
-	std::dynamic_pointer_cast<Matte>(mat1)->SetCd(RGBColor(0.0, 1.0, 0.0));
+	std::shared_ptr<Material> mat1{ new Phong() };
+	std::dynamic_pointer_cast<Phong>(mat1)->SetKa(0.25);
+    std::dynamic_pointer_cast<Phong>(mat1)->SetKd(1.0);
+    std::dynamic_pointer_cast<Phong>(mat1)->SetKs(0.45);
+    std::dynamic_pointer_cast<Phong>(mat1)->SetE(50.0);
+	std::dynamic_pointer_cast<Phong>(mat1)->SetCd(RGBColor(0.0, 1.0, 0.0));
+    std::dynamic_pointer_cast<Phong>(mat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
     sp1->SetMaterial(mat1);
     world->AddObject(sp1);
 
 	std::shared_ptr<GeometricObject> sp2{ new Sphere(Vec3D(-1.0, 0.0, -1.0), 0.5) };
-	std::shared_ptr<Material> mat2{ new Matte() };
-	std::dynamic_pointer_cast<Matte>(mat2)->SetKa(0.25);
-	std::dynamic_pointer_cast<Matte>(mat2)->SetKd(1.0);
-	std::dynamic_pointer_cast<Matte>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
+	std::shared_ptr<Material> mat2{ new Phong() };
+	std::dynamic_pointer_cast<Phong>(mat2)->SetKa(0.25);
+    std::dynamic_pointer_cast<Phong>(mat2)->SetKd(1.0);
+    std::dynamic_pointer_cast<Phong>(mat2)->SetKs(0.45);
+    std::dynamic_pointer_cast<Phong>(mat2)->SetE(50.0);
+    std::dynamic_pointer_cast<Phong>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
+    std::dynamic_pointer_cast<Phong>(mat2)->SetCs(RGBColor(1.0, 1.0, 1.0));
 	sp2->SetMaterial(mat2);
 	world->AddObject(sp2);
 

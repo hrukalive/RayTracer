@@ -24,31 +24,29 @@ public:
 
 class Matte : public Material
 {
-	std::unique_ptr<Lambertian> ambientBRDF, diffuseBRDF;
+	Lambertian ambientBRDF, diffuseBRDF;
 public:
 	Matte() : Material()
 	{
-		ambientBRDF.reset(new Lambertian());
-		diffuseBRDF.reset(new Lambertian());
 	}
     virtual ~Matte() {}
 	void SetKa(const float ka)
 	{
-		ambientBRDF->SetKd(ka);
+		ambientBRDF.SetKd(ka);
 	}
 	void SetKd(const float kd)
 	{
-		diffuseBRDF->SetKd(kd);
+		diffuseBRDF.SetKd(kd);
 	}
 	void SetCd(const RGBColor& c)
 	{
-		ambientBRDF->SetCd(c);
-		diffuseBRDF->SetCd(c);
+		ambientBRDF.SetCd(c);
+		diffuseBRDF.SetCd(c);
 	}
 	RGBColor Shade(const HitRecord& record)
 	{
 		Vec3D wo = -record.Ray.Direction;
-        RGBColor L = ElemMul(ambientBRDF->rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
+        RGBColor L = ElemMul(ambientBRDF.rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
         auto& lights = record.WorldPtr->GetLights();
         for (int i = 0; i < lights.size(); i++)
         {
@@ -56,9 +54,61 @@ public:
             auto ndotwi = record.Normal * wi;
             if (ndotwi > 0.0)
             {
-                L += ElemMul(diffuseBRDF->f(record, wo, wi), lights[i]->L(record) * ndotwi);
+                L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
             }
         }
         return L;
 	}
+};
+
+class Phong : public Material
+{
+    Lambertian ambientBRDF, diffuseBRDF;
+    GlossySpecular specularBRDF;
+public:
+    Phong() : Material()
+    {
+    }
+    virtual ~Phong() {}
+    void SetKa(const float ka)
+    {
+        ambientBRDF.SetKd(ka);
+    }
+    void SetKd(const float kd)
+    {
+        diffuseBRDF.SetKd(kd);
+    }
+    void SetKs(const float ks)
+    {
+        specularBRDF.SetKs(ks);
+    }
+    void SetCd(const RGBColor& c)
+    {
+        ambientBRDF.SetCd(c);
+        diffuseBRDF.SetCd(c);
+    }
+    void SetCs(const RGBColor& c)
+    {
+        specularBRDF.SetCs(c);
+    }
+    void SetE(const float exp)
+    {
+        specularBRDF.SetE(exp);
+    }
+    RGBColor Shade(const HitRecord& record)
+    {
+        Vec3D wo = -record.Ray.Direction;
+        RGBColor L = ElemMul(ambientBRDF.rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
+        auto& lights = record.WorldPtr->GetLights();
+        for (int i = 0; i < lights.size(); i++)
+        {
+            auto wi = lights[i]->GetDirection(record);
+            auto ndotwi = record.Normal * wi;
+            if (ndotwi > 0.0)
+            {
+                L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+            }
+        }
+        return L;
+    }
 };

@@ -57,9 +57,8 @@ struct HitRecord
 	Vec3D Normal;
 	Vec3D HitPoint;
 	FP_TYPE T = 0.0f;
-	std::shared_ptr<Material> MaterialPtr = nullptr;
 	Ray Ray;
-	Vec3D Dir;
+    std::shared_ptr<Material> MaterialPtr = nullptr;
     std::shared_ptr<World> WorldPtr = nullptr;
 
 	HitRecord() {}

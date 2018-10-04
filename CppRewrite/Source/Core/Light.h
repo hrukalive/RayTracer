@@ -67,7 +67,7 @@ public:
 	virtual ~ParallelLight() {}
 	inline Vec3D GetDirection(const HitRecord& record)
 	{
-		return direction.normalised();
+		return -direction.normalised();
 	}
 	inline RGBColor L(const HitRecord& record)
 	{

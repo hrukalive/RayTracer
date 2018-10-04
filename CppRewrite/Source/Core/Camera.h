@@ -65,10 +65,6 @@ public:
         for (auto& shift : shifts)
         {
             auto tmp = centerPos + shift * viewPlane->PixelSize;
-            
-            auto ttt = -w;
-            DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
-            
             ret.push_back(Ray(u * tmp.x + v * tmp.y + eye, -w));
         }
         return ret;
@@ -89,13 +85,8 @@ public:
         auto shifts = sampler->SampleSquare(viewPlane->NumPixelSamples);
         for (auto& shift : shifts)
         {
-            auto tmp = centerPos + shift * viewPlane->PixelSize;
-            auto ttt = (u * tmp.x + v * tmp.y + (eye - (w * dist))).normalised();
-            DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
-
-			ttt = -w;
-			DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
-			ret.push_back(Ray(eye, (u * tmp.x + v * tmp.y + (eye - (w * dist))).normalised()));
+            auto tmp = centerPos + (shift * viewPlane->PixelSize);
+			ret.push_back(Ray(eye, (u * tmp.x + v * tmp.y - w * dist).normalised()));
         }
         return ret;
     }

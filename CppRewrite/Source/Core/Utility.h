@@ -23,6 +23,7 @@ typedef Vec3D RGBColor;
 typedef Point<FP_TYPE> Point2D;
 
 #define BLACK (RGBColor(0.0, 0.0, 0.0))
+#define WHITE (RGBColor(1.0, 1.0, 1.0))
 #define RED (RGBColor(1.0, 0.0, 0.0))
 
 //std::ostream& operator<<(std::ostream& o, const Vec3D& vec)

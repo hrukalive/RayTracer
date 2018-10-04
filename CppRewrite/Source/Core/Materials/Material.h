@@ -52,7 +52,7 @@ public:
         auto& lights = record.WorldPtr->GetLights();
         for (int i = 0; i < lights.size(); i++)
         {
-            auto wi = -lights[i]->GetDirection(record);
+            auto wi = lights[i]->GetDirection(record);
             auto ndotwi = record.Normal * wi;
             if (ndotwi > 0.0)
             {

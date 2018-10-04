@@ -26,6 +26,12 @@ typedef Point<FP_TYPE> Point2D;
 #define WHITE (RGBColor(1.0, 1.0, 1.0))
 #define RED (RGBColor(1.0, 0.0, 0.0))
 
+#define ZERO (Vec3D(0.0, 0.0, 0.0))
+#define ONE (Vec3D(1.0, 1.0, 1.0))
+#define X_DIR (Vec3D(1.0, 0.0, 0.0))
+#define Y_DIR (Vec3D(0.0, 1.0, 0.0))
+#define Z_DIR (Vec3D(0.0, 0.0, 1.0))
+
 //std::ostream& operator<<(std::ostream& o, const Vec3D& vec)
 //{
 //    o << vec.x << ", " << vec.y << ", " << vec.z;

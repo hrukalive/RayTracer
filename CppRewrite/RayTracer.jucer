@@ -5,8 +5,14 @@
     <GROUP id="{589F4DE8-C9B3-F48E-8155-AEEF7A468CFB}" name="Source">
       <GROUP id="{7A267AD0-4BE3-D2CF-027D-6CFF1B1A60AA}" name="Core">
         <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
+          <FILE id="zrhR0Y" name="BBox.h" compile="0" resource="0" file="Source/Core/GeometricObject/BBox.h"/>
+          <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.h"/>
+          <FILE id="qPlxxx" name="Grid.h" compile="0" resource="0" file="Source/Core/GeometricObject/Grid.h"/>
+          <FILE id="R2Vspv" name="Instance.h" compile="0" resource="0" file="Source/Core/GeometricObject/Instance.h"/>
+          <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
+          <FILE id="CEAAHd" name="MeshTriangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/MeshTriangle.h"/>
           <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
           <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
@@ -28,6 +34,8 @@
         <FILE id="bzmdNw" name="Sampler.h" compile="0" resource="0" file="Source/Core/Sampler.h"/>
         <FILE id="So80cU" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer.cpp"/>
         <FILE id="U1xv86" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer.h"/>
+        <FILE id="N2Xg9Q" name="OBJParser.cpp" compile="1" resource="0" file="Source/Core/OBJParser.cpp"/>
+        <FILE id="W9KjuI" name="OBJParser.h" compile="0" resource="0" file="Source/Core/OBJParser.h"/>
       </GROUP>
       <FILE id="tygI0U" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
       <FILE id="jYwEwz" name="MainComponent.cpp" compile="1" resource="0"

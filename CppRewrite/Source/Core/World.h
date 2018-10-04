@@ -29,7 +29,7 @@ public:
 	auto& GetLights() { return lights; }
 	void SetAmbient(std::shared_ptr<Light>& ambient) { ambientLightPtr = ambient; }
     void AddLight(std::shared_ptr<Light>& light) { lights.push_back(light); }
-    void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); DBG(objects.size()); }
+    void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
 	HitRecord HitObjects(const Ray& ray)
     {
         HitRecord record;
@@ -40,10 +40,8 @@ public:
             HitRecord tmp = objects[i]->Hit(ray);
             if (tmp.Hit && tmp.T < tmin)
             {
-                DBG("HIT");
                 tmin = tmp.T;
                 record = tmp;
-                record.WorldPtr.reset(this);
             }
         }
         return record;

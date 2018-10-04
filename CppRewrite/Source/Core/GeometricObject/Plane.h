@@ -22,7 +22,7 @@ public:
 	Point3D getOrigin() { return a; }
 	Vec3D getNormal() { return n.normalised(); }
 
-	virtual HitRecord Hit(const Ray& ray)
+	virtual HitRecord Hit(const Ray& ray) override
 	{
 		HitRecord record;
 		FP_TYPE t = ((a - ray.Origin) * n) / (ray.Direction * n);
@@ -58,7 +58,7 @@ public:
 	Vec3D getV() { return v; }
 	Vec3D getNormal() { return n.normalised(); }
 
-	virtual HitRecord Hit(Ray& ray)
+	virtual HitRecord Hit(const Ray& ray) override
 	{
 		HitRecord record;
 		FP_TYPE t = ((a - ray.Origin) * n) / (ray.Direction * n);

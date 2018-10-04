@@ -30,7 +30,7 @@ public:
     {
         w = (eye - lookAt).normalised();
         u = (up ^ w).normalised();
-        v = w ^ u;
+        v = (w ^ u).normalised();
         if (eye.x == lookAt.x && eye.z == lookAt.z)
         {
             if (eye.y > lookAt.y)
@@ -66,7 +66,7 @@ public:
         {
             auto tmp = centerPos + shift * viewPlane->PixelSize;
             
-            auto ttt = u * tmp.x + v * tmp.y + eye;
+            auto ttt = -w;
             DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
             
             ret.push_back(Ray(u * tmp.x + v * tmp.y + eye, -w));
@@ -90,9 +90,12 @@ public:
         for (auto& shift : shifts)
         {
             auto tmp = centerPos + shift * viewPlane->PixelSize;
-            auto ttt = (u * tmp.x + v * tmp.y + eye - w * dist).normalised();
+            auto ttt = (u * tmp.x + v * tmp.y + (eye - (w * dist))).normalised();
             DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
-            ret.push_back(Ray(eye, (u * tmp.x + v * tmp.y + eye - w * dist).normalised()));
+
+			ttt = -w;
+			DBG((std::to_string(ttt.x) + ", " + std::to_string(ttt.y) + ", " + std::to_string(ttt.z)));
+			ret.push_back(Ray(eye, (u * tmp.x + v * tmp.y + (eye - (w * dist))).normalised()));
         }
         return ret;
     }

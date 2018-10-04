@@ -36,6 +36,7 @@ public:
 	virtual RGBColor Trace(const Ray& ray, int depth) const
 	{
 		HitRecord record = worldPtr->HitObjects(ray);
-		return record.Hit ? (RED)/*(record.MaterialPtr->Shade(record))*/ : (worldPtr->GetBackgroundColor());
+		record.WorldPtr = worldPtr;
+		return record.Hit ? (record.MaterialPtr->Shade(record)) : (worldPtr->GetBackgroundColor());
 	}
 };

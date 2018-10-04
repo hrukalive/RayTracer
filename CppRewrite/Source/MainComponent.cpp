@@ -11,21 +11,22 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    auto vpWidth = 4, vpHeight = 4;
+    auto vpWidth = 4/*128 * 5*/, vpHeight = 4/*72 * 5*/;
     world.reset(new World());
     tracer.reset(new RayCast(world));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight, 1));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 3.0 / vpHeight, 16));
     sampler.reset(new PreviewSampler());
     
     auto r = 3.0;
-    auto theta = 0.0 / 180.0 * 3.1416;
-    auto phi = 90.0 / 180.0 * 3.1416;
+    auto theta = 45.0 / 180.0 * 3.1416;
+    auto phi = 45.0 / 180.0 * 3.1416;
     auto roll = 0.0 / 180.0 * 3.1416;
     auto lookat = Vec3D(0.0, -0.6, -1.5);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-    camera.reset(new OrthographicCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), viewPlane, sampler));
+    //camera.reset(new OrthographicCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), viewPlane, sampler));
+	camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1000.0, viewPlane, sampler));
     
-	std::shared_ptr<Light> l1{ new ParallelLight(0.5, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
+	std::shared_ptr<Light> l1{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(l1);
 
 	std::shared_ptr<Light> amb{ new Ambient(0.05, RGBColor(1.0, 1.0, 1.0)) };
@@ -55,6 +56,30 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat3)->SetCd(RGBColor(0.0, 0.0, 1.0));
 	sp3->SetMaterial(mat3);
 	world->AddObject(sp3);
+
+	std::shared_ptr<GeometricObject> pl1{ new Plane(Point3D(-2.0, -0.6, 0.0), Vec3D(4.0, 0.0, 0.0), Vec3D(0.0, 0.0, -3.0)) };
+	std::shared_ptr<Material> mat4{ new Matte() };
+	std::dynamic_pointer_cast<Matte>(mat4)->SetKa(0.25);
+	std::dynamic_pointer_cast<Matte>(mat4)->SetKd(0.6);
+	std::dynamic_pointer_cast<Matte>(mat4)->SetCd(RGBColor(1.0, 1.0, 1.0));
+	pl1->SetMaterial(mat4);
+	world->AddObject(pl1);
+
+	std::shared_ptr<GeometricObject> pl2{ new Plane(Point3D(-0.4, -0.4, -0.5), Vec3D(0.0, 0.0, -1.0), Vec3D(0.0, 0.7, 0.0)) };
+	std::shared_ptr<Material> mat5{ new Matte() };
+	std::dynamic_pointer_cast<Matte>(mat5)->SetKa(0.25);
+	std::dynamic_pointer_cast<Matte>(mat5)->SetKd(0.8);
+	std::dynamic_pointer_cast<Matte>(mat5)->SetCd(RGBColor(0.0, 1.0, 1.0));
+	pl2->SetMaterial(mat5);
+	world->AddObject(pl2);
+
+	std::shared_ptr<GeometricObject> tri{ new Triangle(Point3D(0.0, -0.5, -1.0), Point3D(1.5, -0.3, -2.5), Point3D(0.5, 0.8, -1.5)) };
+	std::shared_ptr<Material> mat6{ new Matte() };
+	std::dynamic_pointer_cast<Matte>(mat6)->SetKa(0.25);
+	std::dynamic_pointer_cast<Matte>(mat6)->SetKd(0.8);
+	std::dynamic_pointer_cast<Matte>(mat6)->SetCd(RGBColor(0.0, 1.0, 1.0));
+	tri->SetMaterial(mat6);
+	world->AddObject(tri);
     
     for (int r = 0; r < vpHeight; r++)
     {
@@ -66,7 +91,7 @@ MainComponent::MainComponent()
                 viewPlane->SetPixel(c, r, tracer->Trace(ray));
             }
         }
-        //DBG(r);
+        DBG(r);
     }
     
     progress = 0.5;
@@ -96,7 +121,7 @@ MainComponent::MainComponent()
 #if JUCE_MAC
     setSize(vpWidth, vpHeight + progressBar->getHeight());
 #else
-    setSize(vpWidth, vpHeight + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+    setSize(100, 100 + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 
 	//World world;

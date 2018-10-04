@@ -46,7 +46,7 @@ public:
 			if (l1 >= 0.0 && l1 <= 1.0 && l2 >= 0.0 && l2 <= 1.0 && l3 >= 0.0 && l3 <= 1.0)
 			{
 				record.Hit = true;
-				record.Normal = n.normalised();
+				record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
 				record.HitPoint = p;
                 record.MaterialPtr = materialPtr;
                 record.Ray = ray;

@@ -29,7 +29,7 @@ public:
 		if (t > kEpsilon)
 		{
 			record.Hit = true;
-			record.Normal = n.normalised();
+            record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
 			record.HitPoint = ray.GetPoint(t);
             record.MaterialPtr = materialPtr;
             record.Ray = ray;
@@ -70,7 +70,7 @@ public:
 		if (t > kEpsilon && tu >= 0.0 && tu <= 1.0 && tv >= 0.0 && tv <= 1.0)
 		{
 			record.Hit = true;
-			record.Normal = n.normalised();
+			record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
 			record.HitPoint = p;
             record.MaterialPtr = materialPtr;
             record.Ray = ray;

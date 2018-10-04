@@ -19,6 +19,7 @@ public:
     virtual ~Light() {}
     virtual Vec3D GetDirection(const HitRecord& record) = 0;
     virtual RGBColor L(const HitRecord& record) = 0;
+    virtual bool InShadow(const Ray& ray, const HitRecord& objs) = 0;
 };
 
 class Ambient : public Light
@@ -36,6 +37,10 @@ public:
     inline RGBColor L(const HitRecord& record)
     {
         return color * ls;
+    }
+    inline bool InShadow(const Ray& ray, const HitRecord& objs)
+    {
+        return false;
     }
 };
 
@@ -55,6 +60,7 @@ public:
     {
         return color * ls;
     }
+    bool InShadow(const Ray& ray, const HitRecord& record);
 };
 
 class ParallelLight : public Light
@@ -73,4 +79,5 @@ public:
 	{
 		return color * ls;
 	}
+    bool InShadow(const Ray& ray, const HitRecord& record);
 };

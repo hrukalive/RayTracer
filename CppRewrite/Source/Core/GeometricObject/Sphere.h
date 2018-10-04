@@ -35,12 +35,13 @@ public:
 		{
 			auto t1 = (-b - sqrt(disc)) / a * 0.5;
 			auto t2 = (-b + sqrt(disc)) / a * 0.5;
-
+            
 			if (t1 > kEpsilon)
 			{
 				auto p = ray.GetPoint(t1);
+                auto n = p - Center;
 				record.Hit = true;
-				record.Normal = (p - Center).normalised();
+				record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
 				record.HitPoint = p;
                 record.MaterialPtr = materialPtr;
                 record.Ray = ray;
@@ -49,8 +50,9 @@ public:
 			else if (t2 > kEpsilon) 
 			{
 				auto p = ray.GetPoint(t2);
+                auto n = p - Center;
 				record.Hit = true;
-				record.Normal = (p - Center).normalised();
+				record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
 				record.HitPoint = p;
                 record.MaterialPtr = materialPtr;
                 record.Ray = ray;

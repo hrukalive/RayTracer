@@ -52,9 +52,14 @@ public:
         {
             auto wi = lights[i]->GetDirection(record);
             auto ndotwi = record.Normal * wi;
-            if (ndotwi > 0.0)
+            auto ndotwo = record.Normal * wo;
+            if (ndotwi > 0.0 && ndotwo > 0.0)
             {
-                L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+                Ray shadowRay(record.HitPoint, wi);
+                if (!lights[i]->InShadow(shadowRay, record))
+                {
+                    L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+                }
             }
         }
         return L;
@@ -104,9 +109,14 @@ public:
         {
             auto wi = lights[i]->GetDirection(record);
             auto ndotwi = record.Normal * wi;
-            if (ndotwi > 0.0)
+            auto ndotwo = record.Normal * wo;
+            if (ndotwi > 0.0 && ndotwo > 0.0)
             {
-                L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+                Ray shadowRay(record.HitPoint, wi);
+                if (!lights[i]->InShadow(shadowRay, record))
+                {
+                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+                }
             }
         }
         return L;

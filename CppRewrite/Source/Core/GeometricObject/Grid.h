@@ -9,8 +9,14 @@
 */
 
 #pragma once
+#include "Compound.h"
 
-class Grid : public Compound
+namespace RayTracer
 {
-    
-};
+
+	class Grid : public Compound
+	{
+
+	};
+
+}

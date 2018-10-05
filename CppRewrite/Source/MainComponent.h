@@ -17,6 +17,7 @@
 #include "Core/Tracer.h"
 #include "Core/Camera.h"
 #include "Core/Viewplane.h"
+#include "Core/OBJParser.h"
 
 //==============================================================================
 /*

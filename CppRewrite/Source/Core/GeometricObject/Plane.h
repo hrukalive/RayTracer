@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include "GeometricObject.h"
 
 class InfPlane : public GeometricObject
 {

@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include "GeometricObject.h"
 
 class Triangle : public GeometricObject
 {
@@ -32,7 +33,7 @@ public:
 	Vec3D getC() { return c; }
 	Vec3D getNormal() { return n.normalised(); }
 
-	virtual HitRecord Hit(const Ray& ray)
+	virtual HitRecord Hit(const Ray& ray) override
 	{
 		HitRecord record;
 		auto temp = ((a - ray.Origin) * n) / (ray.Direction * n);

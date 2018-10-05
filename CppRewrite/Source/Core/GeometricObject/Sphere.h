@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include "GeometricObject.h"
 
 class Sphere : public GeometricObject
 {
@@ -22,7 +23,7 @@ public:
 	Point3D getCenter() { return Center; }
 	FP_TYPE getRadius() { return Radius; }
 
-	virtual HitRecord Hit(const Ray& ray)
+	virtual HitRecord Hit(const Ray& ray) override
 	{
 		HitRecord record;
 		auto temp = ray.Origin - Center;

@@ -11,11 +11,16 @@
 #pragma once
 
 #include "../Utility.h"
+#include "GeometricObject.h"
 
 class BBox : public GeometricObject
 {
-    float xMin, xMax, yMin, yMax, zMin, zMax;
+    FP_TYPE xMin, xMax, yMin, yMax, zMin, zMax;
 public:
+	BBox()
+	{
+		SetBoundingBox(ZERO, ZERO);
+	}
     BBox(const Point3D min, const Point3D max)
     {
         SetBoundingBox(min, max);

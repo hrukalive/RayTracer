@@ -9,8 +9,11 @@
 */
 
 #pragma once
+#include "GeometricObject.h"
+#include "BBox.h"
 
-class Compound : public class GeometricObject
+class Compound : public GeometricObject
 {
-    
+protected:
+	BBox boundingBox;
 };

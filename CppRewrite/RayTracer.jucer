@@ -12,7 +12,6 @@
           <FILE id="qPlxxx" name="Grid.h" compile="0" resource="0" file="Source/Core/GeometricObject/Grid.h"/>
           <FILE id="R2Vspv" name="Instance.h" compile="0" resource="0" file="Source/Core/GeometricObject/Instance.h"/>
           <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
-          <FILE id="CEAAHd" name="MeshTriangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/MeshTriangle.h"/>
           <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
           <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>

@@ -17,7 +17,7 @@ MainComponent::MainComponent()
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight, 16));
     sampler.reset(new PreviewSampler());
     
-    auto r = 4.0;
+    auto r = 14.0;
     auto theta = 30.0 / 180.0 * 3.1416;
     auto phi = 45.0 / 180.0 * 3.1416;
     auto roll = 0.0 / 180.0 * 3.1416;
@@ -27,7 +27,7 @@ MainComponent::MainComponent()
 	camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
     
 	std::shared_ptr<Light> l1{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
-    world->AddLight(l1);
+    //world->AddLight(l1);
     
     std::shared_ptr<Light> l2{ new PointLight(3.0, WHITE, Point3D(0.0, 0.2, 0.0)) };
     world->AddLight(l2);
@@ -45,7 +45,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Phong>(mat1)->SetCd(RGBColor(0.0, 1.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
     sp1->SetMaterial(mat1);
-    world->AddObject(sp1);
+    //world->AddObject(sp1);
 
 	std::shared_ptr<GeometricObject> sp2{ new Sphere(Vec3D(-1.0, 0.0, -1.0), 0.5) };
 	std::shared_ptr<Material> mat2{ new Phong() };
@@ -56,7 +56,7 @@ MainComponent::MainComponent()
     std::dynamic_pointer_cast<Phong>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat2)->SetCs(RGBColor(1.0, 1.0, 1.0));
 	sp2->SetMaterial(mat2);
-	world->AddObject(sp2);
+	//world->AddObject(sp2);
 
 	std::shared_ptr<GeometricObject> sp3{ new Sphere(Vec3D(1.0, 0.0, -1.0), 0.5) };
 	std::shared_ptr<Material> mat3{ new Matte() };
@@ -64,7 +64,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat3)->SetKd(1.0);
 	std::dynamic_pointer_cast<Matte>(mat3)->SetCd(RGBColor(0.0, 0.0, 1.0));
 	sp3->SetMaterial(mat3);
-	world->AddObject(sp3);
+	//world->AddObject(sp3);
 
 	std::shared_ptr<GeometricObject> pl1{ new Plane(Point3D(-2.0, -0.6, 0.0), Vec3D(4.0, 0.0, 0.0), Vec3D(0.0, 0.0, -3.0)) };
 	std::shared_ptr<Material> mat4{ new Matte() };
@@ -72,7 +72,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat4)->SetKd(0.6);
 	std::dynamic_pointer_cast<Matte>(mat4)->SetCd(RGBColor(1.0, 1.0, 1.0));
 	pl1->SetMaterial(mat4);
-	world->AddObject(pl1);
+	//world->AddObject(pl1);
 
 	std::shared_ptr<GeometricObject> pl2{ new Plane(Point3D(-0.4, -0.4, -0.5), Vec3D(0.0, 0.0, -1.0), Vec3D(0.0, 0.7, 0.0)) };
 	std::shared_ptr<Material> mat5{ new Matte() };
@@ -80,7 +80,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat5)->SetKd(0.8);
 	std::dynamic_pointer_cast<Matte>(mat5)->SetCd(RGBColor(0.0, 1.0, 1.0));
 	pl2->SetMaterial(mat5);
-	world->AddObject(pl2);
+	//world->AddObject(pl2);
 
 	std::shared_ptr<GeometricObject> tri{ new Triangle(Point3D(0.0, -0.5, -1.0), Point3D(1.5, -0.3, -2.5), Point3D(0.5, 0.8, -1.5)) };
 	std::shared_ptr<Material> mat6{ new Matte() };
@@ -88,8 +88,20 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat6)->SetKd(0.8);
 	std::dynamic_pointer_cast<Matte>(mat6)->SetCd(RGBColor(1.0, 0.0, 1.0));
 	tri->SetMaterial(mat6);
-	world->AddObject(tri);
-    
+	//world->AddObject(tri);
+
+	File file("D:\\teapot.obj");
+	if (file.existsAsFile())
+	{
+		DBG("YES");
+		OBJParser parser;
+		StringArray strarr;
+		file.readLines(strarr);
+		std::shared_ptr<GeometricObject> bunny = std::make_shared<Mesh>(parser.parse(strarr));
+		bunny->SetMaterial(mat6);
+		world->AddObject(bunny);
+	}
+
     for (int r = 0; r < vpHeight; r++)
     {
         for (int c = 0; c < vpWidth; c++)
@@ -102,6 +114,7 @@ MainComponent::MainComponent()
         }
         DBG(r);
     }
+
     
     progress = 0.5;
     

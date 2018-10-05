@@ -9,6 +9,7 @@
 */
 
 #pragma once
+#include "GeometricObject.h"
 
 class Instance : public GeometricObject
 {

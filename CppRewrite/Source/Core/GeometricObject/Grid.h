@@ -16,7 +16,7 @@ namespace RayTracer
 
 	class Grid : public Compound
 	{
-
+    
 	};
 
 }

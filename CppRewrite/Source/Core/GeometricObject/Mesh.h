@@ -64,7 +64,7 @@ class Mesh : public RayTracer::Grid
 public:
 	Mesh(std::vector<MeshTriangle>& triangles, const Point3D& boundingMin, const Point3D& boundingMax) : triangles(triangles)
 	{
-		boundingBox.SetBoundingBox(boundingMin, boundingMax);
+		boundingBox->SetBoundingBox(boundingMin, boundingMax);
 	}
 	~Mesh() {}
 	virtual HitRecord Hit(const Ray& ray) override
@@ -72,7 +72,7 @@ public:
 		HitRecord record;
 		FP_TYPE tmin = INFINITY;
 
-		if (!boundingBox.Hit(ray).Hit)
+		if (!boundingBox->Hit(ray).Hit)
 		{
 			return record;
 		}

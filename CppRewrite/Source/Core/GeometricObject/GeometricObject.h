@@ -13,13 +13,16 @@
 #include "../Utility.h"
 
 class BBox;
+
 class GeometricObject
 {
 protected:
     std::shared_ptr<Material> materialPtr;
-	BBox boundingBox;
+    BBox* boundingBox;
 public:
-    virtual ~GeometricObject() {}
+    GeometricObject() = default;
+    GeometricObject(const GeometricObject& other);
+    virtual ~GeometricObject();
     void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }
 	virtual HitRecord Hit(const Ray& ray) = 0;
 };

@@ -7,6 +7,8 @@
         <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
           <FILE id="zrhR0Y" name="BBox.h" compile="0" resource="0" file="Source/Core/GeometricObject/BBox.h"/>
           <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
+          <FILE id="s3Y6dH" name="GeometricObject.cpp" compile="1" resource="0"
+                file="Source/Core/GeometricObject/GeometricObject.cpp"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.h"/>
           <FILE id="qPlxxx" name="Grid.h" compile="0" resource="0" file="Source/Core/GeometricObject/Grid.h"/>

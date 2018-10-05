@@ -16,6 +16,7 @@ class Compound : public GeometricObject
 {
 	std::vector<std::shared_ptr<GeometricObject>> objects;
 public:
+    Compound() = default;
 	void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
 	void SetMaterial(std::shared_ptr<Material>& material)
 	{

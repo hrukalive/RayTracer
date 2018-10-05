@@ -12,10 +12,12 @@
 
 #include "../Utility.h"
 
+class BBox;
 class GeometricObject
 {
 protected:
     std::shared_ptr<Material> materialPtr;
+	BBox boundingBox;
 public:
     virtual ~GeometricObject() {}
     void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }

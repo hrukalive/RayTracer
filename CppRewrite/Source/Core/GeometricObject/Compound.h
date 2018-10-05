@@ -14,6 +14,30 @@
 
 class Compound : public GeometricObject
 {
-protected:
-	BBox boundingBox;
+	std::vector<std::shared_ptr<GeometricObject>> objects;
+public:
+	void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
+	void SetMaterial(std::shared_ptr<Material>& material)
+	{
+		for (auto& obj : objects)
+		{
+			obj->SetMaterial(material);
+		}
+	}
+	HitRecord HitObjects(const Ray& ray)
+	{
+		HitRecord record;
+		FP_TYPE tmin = INFINITY;
+
+		for (int i = 0; i < objects.size(); i++)
+		{
+			HitRecord tmp = objects[i]->Hit(ray);
+			if (tmp.Hit && tmp.T < tmin)
+			{
+				tmin = tmp.T;
+				record = tmp;
+			}
+		}
+		return record;
+	}
 };

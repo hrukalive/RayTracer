@@ -10,7 +10,6 @@
 
 #pragma once
 #include "../Utility.h"
-#include "../World.h"
 #include "BRDF.h"
 
 class Material
@@ -22,13 +21,20 @@ public:
 	virtual RGBColor PathShade(const HitRecord& record) { return BLACK; }
 };
 
+class ConstColor : public Material
+{
+public:
+	virtual ~ConstColor() {}
+	RGBColor Shade(const HitRecord& record) override
+	{
+		return RED;
+	}
+};
+
 class Matte : public Material
 {
 	Lambertian ambientBRDF, diffuseBRDF;
 public:
-	Matte() : Material()
-	{
-	}
     virtual ~Matte() {}
 	void SetKa(const float ka)
 	{
@@ -43,27 +49,7 @@ public:
 		ambientBRDF.SetCd(c);
 		diffuseBRDF.SetCd(c);
 	}
-	RGBColor Shade(const HitRecord& record)
-	{
-		Vec3D wo = -record.Ray.Direction;
-        RGBColor L = ElemMul(ambientBRDF.rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
-        auto& lights = record.WorldPtr->GetLights();
-        for (int i = 0; i < lights.size(); i++)
-        {
-            auto wi = lights[i]->GetDirection(record);
-            auto ndotwi = record.Normal * wi;
-            auto ndotwo = record.Normal * wo;
-            if (ndotwi > 0.0 && ndotwo > 0.0)
-            {
-                Ray shadowRay(record.HitPoint, wi);
-                if (!lights[i]->InShadow(shadowRay, record))
-                {
-                    L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
-                }
-            }
-        }
-        return L;
-	}
+	RGBColor Shade(const HitRecord& record) override;
 };
 
 class Phong : public Material
@@ -100,25 +86,5 @@ public:
     {
         specularBRDF.SetE(exp);
     }
-    RGBColor Shade(const HitRecord& record)
-    {
-        Vec3D wo = -record.Ray.Direction;
-        RGBColor L = ElemMul(ambientBRDF.rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
-        auto& lights = record.WorldPtr->GetLights();
-        for (int i = 0; i < lights.size(); i++)
-        {
-            auto wi = lights[i]->GetDirection(record);
-            auto ndotwi = record.Normal * wi;
-            auto ndotwo = record.Normal * wo;
-            if (ndotwi > 0.0 && ndotwo > 0.0)
-            {
-                Ray shadowRay(record.HitPoint, wi);
-                if (!lights[i]->InShadow(shadowRay, record))
-                {
-                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
-                }
-            }
-        }
-        return L;
-    }
+	RGBColor Shade(const HitRecord& record) override;
 };

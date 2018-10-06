@@ -11,50 +11,30 @@
 #pragma once
 #include "GeometricObject.h"
 
-class InfPlane : public GeometricObject
-{
-	Point3D a;
-	Vec3D n;
-public:
-	InfPlane(Point3D origin, Vec3D normal) : a(origin), n(normal) {}
-    virtual ~InfPlane() {}
-	void setOrigin(Point3D origin) { a = origin; }
-	void setNormal(Vec3D normal) { n = normal; }
-	Point3D getOrigin() { return a; }
-	Vec3D getNormal() { return n.normalised(); }
-
-	virtual HitRecord Hit(const Ray& ray) override
-	{
-		HitRecord record;
-		FP_TYPE t = ((a - ray.Origin) * n) / (ray.Direction * n);
-		if (t > kEpsilon)
-		{
-			record.Hit = true;
-            record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
-			record.HitPoint = ray.GetPoint(t);
-            record.MaterialPtr = materialPtr;
-            record.Ray = ray;
-			record.T = t;
-		}
-		return record;
-	}
-};
-
 class Plane : public GeometricObject
 {
 	Point3D a;
 	Vec3D u, v, n;
+protected:
+	void UpdateBoundingBox()
+	{
+		boundingBox = BBox(a, a);
+		boundingBox.Merge(BBox(a + u, a + u));
+		boundingBox.Merge(BBox(a + v, a + v));
+		boundingBox.Merge(BBox(a + u + v, a + u + v));
+	}
 public:
 	Plane(Point3D origin, Vec3D uDirection, Vec3D vDirection)
 		: a(origin), u(uDirection), v(vDirection)
 	{
 		n = u ^ v;
+		UpdateBoundingBox();
 	}
     virtual ~Plane() {}
 
-	void setOrigin(Point3D origin) { a = origin; }
-	void setU(Vec3D uDirection) { u = uDirection; n = u ^ v; }
-	void setV(Vec3D vDirection) { v = vDirection; n = u ^ v; }
+	void setOrigin(Point3D origin) { a = origin; UpdateBoundingBox(); }
+	void setU(Vec3D uDirection) { u = uDirection; n = u ^ v; UpdateBoundingBox(); }
+	void setV(Vec3D vDirection) { v = vDirection; n = u ^ v; UpdateBoundingBox(); }
 	Point3D getOrigin() { return a; }
 	Vec3D getU() { return u; }
 	Vec3D getV() { return v; }

@@ -15,11 +15,17 @@ class Sphere : public GeometricObject
 {
 	Point3D Center;
 	FP_TYPE Radius = 1.0f;
+protected:
+	void UpdateBoundingBox()
+	{
+		Point3D delta(Radius, Radius, Radius);
+		boundingBox = BBox(Center - delta, Center + delta);
+	}
 public:
-	Sphere(Point3D center, FP_TYPE radius) : Center(center), Radius(radius) {}
+	Sphere(Point3D center, FP_TYPE radius) : Center(center), Radius(radius) { UpdateBoundingBox(); }
     virtual ~Sphere() {}
-	void setCenter(Point3D center) { Center = center; }
-	void setRadius(FP_TYPE radius) { Radius = radius; }
+	void setCenter(Point3D center) { Center = center; UpdateBoundingBox(); }
+	void setRadius(FP_TYPE radius) { Radius = radius; UpdateBoundingBox(); }
 	Point3D getCenter() { return Center; }
 	FP_TYPE getRadius() { return Radius; }
 

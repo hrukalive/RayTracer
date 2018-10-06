@@ -15,6 +15,13 @@ class MeshTriangle : public GeometricObject
 {
 	Vec3D a, b, c, na, nb, nc, nf;
 	bool isSmooth = true;
+protected:
+	void UpdateBoundingBox()
+	{
+		boundingBox = BBox(a, a);
+		boundingBox.Merge(BBox(b, b));
+		boundingBox.Merge(BBox(c, c));
+	}
 public:
 	MeshTriangle(Vec3D vertexA, Vec3D vertexB, Vec3D vertexC,
 				 Vec3D normalA, Vec3D normalB, Vec3D normalC)
@@ -64,15 +71,19 @@ class Mesh : public RayTracer::Grid
 public:
 	Mesh(std::vector<MeshTriangle>& triangles, const Point3D& boundingMin, const Point3D& boundingMax) : triangles(triangles)
 	{
-		boundingBox->SetBoundingBox(boundingMin, boundingMax);
+		boundingBox.SetBoundingBox(boundingMin, boundingMax);
 	}
 	~Mesh() {}
+	void SetMaterial(std::shared_ptr<Material>& material)
+	{
+		this->materialPtr = material;
+	}
 	virtual HitRecord Hit(const Ray& ray) override
 	{
 		HitRecord record;
 		FP_TYPE tmin = INFINITY;
 
-		if (!boundingBox->Hit(ray).Hit)
+		if (!boundingBox.Hit(ray).Hit)
 		{
 			return record;
 		}

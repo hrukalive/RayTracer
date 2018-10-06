@@ -14,10 +14,26 @@
 
 class Compound : public GeometricObject
 {
+protected:
 	std::vector<std::shared_ptr<GeometricObject>> objects;
+	void UpdateBoundingBox()
+	{
+		if (objects.size() == 1)
+		{
+			boundingBox = objects[0]->GetBoundingBox();
+		}
+		else if(objects.size() > 1)
+		{
+			boundingBox.Merge(objects[objects.size() - 1]->GetBoundingBox());
+		}
+	}
 public:
-    Compound() = default;
-	void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
+	virtual ~Compound() {}
+	void AddObject(std::shared_ptr<GeometricObject>& obj) 
+	{ 
+		objects.push_back(obj); 
+		UpdateBoundingBox(); 
+	}
 	void SetMaterial(std::shared_ptr<Material>& material)
 	{
 		for (auto& obj : objects)
@@ -25,10 +41,15 @@ public:
 			obj->SetMaterial(material);
 		}
 	}
-	HitRecord HitObjects(const Ray& ray)
+	HitRecord Hit(const Ray& ray) override
 	{
 		HitRecord record;
 		FP_TYPE tmin = INFINITY;
+
+		if (!boundingBox.Hit(ray).Hit)
+		{
+			return record;
+		}
 
 		for (int i = 0; i < objects.size(); i++)
 		{

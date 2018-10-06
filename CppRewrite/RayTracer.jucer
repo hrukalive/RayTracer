@@ -7,12 +7,11 @@
         <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
           <FILE id="zrhR0Y" name="BBox.h" compile="0" resource="0" file="Source/Core/GeometricObject/BBox.h"/>
           <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
-          <FILE id="s3Y6dH" name="GeometricObject.cpp" compile="1" resource="0"
-                file="Source/Core/GeometricObject/GeometricObject.cpp"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.h"/>
           <FILE id="qPlxxx" name="Grid.h" compile="0" resource="0" file="Source/Core/GeometricObject/Grid.h"/>
           <FILE id="R2Vspv" name="Instance.h" compile="0" resource="0" file="Source/Core/GeometricObject/Instance.h"/>
+          <FILE id="WnBLaL" name="IObject.h" compile="0" resource="0" file="Source/Core/GeometricObject/IObject.h"/>
           <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
           <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
           <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
@@ -20,8 +19,10 @@
         </GROUP>
         <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
           <FILE id="DiLnP3" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/BRDF.h"/>
+          <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
         </GROUP>
+        <FILE id="H5QLYT" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility.cpp"/>
         <FILE id="zYCM1q" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility.h"/>
         <FILE id="j7lyGp" name="World.cpp" compile="1" resource="0" file="Source/Core/World.cpp"/>
         <FILE id="TErAPK" name="World.h" compile="0" resource="0" file="Source/Core/World.h"/>
@@ -64,6 +65,7 @@
         <MODULEPATH id="juce_audio_devices" path="D:/Program Files/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="D:/Program Files/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="D:/Program Files/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
     <VS2017 targetFolder="Builds/VisualStudio2017" windowsTargetPlatformVersion="10.0.17134.0">
@@ -85,6 +87,7 @@
         <MODULEPATH id="juce_audio_devices" path="D:/Program Files/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="D:/Program Files/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="D:/Program Files/JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
     <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
@@ -106,6 +109,7 @@
         <MODULEPATH id="juce_audio_devices" path="D:/Program Files/JUCE/modules"/>
         <MODULEPATH id="juce_audio_formats" path="D:/Program Files/JUCE/modules"/>
         <MODULEPATH id="juce_audio_processors" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="D:/Program Files/JUCE/modules"/>
       </MODULEPATHS>
     </LINUX_MAKE>
   </EXPORTFORMATS>
@@ -117,6 +121,7 @@
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>

@@ -14,6 +14,8 @@
 
 #define FP_TYPE double
 #define kEpsilon 0.001
+#define kBBOXRatio 0.01
+#define KBBOXMax 1.0
 #define PI 3.14159265359
 #define INV_PI 0.31830988618
 
@@ -21,6 +23,7 @@ typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;
 typedef Vec3D RGBColor;
 typedef Point<FP_TYPE> Point2D;
+typedef dsp::Matrix<FP_TYPE> Matrix;
 
 #define BLACK (RGBColor(0.0, 0.0, 0.0))
 #define WHITE (RGBColor(1.0, 1.0, 1.0))
@@ -32,15 +35,42 @@ typedef Point<FP_TYPE> Point2D;
 #define Y_DIR (Vec3D(0.0, 1.0, 0.0))
 #define Z_DIR (Vec3D(0.0, 0.0, 1.0))
 
-//std::ostream& operator<<(std::ostream& o, const Vec3D& vec)
-//{
-//    o << vec.x << ", " << vec.y << ", " << vec.z;
-//    return o;
-//}
+bool operator<(const Point3D& lhs, const Point3D& rhs);
+std::ostream& operator<<(std::ostream& o, const Vec3D& vec);
 
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {
-    return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);
+	return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);
+}
+
+inline void SetMatrix(Matrix& m, const int row, const int col, const FP_TYPE val)
+{
+	FP_TYPE* data = m.getRawDataPointer();
+	data[row * m.getNumColumns() + col] = val;
+}
+
+inline Point3D MatrixMulPoint(const Matrix& m, const Point3D& p)
+{
+	Matrix pm = Matrix(4, 1);
+	SetMatrix(pm, 0, 0, p.x);
+	SetMatrix(pm, 1, 0, p.y);
+	SetMatrix(pm, 2, 0, p.z);
+	SetMatrix(pm, 3, 0, 1.0);
+	auto res = m * pm;
+	auto ret = res.getRawDataPointer();
+	return Point3D(ret[0] / ret[3], ret[1] / ret[3], ret[2] / ret[3]);
+}
+
+inline Point3D MatrixMulVector(const Matrix& m, const Vec3D& n)
+{
+	Matrix nm = Matrix(4, 1);
+	SetMatrix(nm, 0, 0, n.x);
+	SetMatrix(nm, 1, 0, n.y);
+	SetMatrix(nm, 2, 0, n.z);
+	SetMatrix(nm, 3, 0, 0.0);
+	auto res = m * nm;
+	auto ret = res.getRawDataPointer();
+	return Point3D(ret[0], ret[1], ret[2]);
 }
 
 struct Ray
@@ -71,3 +101,4 @@ struct HitRecord
 	HitRecord(Vec3D normal, Vec3D hitPoint, FP_TYPE t)
 		: Normal(normal), HitPoint(hitPoint), T(t) {}
 };
+

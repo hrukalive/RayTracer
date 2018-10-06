@@ -10,23 +10,25 @@
 
 #pragma once
 
-#include "../Utility.h"
+#include "IObject.h"
+#include "BBox.h"
 
-class BBox;
-
-class GeometricObject
+class GeometricObject : public IObject
 {
 protected:
     std::shared_ptr<Material> materialPtr;
-    BBox* boundingBox;
+    BBox boundingBox;
+	virtual void UpdateBoundingBox() = 0;
 public:
-    GeometricObject() = default;
-    GeometricObject(const GeometricObject& other);
-    virtual ~GeometricObject();
-    void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }
-	virtual HitRecord Hit(const Ray& ray) = 0;
+	virtual ~GeometricObject() {}
+    virtual void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }
+	BBox GetBoundingBox() { return boundingBox; }
 };
 
 #include "Sphere.h"
 #include "Plane.h"
 #include "Triangle.h"
+#include "Instance.h"
+#include "Compound.h"
+#include "Grid.h"
+#include "Mesh.h"

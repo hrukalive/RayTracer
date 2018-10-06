@@ -17,7 +17,7 @@ MainComponent::MainComponent()
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight, 16));
     sampler.reset(new PreviewSampler());
     
-    auto r = 14.0;
+    auto r = 4.0;
     auto theta = 30.0 / 180.0 * 3.1416;
     auto phi = 45.0 / 180.0 * 3.1416;
     auto roll = 0.0 / 180.0 * 3.1416;
@@ -27,16 +27,17 @@ MainComponent::MainComponent()
 	camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
     
 	std::shared_ptr<Light> l1{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
-    //world->AddLight(l1);
+    world->AddLight(l1);
     
     std::shared_ptr<Light> l2{ new PointLight(3.0, WHITE, Point3D(0.0, 0.2, 0.0)) };
     world->AddLight(l2);
 
 	std::shared_ptr<Light> amb{ new Ambient(0.35, RGBColor(1.0, 1.0, 1.0)) };
 	world->SetAmbient(amb);
+
+	std::shared_ptr<GeometricObject> comp{ new Compound() };
     
-    
-	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -2.0), 0.5) };
+	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -1.0), 0.5) };
 	std::shared_ptr<Material> mat1{ new Phong() };
 	std::dynamic_pointer_cast<Phong>(mat1)->SetKa(0.5);
     std::dynamic_pointer_cast<Phong>(mat1)->SetKd(1.0);
@@ -45,7 +46,9 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Phong>(mat1)->SetCd(RGBColor(0.0, 1.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
     sp1->SetMaterial(mat1);
-    //world->AddObject(sp1);
+	std::shared_ptr<GeometricObject> ins{ new Instance(sp1) };
+	std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, -1);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
 
 	std::shared_ptr<GeometricObject> sp2{ new Sphere(Vec3D(-1.0, 0.0, -1.0), 0.5) };
 	std::shared_ptr<Material> mat2{ new Phong() };
@@ -56,7 +59,7 @@ MainComponent::MainComponent()
     std::dynamic_pointer_cast<Phong>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat2)->SetCs(RGBColor(1.0, 1.0, 1.0));
 	sp2->SetMaterial(mat2);
-	//world->AddObject(sp2);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(sp2);
 
 	std::shared_ptr<GeometricObject> sp3{ new Sphere(Vec3D(1.0, 0.0, -1.0), 0.5) };
 	std::shared_ptr<Material> mat3{ new Matte() };
@@ -64,7 +67,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat3)->SetKd(1.0);
 	std::dynamic_pointer_cast<Matte>(mat3)->SetCd(RGBColor(0.0, 0.0, 1.0));
 	sp3->SetMaterial(mat3);
-	//world->AddObject(sp3);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(sp3);
 
 	std::shared_ptr<GeometricObject> pl1{ new Plane(Point3D(-2.0, -0.6, 0.0), Vec3D(4.0, 0.0, 0.0), Vec3D(0.0, 0.0, -3.0)) };
 	std::shared_ptr<Material> mat4{ new Matte() };
@@ -72,7 +75,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat4)->SetKd(0.6);
 	std::dynamic_pointer_cast<Matte>(mat4)->SetCd(RGBColor(1.0, 1.0, 1.0));
 	pl1->SetMaterial(mat4);
-	//world->AddObject(pl1);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(pl1);
 
 	std::shared_ptr<GeometricObject> pl2{ new Plane(Point3D(-0.4, -0.4, -0.5), Vec3D(0.0, 0.0, -1.0), Vec3D(0.0, 0.7, 0.0)) };
 	std::shared_ptr<Material> mat5{ new Matte() };
@@ -80,7 +83,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat5)->SetKd(0.8);
 	std::dynamic_pointer_cast<Matte>(mat5)->SetCd(RGBColor(0.0, 1.0, 1.0));
 	pl2->SetMaterial(mat5);
-	//world->AddObject(pl2);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(pl2);
 
 	std::shared_ptr<GeometricObject> tri{ new Triangle(Point3D(0.0, -0.5, -1.0), Point3D(1.5, -0.3, -2.5), Point3D(0.5, 0.8, -1.5)) };
 	std::shared_ptr<Material> mat6{ new Matte() };
@@ -90,7 +93,7 @@ MainComponent::MainComponent()
 	tri->SetMaterial(mat6);
 	//world->AddObject(tri);
 
-	File file("D:\\teapot.obj");
+	File file("D:\\myobj.obj");
 	if (file.existsAsFile())
 	{
 		DBG("YES");
@@ -99,8 +102,9 @@ MainComponent::MainComponent()
 		file.readLines(strarr);
 		std::shared_ptr<GeometricObject> bunny = std::make_shared<Mesh>(parser.parse(strarr));
 		bunny->SetMaterial(mat6);
-		world->AddObject(bunny);
+		std::dynamic_pointer_cast<Compound>(comp)->AddObject(bunny);
 	}
+	world->AddObject(comp);
 
     for (int r = 0; r < vpHeight; r++)
     {

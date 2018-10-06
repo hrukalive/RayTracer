@@ -14,20 +14,28 @@
 class Triangle : public GeometricObject
 {
 	Vec3D a, b, c, n;
-	void updateNormal()
+	void UpdateNormal()
 	{
 		n = (b - a) ^ (c - a);
+	}
+protected:
+	void UpdateBoundingBox()
+	{
+		boundingBox = BBox(a, a);
+		boundingBox.Merge(BBox(b, b));
+		boundingBox.Merge(BBox(c, c));
 	}
 public:
 	Triangle(Vec3D vertexA, Vec3D vertexB, Vec3D vertexC)
 		: a(vertexA), b(vertexB), c(vertexC)
 	{
-		updateNormal();
+		UpdateNormal();
+		UpdateBoundingBox();
 	}
     virtual ~Triangle() {}
-	void setA(Vec3D vertexA) { a = vertexA; updateNormal(); }
-	void setB(Vec3D vertexB) { b = vertexB; updateNormal(); }
-	void setC(Vec3D vertexC) { c = vertexC; updateNormal(); }
+	void setA(Vec3D vertexA) { a = vertexA; UpdateNormal(); UpdateBoundingBox(); }
+	void setB(Vec3D vertexB) { b = vertexB; UpdateNormal(); UpdateBoundingBox(); }
+	void setC(Vec3D vertexC) { c = vertexC; UpdateNormal(); UpdateBoundingBox(); }
 	Vec3D getA() { return a; }
 	Vec3D getB() { return b; }
 	Vec3D getC() { return c; }

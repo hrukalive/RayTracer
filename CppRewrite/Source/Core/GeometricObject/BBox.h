@@ -10,12 +10,13 @@
 
 #pragma once
 
-#include "../Utility.h"
-#include "GeometricObject.h"
+#include "IObject.h"
+#include "../Materials/Material.h"
 
-class BBox : public GeometricObject
+class BBox : public IObject
 {
-    FP_TYPE xMin, xMax, yMin, yMax, zMin, zMax;
+	Point3D bboxMin, bboxMax;
+	FP_TYPE diagLength = 0.0;
 public:
 	BBox()
 	{
@@ -28,13 +29,17 @@ public:
     virtual ~BBox() {}
     void SetBoundingBox(const Point3D min, const Point3D max)
     {
-        xMin = min.x;
-        yMin = min.y;
-        zMin = min.z;
-        xMax = max.x;
-        yMax = max.y;
-        zMax = max.z;
+		this->bboxMin = min;
+		this->bboxMax = max;
+		diagLength = (bboxMax - bboxMin).length();
     }
+	void Merge(const BBox& other)
+	{
+		SetBoundingBox(Point3D(fmin(bboxMin.x, other.bboxMin.x), fmin(bboxMin.y, other.bboxMin.y), fmin(bboxMin.z, other.bboxMin.z)), 
+			Point3D(fmax(bboxMax.x, other.bboxMax.x), fmax(bboxMax.y, other.bboxMax.y), fmax(bboxMax.z, other.bboxMax.z)));
+	}
+	Point3D GetMinPoint() { return bboxMin; }
+	Point3D GetMaxPoint() { return bboxMax; }
     Vec3D GetNormal(const int face) const
     {
         switch (face)
@@ -52,28 +57,30 @@ public:
     {
         auto& rayOrigin = ray.Origin;
         auto& rayDir = ray.Direction;
+		auto delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio > KBBOXMax));
         
+		FP_TYPE xMin = bboxMin.x, yMin = bboxMin.y, zMin = bboxMin.z, xMax = bboxMax.x, yMax = bboxMax.y, zMax = bboxMax.z;
         FP_TYPE txMin, txMax, tyMin, tyMax, tzMin, tzMax;
         
         FP_TYPE a = 1.0 / rayDir.x;
-        txMin = (xMin - rayOrigin.x) * a;
-        txMax = (xMax - rayOrigin.x) * a;
+        txMin = (xMin - delta - rayOrigin.x) * a;
+        txMax = (xMax + delta - rayOrigin.x) * a;
         if (a < 0.0)
         {
             std::swap(txMin, txMax);
         }
         
         FP_TYPE b = 1.0 / rayDir.y;
-        tyMin = (yMin - rayOrigin.y) * b;
-        tyMax = (yMax - rayOrigin.y) * b;
+        tyMin = (yMin - delta - rayOrigin.y) * b;
+        tyMax = (yMax + delta - rayOrigin.y) * b;
         if (b < 0.0)
         {
             std::swap(tyMin, tyMax);
         }
         
         FP_TYPE c = 1.0 / rayDir.z;
-        tzMin = (zMin - rayOrigin.z) * c;
-        tzMax = (zMax - rayOrigin.z) * c;
+        tzMin = (zMin - delta - rayOrigin.z) * c;
+        tzMax = (zMax + delta - rayOrigin.z) * c;
         if (c < 0.0)
         {
             std::swap(tzMin, tzMax);
@@ -114,6 +121,8 @@ public:
         }
         
         HitRecord record;
+		std::shared_ptr<Material> tmp{ new ConstColor() };
+
         if (t0 < t1 && t1 > kEpsilon)
         {
             if (t0 > kEpsilon)
@@ -121,6 +130,7 @@ public:
                 record.Hit = true;
                 record.Normal = GetNormal(faceIn);
                 record.HitPoint = ray.GetPoint(t0);
+				record.MaterialPtr = tmp;
                 record.Ray = ray;
                 record.T = t0;
             }
@@ -129,6 +139,7 @@ public:
                 record.Hit = true;
                 record.Normal = GetNormal(faceOut);
                 record.HitPoint = ray.GetPoint(t1);
+				record.MaterialPtr = tmp;
                 record.Ray = ray;
                 record.T = t1;
             }

@@ -73,9 +73,24 @@ public:
 		SetMatrix(im, 2, 3, -dz);
 		Transform(m, im);
 	}
+	void Scale(const FP_TYPE a, const FP_TYPE b, const FP_TYPE c)
+	{
+		auto m = Matrix::identity(4);
+		SetMatrix(m, 0, 0, a);
+		SetMatrix(m, 1, 1, b);
+		SetMatrix(m, 2, 2, c);
+		auto im = Matrix::identity(4);
+		SetMatrix(im, 0, 0, 1 / a);
+		SetMatrix(im, 1, 1, 1 / b);
+		SetMatrix(im, 2, 2, 1 / c);
+		Transform(m, im);
+	}
 	virtual HitRecord Hit(const Ray& ray) override
 	{
 		Ray invRay(MatrixMulPoint(invMatrix, ray.Origin), MatrixMulVector(invMatrix, ray.Direction));
-		return objectPtr->Hit(invRay);
+		HitRecord record = objectPtr->Hit(invRay);
+		record.HitPoint = ray.GetPoint(record.T);
+		record.Normal = MatrixMulVector(invMatrix, record.Normal).normalised();
+		return record;
 	}
 };

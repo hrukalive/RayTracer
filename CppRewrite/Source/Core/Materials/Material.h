@@ -23,11 +23,14 @@ public:
 
 class ConstColor : public Material
 {
+	RGBColor c = RED;
 public:
+	ConstColor() {}
+	ConstColor(RGBColor color) : c(color) {}
 	virtual ~ConstColor() {}
 	RGBColor Shade(const HitRecord& record) override
 	{
-		return RED;
+		return c;
 	}
 };
 

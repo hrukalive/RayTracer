@@ -17,6 +17,7 @@ class BBox : public IObject
 {
 	Point3D bboxMin, bboxMax;
 	FP_TYPE diagLength = 0.0;
+	FP_TYPE delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio > KBBOXMax));
 public:
 	BBox()
 	{
@@ -32,14 +33,15 @@ public:
 		this->bboxMin = min;
 		this->bboxMax = max;
 		diagLength = (bboxMax - bboxMin).length();
+		delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio > KBBOXMax));
     }
 	void Merge(const BBox& other)
 	{
 		SetBoundingBox(Point3D(fmin(bboxMin.x, other.bboxMin.x), fmin(bboxMin.y, other.bboxMin.y), fmin(bboxMin.z, other.bboxMin.z)), 
 			Point3D(fmax(bboxMax.x, other.bboxMax.x), fmax(bboxMax.y, other.bboxMax.y), fmax(bboxMax.z, other.bboxMax.z)));
 	}
-	Point3D GetMinPoint() { return bboxMin; }
-	Point3D GetMaxPoint() { return bboxMax; }
+	Point3D GetMinPoint() { return bboxMin - Point3D(delta, delta, delta); }
+	Point3D GetMaxPoint() { return bboxMax + Point3D(delta, delta, delta); }
     Vec3D GetNormal(const int face) const
     {
         switch (face)
@@ -53,11 +55,14 @@ public:
             default: return ZERO;
         }
     }
+	bool Inside(const Point3D point)
+	{
+		return bboxMin < point && point < bboxMax;
+	}
     virtual HitRecord Hit(const Ray& ray) override
     {
         auto& rayOrigin = ray.Origin;
         auto& rayDir = ray.Direction;
-		auto delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio > KBBOXMax));
         
 		FP_TYPE xMin = bboxMin.x, yMin = bboxMin.y, zMin = bboxMin.z, xMax = bboxMax.x, yMax = bboxMax.y, zMax = bboxMax.z;
         FP_TYPE txMin, txMax, tyMin, tyMax, tzMin, tzMax;

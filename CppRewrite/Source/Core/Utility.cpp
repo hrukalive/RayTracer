@@ -18,5 +18,5 @@ std::ostream& operator<<(std::ostream& o, const Vec3D& vec)
 
 bool operator<(const Point3D& lhs, const Point3D& rhs)
 {
-	return lhs.x < rhs.x || lhs.y < rhs.y || lhs.z < rhs.z;
+	return lhs.x < rhs.x && lhs.y < rhs.y && lhs.z < rhs.z;
 }

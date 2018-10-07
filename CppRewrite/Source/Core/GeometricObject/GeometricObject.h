@@ -22,7 +22,7 @@ protected:
 public:
 	virtual ~GeometricObject() {}
     virtual void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }
-	BBox GetBoundingBox() { return boundingBox; }
+	BBox& GetBoundingBox() { return boundingBox; }
 };
 
 #include "Sphere.h"

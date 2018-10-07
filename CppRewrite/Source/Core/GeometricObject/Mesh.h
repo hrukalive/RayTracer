@@ -28,6 +28,7 @@ public:
 		: a(vertexA), b(vertexB), c(vertexC), na(normalA), nb(normalB), nc(normalC)
 	{
 		nf = (b - a) ^ (c - a);
+		UpdateBoundingBox();
 	}
 	virtual ~MeshTriangle() {}
 	void SetSmooth(bool isSmooth) { this->isSmooth = isSmooth; }
@@ -47,14 +48,18 @@ public:
 			auto l1 = (nf * ((b - a) ^ (p - a))) / denom;
 			auto l2 = (nf * ((c - b) ^ (p - b))) / denom;
 			auto l3 = 1.0 - l1 - l2;
-			/*if (isSmooth)
-			{
-				nf = nc * l1 + na * l2 + nb * l3;
-			}*/
 			if (l1 >= 0.0 && l1 <= 1.0 && l2 >= 0.0 && l2 <= 1.0 && l3 >= 0.0 && l3 <= 1.0)
 			{
 				record.Hit = true;
-				record.Normal = (nf * -ray.Direction > 0.0 ? nf.normalised() : -nf.normalised());
+				if (!isSmooth)
+				{
+					record.Normal = (nf * -ray.Direction > 0.0 ? nf.normalised() : -nf.normalised());
+				}
+				else
+				{
+					auto tmpn = nc * l1 + na * l2 + nb * l3;
+					record.Normal = (tmpn * -ray.Direction > 0.0 ? tmpn.normalised() : -tmpn.normalised());
+				}
 				record.HitPoint = p;
 				record.MaterialPtr = materialPtr;
 				record.Ray = ray;
@@ -67,12 +72,7 @@ public:
 
 class Mesh : public RayTracer::Grid
 {
-	std::vector<MeshTriangle> triangles;
 public:
-	Mesh(std::vector<MeshTriangle>& triangles, const Point3D& boundingMin, const Point3D& boundingMax) : triangles(triangles)
-	{
-		boundingBox.SetBoundingBox(boundingMin, boundingMax);
-	}
 	~Mesh() {}
 	void SetMaterial(std::shared_ptr<Material>& material)
 	{
@@ -80,23 +80,7 @@ public:
 	}
 	virtual HitRecord Hit(const Ray& ray) override
 	{
-		HitRecord record;
-		FP_TYPE tmin = INFINITY;
-
-		if (!boundingBox.Hit(ray).Hit)
-		{
-			return record;
-		}
-
-		for (int i = 0; i < triangles.size(); i++)
-		{
-			HitRecord tmp = triangles[i].Hit(ray);
-			if (tmp.Hit && tmp.T < tmin)
-			{
-				tmin = tmp.T;
-				record = tmp;
-			}
-		}
+		HitRecord record = RayTracer::Grid::Hit(ray);
 		record.MaterialPtr = materialPtr;
 		return record;
 	}

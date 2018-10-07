@@ -29,7 +29,7 @@ protected:
 	}
 public:
 	virtual ~Compound() {}
-	void AddObject(std::shared_ptr<GeometricObject>& obj) 
+	virtual void AddObject(std::shared_ptr<GeometricObject>& obj) 
 	{ 
 		objects.push_back(obj); 
 		UpdateBoundingBox(); 

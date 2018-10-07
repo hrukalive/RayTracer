@@ -22,8 +22,6 @@ public:
         std::vector<Vector3D<int>> faces;
         std::vector<Vec3D> faceNormals;
 		std::vector<Vec3D> vertexNormals;
-
-		FP_TYPE xMin = INFINITY, xMax = -INFINITY, yMin = INFINITY, yMax = -INFINITY, zMin = INFINITY, zMax = -INFINITY;
         
         for (auto& line : content)
         {
@@ -35,19 +33,6 @@ public:
                 FP_TYPE v1, v2, v3;
                 ss >> c >> v1 >> v2 >> v3;
                 vertices.push_back(Point3D(v1, v2, v3));
-
-				if (xMin > v1)
-					xMin = v1;
-				if (yMin > v2)
-					yMin = v2;
-				if (zMin > v3)
-					zMin = v3;
-				if (xMax < v1)
-					xMax = v1;
-				if (yMax < v2)
-					yMax = v2;
-				if (zMax < v3)
-					zMax = v3;
             }
             else if (line[0] == 'f')
             {
@@ -76,12 +61,15 @@ public:
 		}
 
 		std::vector<MeshTriangle> triangles;
+		Mesh mesh;
 		for (int i = 0; i < faces.size(); i++)
 		{
 			auto& face = faces[i];
-			triangles.push_back(MeshTriangle(vertices[face.x], vertices[face.y], vertices[face.z],
-				vertexNormals[face.x], vertexNormals[face.y], vertexNormals[face.z]));
+			mesh.AddObject(std::dynamic_pointer_cast<GeometricObject>(
+				std::make_shared<MeshTriangle>(MeshTriangle(vertices[face.x], vertices[face.y], vertices[face.z], 
+					vertexNormals[face.x], vertexNormals[face.y], vertexNormals[face.z]))));
 		}
-        return Mesh(triangles, Point3D(xMin, yMin, zMin), Point3D(xMax, yMax, zMax));
+		mesh.Setup();
+        return mesh;
     }
 };

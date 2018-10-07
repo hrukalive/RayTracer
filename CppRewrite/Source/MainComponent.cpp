@@ -29,15 +29,15 @@ MainComponent::MainComponent()
 	std::shared_ptr<Light> l1{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(l1);
     
-    std::shared_ptr<Light> l2{ new PointLight(3.0, WHITE, Point3D(0.0, 0.2, 0.0)) };
+    std::shared_ptr<Light> l2{ new PointLight(3.0, WHITE, Point3D(10.0, 10.2, 10.0)) };
     world->AddLight(l2);
 
 	std::shared_ptr<Light> amb{ new Ambient(0.35, RGBColor(1.0, 1.0, 1.0)) };
 	world->SetAmbient(amb);
 
-	std::shared_ptr<GeometricObject> comp{ new Compound() };
+	std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
     
-	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -1.0), 0.5) };
+	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -2.0), 0.5) };
 	std::shared_ptr<Material> mat1{ new Phong() };
 	std::dynamic_pointer_cast<Phong>(mat1)->SetKa(0.5);
     std::dynamic_pointer_cast<Phong>(mat1)->SetKd(1.0);
@@ -46,11 +46,9 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Phong>(mat1)->SetCd(RGBColor(0.0, 1.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
     sp1->SetMaterial(mat1);
-	std::shared_ptr<GeometricObject> ins{ new Instance(sp1) };
-	std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, -1);
-	std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(sp1);
 
-	std::shared_ptr<GeometricObject> sp2{ new Sphere(Vec3D(-1.0, 0.0, -1.0), 0.5) };
+	std::shared_ptr<GeometricObject> sp2{ new Sphere(Vec3D(0.0, 0.0, 0.0), 0.5) };
 	std::shared_ptr<Material> mat2{ new Phong() };
 	std::dynamic_pointer_cast<Phong>(mat2)->SetKa(0.5);
     std::dynamic_pointer_cast<Phong>(mat2)->SetKd(1.0);
@@ -59,7 +57,10 @@ MainComponent::MainComponent()
     std::dynamic_pointer_cast<Phong>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat2)->SetCs(RGBColor(1.0, 1.0, 1.0));
 	sp2->SetMaterial(mat2);
-	std::dynamic_pointer_cast<Compound>(comp)->AddObject(sp2);
+	std::shared_ptr<GeometricObject> ins{ new Instance(sp2) };
+	std::dynamic_pointer_cast<Instance>(ins)->Scale(1.0, 1.0, 1.0);
+	std::dynamic_pointer_cast<Instance>(ins)->Translate(-1, 0, -1);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
 
 	std::shared_ptr<GeometricObject> sp3{ new Sphere(Vec3D(1.0, 0.0, -1.0), 0.5) };
 	std::shared_ptr<Material> mat3{ new Matte() };
@@ -93,7 +94,7 @@ MainComponent::MainComponent()
 	tri->SetMaterial(mat6);
 	//world->AddObject(tri);
 
-	File file("D:\\myobj.obj");
+	File file("D:\\dragon.obj");
 	if (file.existsAsFile())
 	{
 		DBG("YES");
@@ -101,9 +102,10 @@ MainComponent::MainComponent()
 		StringArray strarr;
 		file.readLines(strarr);
 		std::shared_ptr<GeometricObject> bunny = std::make_shared<Mesh>(parser.parse(strarr));
-		bunny->SetMaterial(mat6);
-		std::dynamic_pointer_cast<Compound>(comp)->AddObject(bunny);
+		bunny->SetMaterial(mat1);
+		std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(bunny);
 	}
+	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 	world->AddObject(comp);
 
     for (int r = 0; r < vpHeight; r++)

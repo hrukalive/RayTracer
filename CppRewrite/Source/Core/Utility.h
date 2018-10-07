@@ -13,11 +13,14 @@
 #include "../../JuceLibraryCode/JuceHeader.h"
 
 #define FP_TYPE double
-#define kEpsilon 0.001
+#define kEpsilon 0.0001
+#define kHugeValue 1.0E10
 #define kBBOXRatio 0.01
 #define KBBOXMax 1.0
-#define PI 3.14159265359
-#define INV_PI 0.31830988618
+#define PI 3.1415926535897932384
+#define TWO_PI 6.2831853071795864769
+#define INV_PI 0.3183098861837906715
+#define INV_TWO_PI 0.1591549430918953358
 
 typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;
@@ -71,6 +74,29 @@ inline Point3D MatrixMulVector(const Matrix& m, const Vec3D& n)
 	auto res = m * nm;
 	auto ret = res.getRawDataPointer();
 	return Point3D(ret[0], ret[1], ret[2]);
+}
+
+// https://github.com/Forceflow/libmorton/blob/master/libmorton/include/morton3D.h
+// Magicbits masks (3D encode)
+static uint_fast32_t magicbit3D_masks32_encode[6] = { 0x000003ff, 0, 0x30000ff, 0x0300f00f, 0x30c30c3, 0x9249249 }; // we add a 0 on position 1 in this array to use same code for 32-bit and 64-bit cases
+static uint_fast64_t magicbit3D_masks64_encode[6] = { 0x1fffff, 0x1f00000000ffff, 0x1f0000ff0000ff, 0x100f00f00f00f00f, 0x10c30c30c30c30c3, 0x1249249249249249 };
+
+// HELPER METHOD: Magic bits encoding (helper method)
+static inline size_t morton3D_SplitBy3bits(const size_t a) {
+	const size_t* masks = (sizeof(size_t) <= 4) ? reinterpret_cast<const size_t*>(magicbit3D_masks32_encode) : reinterpret_cast<const size_t*>(magicbit3D_masks64_encode);
+	size_t x = ((size_t)a) & masks[0];
+	if (sizeof(size_t) == 8) { x = (x | (uint_fast64_t)x << 32) & masks[1]; } // for 64-bit case
+	x = (x | x << 16) & masks[2];
+	x = (x | x << 8)  & masks[3];
+	x = (x | x << 4)  & masks[4];
+	x = (x | x << 2)  & masks[5];
+	return x;
+}
+
+// ENCODE 3D Morton code : Magic bits method
+// This method uses certain bit patterns (magic bits) to split bits in the coordinates
+inline size_t m3D_e_magicbits(const size_t x, const size_t y, const size_t z) {
+	return morton3D_SplitBy3bits(x) | (morton3D_SplitBy3bits(y) << 1) | (morton3D_SplitBy3bits(z) << 2);
 }
 
 struct Ray

@@ -33,7 +33,7 @@ public:
 		this->bboxMin = min;
 		this->bboxMax = max;
 		diagLength = (bboxMax - bboxMin).length();
-		delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio > KBBOXMax));
+		delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio));
     }
 	void Merge(const BBox& other)
 	{

@@ -92,7 +92,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat6)->SetKd(0.8);
 	std::dynamic_pointer_cast<Matte>(mat6)->SetCd(RGBColor(1.0, 0.0, 1.0));
 	tri->SetMaterial(mat6);
-	//world->AddObject(tri);
+	world->AddObject(tri);
 
 	File file("D:\\dragon.obj");
 	if (file.existsAsFile())

@@ -207,6 +207,8 @@ namespace RayTracer
 				tzStop = -1;
 			}
 
+			RGBColor rrrr(0.3, 0.0, 0.0);
+
 			while (true)
 			{
 				auto objPtr = cells.find(GridIndex(ix, iy, iz));
@@ -245,7 +247,8 @@ namespace RayTracer
 						{
 							/*HitRecord rrr;
 							rrr.Hit = true;
-							rrr.MaterialPtr = std::make_shared<ConstColor>(ConstColor());
+							rrr.MaterialPtr = std::make_shared<ConstColor>(ConstColor(rrrr));
+							rrrr.x += 0.1;
 							return rrr;*/
 							return HitRecord();
 						}

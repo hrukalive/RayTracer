@@ -58,7 +58,7 @@ public:
     }
     inline RGBColor L(const HitRecord& record)
     {
-        return color * ls;
+        return color * ls / ((location - record.HitPoint).lengthSquared() + 1);
     }
     bool InShadow(const Ray& ray, const HitRecord& record);
 };

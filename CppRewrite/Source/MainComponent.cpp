@@ -18,9 +18,9 @@ MainComponent::MainComponent()
     sampler.reset(new PreviewSampler());
     
     auto r = 4.0;
-    auto theta = 30.0 / 180.0 * 3.1416;
-    auto phi = 45.0 / 180.0 * 3.1416;
-    auto roll = 0.0 / 180.0 * 3.1416;
+    auto theta = 30.0 * PI_OVER_180;
+    auto phi = 45.0 * PI_OVER_180;
+    auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.0, -0.6, -1.5);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
     //camera.reset(new OrthographicCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), viewPlane, sampler));
@@ -103,12 +103,11 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat6)->SetKd(0.8);
 	std::dynamic_pointer_cast<Matte>(mat6)->SetCd(RGBColor(1.0, 0.0, 1.0));
 	tri->SetMaterial(mat6);
-	//world->AddObject(tri);
+	world->AddObject(tri);
 
-	File file("D:\\teapot.obj");
+	File file("D:\\bunny.obj");
 	if (file.existsAsFile())
 	{
-		DBG("YES");
 		OBJParser parser;
 		StringArray strarr;
 		file.readLines(strarr);
@@ -123,13 +122,13 @@ MainComponent::MainComponent()
 		bunny->SetMaterial(mat7);
 
 		std::shared_ptr<GeometricObject> ins3{ new Instance(bunny) };
-		std::dynamic_pointer_cast<Instance>(ins3)->Scale(0.3, 0.3, 0.3);
-		std::dynamic_pointer_cast<Instance>(ins3)->Translate(0, 0, 0);
+		std::dynamic_pointer_cast<Instance>(ins3)->Scale(-1, -1, 1);
+		std::dynamic_pointer_cast<Instance>(ins3)->Translate(0, 0, -1);
 		std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(ins3);
-		world->AddObject(ins3);
+		//world->AddObject(ins3);
 	}
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
-	//world->AddObject(comp);
+	world->AddObject(comp);
 
     for (int r = 0; r < vpHeight; r++)
     {

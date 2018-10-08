@@ -89,6 +89,48 @@ public:
 		im(2, 2) = 1.0 / c;
 		Transform(m, im);
 	}
+	void RotateX(const FP_TYPE radian)
+	{
+		auto m = Matrix::identity(4);
+		m(1, 1) = cos(radian);
+		m(2, 2) = cos(radian);
+		m(1, 2) = -sin(radian);
+		m(2, 1) = sin(radian);
+		auto im = Matrix::identity(4);
+		im(1, 1) = cos(radian);
+		im(2, 2) = cos(radian);
+		im(1, 2) = sin(radian);
+		im(2, 1) = -sin(radian);
+		Transform(m, im);
+	}
+	void RotateY(const FP_TYPE radian)
+	{
+		auto m = Matrix::identity(4);
+		m(0, 0) = cos(radian);
+		m(2, 2) = cos(radian);
+		m(0, 2) = sin(radian);
+		m(2, 0) = -sin(radian);
+		auto im = Matrix::identity(4);
+		im(0, 0) = cos(radian);
+		im(2, 2) = cos(radian);
+		im(0, 2) = -sin(radian);
+		im(2, 0) = sin(radian);
+		Transform(m, im);
+	}
+	void RotateZ(const FP_TYPE radian)
+	{
+		auto m = Matrix::identity(4);
+		m(0, 0) = cos(radian);
+		m(1, 1) = cos(radian);
+		m(0, 1) = -sin(radian);
+		m(1, 0) = sin(radian);
+		auto im = Matrix::identity(4);
+		im(0, 0) = cos(radian);
+		im(1, 1) = cos(radian);
+		im(0, 1) = sin(radian);
+		im(1, 0) = -sin(radian);
+		Transform(m, im);
+	}
 	virtual HitRecord Hit(const Ray& ray) override
 	{
 		Ray invRay(MatrixMulPoint(invMatrix, ray.Origin), MatrixMulVector(invMatrix, ray.Direction));

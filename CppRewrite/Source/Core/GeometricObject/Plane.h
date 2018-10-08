@@ -16,7 +16,7 @@ class Plane : public GeometricObject
 	Point3D a;
 	Vec3D u, v, n;
 protected:
-	void UpdateBoundingBox()
+	void UpdateBoundingBox() override
 	{
 		boundingBox = BBox(a, a);
 		boundingBox.Merge(BBox(a + u, a + u));

@@ -16,7 +16,7 @@ class Sphere : public GeometricObject
 	Point3D Center;
 	FP_TYPE Radius = 1.0f;
 protected:
-	void UpdateBoundingBox()
+	void UpdateBoundingBox() override
 	{
 		Point3D delta(Radius, Radius, Radius);
 		boundingBox = BBox(Center - delta, Center + delta);

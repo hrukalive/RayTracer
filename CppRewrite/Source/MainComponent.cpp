@@ -51,23 +51,23 @@ MainComponent::MainComponent()
 
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(plins);
 
-	File file("D:\\dragon.obj");
-	std::shared_ptr<GeometricObject> mesh;
-	if (file.existsAsFile())
-	{
-		OBJParser parser;
-		StringArray strarr;
-		file.readLines(strarr);
-		mesh = std::make_shared<Mesh>(parser.parse(strarr));
-	}
+//    File file("D:\\dragon.obj");
+//    std::shared_ptr<GeometricObject> mesh;
+//    if (file.existsAsFile())
+//    {
+//        OBJParser parser;
+//        StringArray strarr;
+//        file.readLines(strarr);
+//        mesh = std::make_shared<Mesh>(parser.parse(strarr));
+//    }
 
 	int numSphere = 10;
 	float volume = 0.1 / numSphere;
 	float radius = pow(0.75 * volume / PI, 1.0 / 3);
-	//std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -1, 0);
+	std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -1, 0);
 	Random random;
 
-	/*for (int i = 0; i < numSphere; i++)
+	for (int i = 0; i < numSphere; i++)
 	{
 		std::shared_ptr<Material> phong{ new Phong() };
 		std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
@@ -80,29 +80,29 @@ MainComponent::MainComponent()
 		std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble()), radius) };
 		sphere->SetMaterial(phong);
 		std::dynamic_pointer_cast<Compound>(comp)->AddObject(sphere);
-	}*/
-
-	int numberAx = 1;
-	std::dynamic_pointer_cast<Instance>(plins)->Translate(0, mesh->GetBoundingBox().GetMinPoint().y, 0);
-	for (int i = 0; i < numberAx; i++)
-	{
-		for (int k = 0; k < numberAx; k++)
-		{
-			std::shared_ptr<Material> phong{ new Phong() };
-			std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
-			std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
-			std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
-			std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
-			std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
-			std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
-			mesh->SetMaterial(phong);
-
-			std::shared_ptr<GeometricObject> ins{ new Instance(mesh) };
-			std::dynamic_pointer_cast<Instance>(ins)->Scale(1, 1, 1);
-			std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, 0);
-			std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(ins);
-		}
 	}
+
+//    int numberAx = 1;
+//    std::dynamic_pointer_cast<Instance>(plins)->Translate(0, mesh->GetBoundingBox().GetMinPoint().y, 0);
+//    for (int i = 0; i < numberAx; i++)
+//    {
+//        for (int k = 0; k < numberAx; k++)
+//        {
+//            std::shared_ptr<Material> phong{ new Phong() };
+//            std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
+//            std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
+//            std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
+//            std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
+//            std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
+//            std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
+//            mesh->SetMaterial(phong);
+//
+//            std::shared_ptr<GeometricObject> ins{ new Instance(mesh) };
+//            std::dynamic_pointer_cast<Instance>(ins)->Scale(1, 1, 1);
+//            std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, 0);
+//            std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(ins);
+//        }
+//    }
 
 
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();

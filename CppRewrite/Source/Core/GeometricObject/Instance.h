@@ -27,7 +27,7 @@ class Instance : public GeometricObject
 		UpdateBoundingBox();
 	}
 protected:
-	void UpdateBoundingBox()
+	void UpdateBoundingBox() override
 	{
 		if (!objectPtr)
 			return;

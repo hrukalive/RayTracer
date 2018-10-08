@@ -10,16 +10,20 @@
 
 #pragma once
 #include "GeometricObject.h"
+#include <sstream>
 
 class Instance : public GeometricObject
 {
 	std::shared_ptr<GeometricObject> objectPtr;
 	Matrix forwardMatrix = Matrix::identity(4);
 	Matrix invMatrix = Matrix::identity(4);
+	Matrix invMatrixT = Matrix::identity(4);
 	void Transform(const Matrix& transform, const Matrix& invTransform)
 	{
 		forwardMatrix = transform * forwardMatrix;
 		invMatrix = invMatrix * invTransform;
+		invMatrixT = MatrixTranspose(invMatrix);
+
 		UpdateBoundingBox();
 	}
 protected:
@@ -64,33 +68,34 @@ public:
 	void Translate(const FP_TYPE dx, const FP_TYPE dy, const FP_TYPE dz)
 	{
 		auto m = Matrix::identity(4);
-		SetMatrix(m, 0, 3, dx);
-		SetMatrix(m, 1, 3, dy);
-		SetMatrix(m, 2, 3, dz);
+		m(0, 3) = dx;
+		m(1, 3) = dy;
+		m(2, 3) = dz;
 		auto im = Matrix::identity(4);
-		SetMatrix(im, 0, 3, -dx);
-		SetMatrix(im, 1, 3, -dy);
-		SetMatrix(im, 2, 3, -dz);
+		im(0, 3) = -dx;
+		im(1, 3) = -dy;
+		im(2, 3) = -dz;
 		Transform(m, im);
 	}
 	void Scale(const FP_TYPE a, const FP_TYPE b, const FP_TYPE c)
 	{
 		auto m = Matrix::identity(4);
-		SetMatrix(m, 0, 0, a);
-		SetMatrix(m, 1, 1, b);
-		SetMatrix(m, 2, 2, c);
+		m(0, 0) = a;
+		m(1, 1) = b;
+		m(2, 2) = c;
 		auto im = Matrix::identity(4);
-		SetMatrix(im, 0, 0, 1 / a);
-		SetMatrix(im, 1, 1, 1 / b);
-		SetMatrix(im, 2, 2, 1 / c);
+		im(0, 0) = 1.0 / a;
+		im(1, 1) = 1.0 / b;
+		im(2, 2) = 1.0 / c;
 		Transform(m, im);
 	}
 	virtual HitRecord Hit(const Ray& ray) override
 	{
 		Ray invRay(MatrixMulPoint(invMatrix, ray.Origin), MatrixMulVector(invMatrix, ray.Direction));
 		HitRecord record = objectPtr->Hit(invRay);
+		record.Ray = ray;
 		record.HitPoint = ray.GetPoint(record.T);
-		record.Normal = MatrixMulVector(invMatrix, record.Normal).normalised();
+		record.Normal = MatrixMulVector(invMatrixT, record.Normal).normalised();
 		return record;
 	}
 };

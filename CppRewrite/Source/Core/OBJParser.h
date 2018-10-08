@@ -53,7 +53,6 @@ public:
 			vertexNormals[face.x] += faceNormals[i];
 			vertexNormals[face.y] += faceNormals[i];
 			vertexNormals[face.z] += faceNormals[i];
-			faceNormals[i] = faceNormals[i].normalised();
 		}
 		for (auto& vertexNormal : vertexNormals)
 		{

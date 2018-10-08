@@ -40,40 +40,45 @@ typedef dsp::Matrix<FP_TYPE> Matrix;
 
 bool operator<(const Point3D& lhs, const Point3D& rhs);
 std::ostream& operator<<(std::ostream& o, const Vec3D& vec);
+std::ostream& operator<<(std::ostream& o, const Matrix& m);
 
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {
 	return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);
 }
 
-inline void SetMatrix(Matrix& m, const int row, const int col, const FP_TYPE val)
-{
-	FP_TYPE* data = m.getRawDataPointer();
-	data[row * m.getNumColumns() + col] = val;
-}
-
 inline Point3D MatrixMulPoint(const Matrix& m, const Point3D& p)
 {
 	Matrix pm = Matrix(4, 1);
-	SetMatrix(pm, 0, 0, p.x);
-	SetMatrix(pm, 1, 0, p.y);
-	SetMatrix(pm, 2, 0, p.z);
-	SetMatrix(pm, 3, 0, 1.0);
+	pm(0, 0) = p.x;
+	pm(1, 0) = p.y;
+	pm(2, 0) = p.z;
+	pm(3, 0) = 1.0;
 	auto res = m * pm;
-	auto ret = res.getRawDataPointer();
-	return Point3D(ret[0] / ret[3], ret[1] / ret[3], ret[2] / ret[3]);
+	return Point3D(res(0, 0) / res(3, 0), res(1, 0) / res(3, 0), res(2, 0) / res(3, 0));
 }
 
 inline Point3D MatrixMulVector(const Matrix& m, const Vec3D& n)
 {
 	Matrix nm = Matrix(4, 1);
-	SetMatrix(nm, 0, 0, n.x);
-	SetMatrix(nm, 1, 0, n.y);
-	SetMatrix(nm, 2, 0, n.z);
-	SetMatrix(nm, 3, 0, 0.0);
+	nm(0, 0) = n.x;
+	nm(1, 0) = n.y;
+	nm(2, 0) = n.z;
+	nm(3, 0) = 0.0;
 	auto res = m * nm;
-	auto ret = res.getRawDataPointer();
-	return Point3D(ret[0], ret[1], ret[2]);
+	return Point3D(res(0, 0), res(1, 0), res(2, 0));
+}
+
+inline Matrix MatrixTranspose(Matrix& m)
+{
+	Matrix ret(m);
+	std::swap(ret(0, 1), ret(1, 0));
+	std::swap(ret(0, 2), ret(2, 0));
+	std::swap(ret(0, 3), ret(3, 0));
+	std::swap(ret(1, 2), ret(2, 1));
+	std::swap(ret(1, 3), ret(3, 1));
+	std::swap(ret(2, 3), ret(3, 2));
+	return ret;
 }
 
 // https://github.com/Forceflow/libmorton/blob/master/libmorton/include/morton3D.h

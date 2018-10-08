@@ -34,6 +34,16 @@ public:
 	}
 };
 
+class NormalShade : public Material
+{
+public:
+	virtual ~NormalShade() {}
+	RGBColor Shade(const HitRecord& record) override
+	{
+		return (record.Normal + Vec3D(1.0, 1.0, 1.0)) / 2.0;
+	}
+};
+
 class Matte : public Material
 {
 	Lambertian ambientBRDF, diffuseBRDF;

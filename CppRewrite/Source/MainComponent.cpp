@@ -29,14 +29,19 @@ MainComponent::MainComponent()
 	std::shared_ptr<Light> l1{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(l1);
     
-    std::shared_ptr<Light> l2{ new PointLight(3.0, WHITE, Point3D(10.0, 10.2, 10.0)) };
+    std::shared_ptr<Light> l2{ new PointLight(3.0, Vec3D(0.0, 0.0, 1.0), Point3D(-10.0, 10.2, 10.0)) };
     world->AddLight(l2);
+
+	std::shared_ptr<Light> l3{ new PointLight(1.0, RED, Point3D(0.0, 5.0, 10.0)) };
+	world->AddLight(l3);
 
 	std::shared_ptr<Light> amb{ new Ambient(0.35, RGBColor(1.0, 1.0, 1.0)) };
 	world->SetAmbient(amb);
 
 	std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
     
+	std::shared_ptr<Material> matnor{ new NormalShade() };
+
 	std::shared_ptr<GeometricObject> sp1{ new Sphere(Vec3D(0.0, 0.0, -2.0), 0.5) };
 	std::shared_ptr<Material> mat1{ new Phong() };
 	std::dynamic_pointer_cast<Phong>(mat1)->SetKa(0.5);
@@ -52,23 +57,29 @@ MainComponent::MainComponent()
 	std::shared_ptr<Material> mat2{ new Phong() };
 	std::dynamic_pointer_cast<Phong>(mat2)->SetKa(0.5);
     std::dynamic_pointer_cast<Phong>(mat2)->SetKd(1.0);
-    std::dynamic_pointer_cast<Phong>(mat2)->SetKs(0.45);
-    std::dynamic_pointer_cast<Phong>(mat2)->SetE(50.0);
+    std::dynamic_pointer_cast<Phong>(mat2)->SetKs(0.6);
+    std::dynamic_pointer_cast<Phong>(mat2)->SetE(60.0);
     std::dynamic_pointer_cast<Phong>(mat2)->SetCd(RGBColor(1.0, 0.0, 0.0));
     std::dynamic_pointer_cast<Phong>(mat2)->SetCs(RGBColor(1.0, 1.0, 1.0));
 	sp2->SetMaterial(mat2);
 	std::shared_ptr<GeometricObject> ins{ new Instance(sp2) };
-	std::dynamic_pointer_cast<Instance>(ins)->Scale(1.0, 1.0, 1.0);
+	std::dynamic_pointer_cast<Instance>(ins)->Scale(1.0, 1.0, 2.0);
 	std::dynamic_pointer_cast<Instance>(ins)->Translate(-1, 0, -1);
 	std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
 
-	std::shared_ptr<GeometricObject> sp3{ new Sphere(Vec3D(1.0, 0.0, -1.0), 0.5) };
-	std::shared_ptr<Material> mat3{ new Matte() };
-	std::dynamic_pointer_cast<Matte>(mat3)->SetKa(0.5);
-	std::dynamic_pointer_cast<Matte>(mat3)->SetKd(1.0);
-	std::dynamic_pointer_cast<Matte>(mat3)->SetCd(RGBColor(0.0, 0.0, 1.0));
+	std::shared_ptr<GeometricObject> sp3{ new Sphere(Vec3D(0.0, 0.0, 0.0), 0.5) };
+	std::shared_ptr<Material> mat3{ new Phong() };
+	std::dynamic_pointer_cast<Phong>(mat3)->SetKa(0.5);
+	std::dynamic_pointer_cast<Phong>(mat3)->SetKd(1.0);
+	std::dynamic_pointer_cast<Phong>(mat3)->SetKs(0.6);
+	std::dynamic_pointer_cast<Phong>(mat3)->SetE(60.0);
+	std::dynamic_pointer_cast<Phong>(mat3)->SetCd(RGBColor(0.0, 0.0, 1.0));
+	std::dynamic_pointer_cast<Phong>(mat3)->SetCs(RGBColor(1.0, 1.0, 1.0));
 	sp3->SetMaterial(mat3);
-	std::dynamic_pointer_cast<Compound>(comp)->AddObject(sp3);
+	std::shared_ptr<GeometricObject> ins2{ new Instance(sp3) };
+	std::dynamic_pointer_cast<Instance>(ins2)->Scale(2.0, 1.0, 1.0);
+	std::dynamic_pointer_cast<Instance>(ins2)->Translate(1, 0, -1);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins2);
 
 	std::shared_ptr<GeometricObject> pl1{ new Plane(Point3D(-2.0, -0.6, 0.0), Vec3D(4.0, 0.0, 0.0), Vec3D(0.0, 0.0, -3.0)) };
 	std::shared_ptr<Material> mat4{ new Matte() };
@@ -92,9 +103,9 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<Matte>(mat6)->SetKd(0.8);
 	std::dynamic_pointer_cast<Matte>(mat6)->SetCd(RGBColor(1.0, 0.0, 1.0));
 	tri->SetMaterial(mat6);
-	world->AddObject(tri);
+	//world->AddObject(tri);
 
-	File file("D:\\dragon.obj");
+	File file("D:\\teapot.obj");
 	if (file.existsAsFile())
 	{
 		DBG("YES");
@@ -102,11 +113,23 @@ MainComponent::MainComponent()
 		StringArray strarr;
 		file.readLines(strarr);
 		std::shared_ptr<GeometricObject> bunny = std::make_shared<Mesh>(parser.parse(strarr));
-		bunny->SetMaterial(mat1);
-		std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(bunny);
+		std::shared_ptr<Material> mat7{ new Phong() };
+		std::dynamic_pointer_cast<Phong>(mat7)->SetKa(0.3);
+		std::dynamic_pointer_cast<Phong>(mat7)->SetKd(0.8);
+		std::dynamic_pointer_cast<Phong>(mat7)->SetKs(0.6);
+		std::dynamic_pointer_cast<Phong>(mat7)->SetE(80.0);
+		std::dynamic_pointer_cast<Phong>(mat7)->SetCd(RGBColor(1.0, 1.0, 0.0));
+		std::dynamic_pointer_cast<Phong>(mat7)->SetCs(RGBColor(1.0, 1.0, 1.0));
+		bunny->SetMaterial(mat7);
+
+		std::shared_ptr<GeometricObject> ins3{ new Instance(bunny) };
+		std::dynamic_pointer_cast<Instance>(ins3)->Scale(0.3, 0.3, 0.3);
+		std::dynamic_pointer_cast<Instance>(ins3)->Translate(0, 0, 0);
+		std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(ins3);
+		world->AddObject(ins3);
 	}
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
-	world->AddObject(comp);
+	//world->AddObject(comp);
 
     for (int r = 0; r < vpHeight; r++)
     {

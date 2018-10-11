@@ -42,7 +42,7 @@ private:
         for (int i = 0; i < Width; i++) {
             for (int j = 0; j < Height; j++)
             {
-                RenderedImage->setPixelAt(i, j, Colour::fromFloatRGBA(1.0, 0.0, 0.0, 1.0));
+                RenderedImage->setPixelAt(i, j, Colour::fromFloatRGBA(0.0, 0.0, 0.0, 1.0));
             }
         }
 	}

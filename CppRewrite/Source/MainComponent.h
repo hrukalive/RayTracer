@@ -18,6 +18,7 @@
 #include "Core/Camera.h"
 #include "Core/Viewplane.h"
 #include "Core/OBJParser.h"
+#include "Renderer.h"
 
 //==============================================================================
 /*
@@ -26,7 +27,8 @@
 */
 class MainComponent   : public Component,
                         public ApplicationCommandTarget,
-                        public MenuBarModel
+                        public MenuBarModel,
+						public Timer
 {
 public:
     enum CommandIDs
@@ -62,6 +64,8 @@ public:
     void resized() override;
 
 private:
+	void renderSucceeded();
+	void timerCallback() override;
     //==============================================================================
     // Your private member variables go here...
     ApplicationCommandManager commandManager;
@@ -75,6 +79,7 @@ private:
     std::shared_ptr<Sampler> sampler;
     std::shared_ptr<ViewPlane> viewPlane;
     std::shared_ptr<Camera> camera;
+	Renderer renderer = Renderer(std::bind(&MainComponent::renderSucceeded, this));
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

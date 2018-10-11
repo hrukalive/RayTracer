@@ -108,22 +108,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 	world->AddObject(comp);
 
-	auto t0 = Time::getMillisecondCounterHiRes();
-    for (int r = 0; r < vpHeight; r++)
-    {
-        for (int c = 0; c < vpWidth; c++)
-        {
-            auto rays = camera->CreateRay(c, r);
-            for (auto& ray : rays)
-            {
-                viewPlane->SetPixel(c, r, tracer->Trace(ray));
-            }
-        }
-        DBG(r);
-    }
-	auto t1 = Time::getMillisecondCounterHiRes();
-	DBG((t1 - t0) / 1000.0);
-
+	renderer.Render(camera, tracer, viewPlane);
     
     progress = 0.5;
     
@@ -132,7 +117,6 @@ MainComponent::MainComponent()
     progressBar.reset(new ProgressBar(progress));
     
     progressBar->setSize(0, 25);
-    image->setImage(*viewPlane->RenderedImage);
     
     addAndMakeVisible(menuBar.get());
     addAndMakeVisible(image.get());
@@ -154,11 +138,11 @@ MainComponent::MainComponent()
 #else
     setSize(vpWidth, vpHeight + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
-
 	//World world;
     //FileOutputStream stream(File("/Volumes/Document/RayTracer/test.png"));
     //PNGImageFormat pngWriter;
     //pngWriter.writeImageToStream(*viewPlane->RenderedImage, stream);
+	startTimer(1000);
 }
 
 MainComponent::~MainComponent()
@@ -314,4 +298,22 @@ void MainComponent::resized()
 #endif
     progressBar->setBounds(b.removeFromBottom(progressBar->getHeight()));
     image->setBounds(b);
+}
+
+//==============================================================================
+void MainComponent::renderSucceeded()
+{
+	DBG("Finished");
+	const MessageManagerLock mmLock;
+	image->setImage(*viewPlane->RenderedImage);
+	progress = 1.0;
+	repaint();
+}
+
+void MainComponent::timerCallback()
+{
+	const MessageManagerLock mmLock;
+	progress = renderer.GetProgress();
+	image->setImage(*viewPlane->RenderedImage);
+	repaint();
 }

@@ -108,7 +108,7 @@ MainComponent::MainComponent()
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 	world->AddObject(comp);
 
-	renderer.Render(camera, tracer, viewPlane);
+	renderer.Render(progress, camera, tracer, viewPlane);
     
     progress = 0.5;
     
@@ -313,7 +313,6 @@ void MainComponent::renderSucceeded()
 void MainComponent::timerCallback()
 {
 	const MessageManagerLock mmLock;
-	progress = renderer.GetProgress();
 	image->setImage(*viewPlane->RenderedImage);
 	repaint();
 }

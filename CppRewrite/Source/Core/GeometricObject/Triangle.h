@@ -19,7 +19,7 @@ class Triangle : public GeometricObject
 		n = (b - a) ^ (c - a);
 	}
 protected:
-	void UpdateBoundingBox()
+	void UpdateBoundingBox() override
 	{
 		boundingBox = BBox(a, a);
 		boundingBox.Merge(BBox(b, b));

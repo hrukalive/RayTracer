@@ -16,7 +16,7 @@ class MeshTriangle : public GeometricObject
 	Vec3D a, b, c, na, nb, nc, nf;
 	bool isSmooth = true;
 protected:
-	void UpdateBoundingBox()
+	void UpdateBoundingBox() override
 	{
 		boundingBox = BBox(a, a);
 		boundingBox.Merge(BBox(b, b));
@@ -74,7 +74,7 @@ class Mesh : public RayTracer::Grid
 {
 public:
 	~Mesh() {}
-	void SetMaterial(std::shared_ptr<Material>& material)
+	void SetMaterial(std::shared_ptr<Material>& material) override
 	{
 		this->materialPtr = material;
 	}

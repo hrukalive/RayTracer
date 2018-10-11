@@ -34,9 +34,9 @@ namespace RayTracer
 		};
 		std::unordered_map<GridIndex, std::shared_ptr<GeometricObject>, GridIndexHasher> cells;
 		int nx = 1, ny = 1, nz = 1;
-		inline size_t clamp(size_t x, size_t min, size_t max)
+		inline long clamp(FP_TYPE x, long min, long max)
 		{
-			return (x < min ? min : (x > max ? max : x));
+			return long((x < min ? min : (x > max ? max : x)));
 		}
 	public:
 		virtual ~Grid() {}
@@ -148,7 +148,7 @@ namespace RayTracer
 				return HitRecord();
 			}
 
-			int ix, iy, iz;
+			long ix, iy, iz;
 			if (boundingBox.Inside(ray.Origin))
 			{
 				ix = clamp((ray.Origin.x - p0.x) * nx / wx, 0, nx - 1);
@@ -166,7 +166,7 @@ namespace RayTracer
 			FP_TYPE dtx = (txMax - txMin) / nx, dty = (tyMax - tyMin) / ny, dtz = (tzMax - tzMin) / nz;
 			FP_TYPE txNext = txMin + (ix + 1) * dtx, tyNext = tyMin + (iy + 1) * dty, tzNext = tzMin + (iz + 1) * dtz;
 			int txStep = 1, tyStep = 1, tzStep = 1;
-			int txStop = nx, tyStop = ny, tzStop = nz;
+			long txStop = nx, tyStop = ny, tzStop = nz;
 
 			if (abs(ray.Direction.x) < kEpsilon)
 			{

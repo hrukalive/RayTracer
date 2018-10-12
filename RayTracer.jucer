@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="BSMskS" name="RayTracer" projectType="guiapp" jucerVersion="5.3.2">
+  <MAINGROUP id="WkbGml" name="RayTracer">
+    <GROUP id="{589F4DE8-C9B3-F48E-8155-AEEF7A468CFB}" name="Source">
+      <GROUP id="{7A267AD0-4BE3-D2CF-027D-6CFF1B1A60AA}" name="Core">
+        <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
+          <FILE id="zrhR0Y" name="BBox.h" compile="0" resource="0" file="Source/Core/GeometricObject/BBox.h"/>
+          <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
+          <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
+                file="Source/Core/GeometricObject/GeometricObject.h"/>
+          <FILE id="qPlxxx" name="Grid.h" compile="0" resource="0" file="Source/Core/GeometricObject/Grid.h"/>
+          <FILE id="R2Vspv" name="Instance.h" compile="0" resource="0" file="Source/Core/GeometricObject/Instance.h"/>
+          <FILE id="WnBLaL" name="IObject.h" compile="0" resource="0" file="Source/Core/GeometricObject/IObject.h"/>
+          <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
+          <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
+          <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
+          <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
+        </GROUP>
+        <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
+          <FILE id="DiLnP3" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/BRDF.h"/>
+          <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
+          <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
+        </GROUP>
+        <FILE id="H5QLYT" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility.cpp"/>
+        <FILE id="zYCM1q" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility.h"/>
+        <FILE id="j7lyGp" name="World.cpp" compile="1" resource="0" file="Source/Core/World.cpp"/>
+        <FILE id="TErAPK" name="World.h" compile="0" resource="0" file="Source/Core/World.h"/>
+        <FILE id="LTIfwl" name="Viewplane.cpp" compile="1" resource="0" file="Source/Core/Viewplane.cpp"/>
+        <FILE id="LqX6nC" name="Viewplane.h" compile="0" resource="0" file="Source/Core/Viewplane.h"/>
+        <FILE id="pe0J2K" name="Camera.cpp" compile="1" resource="0" file="Source/Core/Camera.cpp"/>
+        <FILE id="krQKRc" name="Camera.h" compile="0" resource="0" file="Source/Core/Camera.h"/>
+        <FILE id="cyUYZX" name="Light.cpp" compile="1" resource="0" file="Source/Core/Light.cpp"/>
+        <FILE id="qLTDxy" name="Light.h" compile="0" resource="0" file="Source/Core/Light.h"/>
+        <FILE id="qaF6cr" name="Sampler.cpp" compile="1" resource="0" file="Source/Core/Sampler.cpp"/>
+        <FILE id="bzmdNw" name="Sampler.h" compile="0" resource="0" file="Source/Core/Sampler.h"/>
+        <FILE id="So80cU" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer.cpp"/>
+        <FILE id="U1xv86" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer.h"/>
+        <FILE id="N2Xg9Q" name="OBJParser.cpp" compile="1" resource="0" file="Source/Core/OBJParser.cpp"/>
+        <FILE id="W9KjuI" name="OBJParser.h" compile="0" resource="0" file="Source/Core/OBJParser.h"/>
+      </GROUP>
+      <FILE id="YlPR9Z" name="Renderer.cpp" compile="1" resource="0" file="Source/Renderer.cpp"/>
+      <FILE id="WU002s" name="Renderer.h" compile="0" resource="0" file="Source/Renderer.h"/>
+      <FILE id="tygI0U" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>
+      <FILE id="jYwEwz" name="MainComponent.cpp" compile="1" resource="0"
+            file="Source/MainComponent.cpp"/>
+      <FILE id="i2xlhn" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="D:/Program Files/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2017 targetFolder="Builds/VisualStudio2017" windowsTargetPlatformVersion="10.0.17134.0">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="D:/Program Files/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2017>
+    <LINUX_MAKE targetFolder="Builds/LinuxMakefile">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_core" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_basics" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="D:/Program Files/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="D:/Program Files/JUCE/modules"/>
+      </MODULEPATHS>
+    </LINUX_MAKE>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS buildEnabled="0" windowsTargetPlatformVersion="10.0.17134.0"/>
+    <OSX buildEnabled="1"/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS/>
+</JUCERPROJECT>

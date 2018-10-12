@@ -34,8 +34,8 @@ public:
     enum CommandIDs
     {
         startRender = 1,
-        pauseRender,
         stopRender,
+		saveRender,
         settingWorld,
         settingLight,
         settingCamera,
@@ -64,7 +64,7 @@ public:
     void resized() override;
 
 private:
-	void renderSucceeded();
+	void renderSucceeded(double timeElapsed);
 	void timerCallback() override;
     //==============================================================================
     // Your private member variables go here...
@@ -72,14 +72,17 @@ private:
     std::unique_ptr<MenuBarComponent> menuBar;
     std::unique_ptr<ImageComponent> image;
     std::unique_ptr<ProgressBar> progressBar;
-    double progress;
+    double progress = -1.0;
+	size_t timerSkip = 0;
+	bool rendering = false;
+	bool renderFinished = false;
     
     std::shared_ptr<World> world;
     std::shared_ptr<Tracer> tracer;
     std::shared_ptr<Sampler> sampler;
     std::shared_ptr<ViewPlane> viewPlane;
     std::shared_ptr<Camera> camera;
-    Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this))};
+    Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this, std::placeholders::_1))};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)
 };

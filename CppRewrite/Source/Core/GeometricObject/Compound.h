@@ -15,7 +15,7 @@
 class Compound : public GeometricObject
 {
 protected:
-	std::vector<const std::shared_ptr<GeometricObject>> objects;
+	std::vector<std::shared_ptr<GeometricObject>> objects;
 	void UpdateBoundingBox() override
 	{
 		if (objects.size() == 1)
@@ -29,7 +29,7 @@ protected:
 	}
 public:
 	virtual ~Compound() {}
-	virtual void AddObject(const std::shared_ptr<GeometricObject>& obj)
+	virtual void AddObject(std::shared_ptr<GeometricObject>& obj)
 	{ 
 		objects.push_back(obj); 
 		UpdateBoundingBox(); 

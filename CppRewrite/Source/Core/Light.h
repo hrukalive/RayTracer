@@ -49,8 +49,10 @@ class PointLight : public Light
     float ls;
     RGBColor color;
     Point3D location;
+	float decay = 0.2;
 public:
     PointLight(float ls, RGBColor color, Point3D location) : ls(ls), color(color), location(location) {}
+	PointLight(float ls, RGBColor color, Point3D location, float decay) : ls(ls), color(color), location(location), decay(decay) {}
     virtual ~PointLight() {}
     inline Vec3D GetDirection(const HitRecord& record)
     {
@@ -58,7 +60,7 @@ public:
     }
     inline RGBColor L(const HitRecord& record)
     {
-        return color * ls / ((location - record.HitPoint).lengthSquared() + 1);
+        return color * ls / (decay * (location - record.HitPoint).lengthSquared() + 1);
     }
     bool InShadow(const Ray& ray, const HitRecord& record);
 };

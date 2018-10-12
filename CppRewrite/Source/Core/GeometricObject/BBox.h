@@ -17,7 +17,7 @@ class BBox : public IObject
 {
 	Point3D bboxMin, bboxMax;
 	FP_TYPE diagLength = 0.0;
-	FP_TYPE delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio > KBBOXMax));
+	FP_TYPE delta = (diagLength * kBBOXRatio > KBBOXMax ? KBBOXMax : (diagLength * kBBOXRatio));
 public:
 	BBox()
 	{

@@ -12,6 +12,7 @@
 
 #include "IObject.h"
 #include "BBox.h"
+#include "../Utility.h"
 
 class GeometricObject : public IObject
 {
@@ -21,14 +22,6 @@ protected:
 	virtual void UpdateBoundingBox() = 0;
 public:
 	virtual ~GeometricObject() {}
-    virtual void SetMaterial(std::shared_ptr<Material>& materialPtr) { this->materialPtr = materialPtr; }
+    virtual void SetMaterial(std::shared_ptr<Material> newMaterialPtr) { materialPtr = newMaterialPtr; }
 	BBox& GetBoundingBox() { return boundingBox; }
 };
-
-#include "Sphere.h"
-#include "Plane.h"
-#include "Triangle.h"
-#include "Instance.h"
-#include "Compound.h"
-#include "Grid.h"
-#include "Mesh.h"

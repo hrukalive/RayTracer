@@ -16,10 +16,9 @@ class ViewPlane
 {
 public:
     int Width = 512, Height = 512;
-    float PixelSize = 1.0f;
+    FP_TYPE PixelSize = 1.0f;
 	int NumPixelSamples = 64, NumLensSamples = 1;
 	int SqrtNumSamplePixel, SqrtNumSampleLens;
-	float Gamma = 1.0f;
 	std::shared_ptr<Image> RenderedImage;
 private:
 	CriticalSection criticalSection;
@@ -53,17 +52,17 @@ private:
 	}
 public:
     ViewPlane() { initialize(); }
-	ViewPlane(int width, int height, float pixelSize) 
+	ViewPlane(int width, int height, FP_TYPE pixelSize) 
 		: Width(width), Height(height), PixelSize(pixelSize)
 	{
 		initialize();
     }
-    ViewPlane(int width, int height, float pixelSize, int numSamplePixels)
+    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels)
     : Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels)
     {
         initialize();
     }
-	ViewPlane(int width, int height, float pixelSize, int numSamplePixels, int numSampleLens)
+	ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens)
 		: Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels), NumLensSamples(numSampleLens)
 	{
 		initialize();
@@ -90,12 +89,11 @@ public:
 		auto color = renderedArray[y][x] / renderedCount[y][x];
 		RenderedImage->setPixelAt(x, y, Colour::fromFloatRGBA((float)color.x, (float)color.y, (float)color.z, 1.0));
         logIntensityArray[y * Width + x] = log10(1.0 / 61.0 * (20.0 * color.x + 40.0 * color.y + color.z) + 1e-7);
-        DBG(log10(1.0 / 61.0 * (20.0 * color.x + 40.0 * color.y + color.z) + 1e-7));
 		criticalSection.exit();
 	}
 
     // TODO: Fix this conversion
-    void ShowHDR(double targetContrast = log10(5.0), double gamma = 1.0)
+    void ShowHDR(FP_TYPE targetContrast = log10(5.0), FP_TYPE gamma = 1.0)
     {
         criticalSection.enter();
         auto logBase = bilaterialFilter(logIntensityArray, Width, Height);
@@ -124,7 +122,7 @@ public:
         }
         criticalSection.exit();
     }
-    void ShowClamped(double gamma = 1.0)
+    void ShowClamped(FP_TYPE gamma = 1.0)
     {
         criticalSection.enter();
         for (int j = 0; j < Height; j++)

@@ -15,15 +15,15 @@ public:
 
 class Lambertian : public BRDF
 {
-	float kd;
+    FP_TYPE kd;
 	RGBColor cd;
 public:
     Lambertian() : kd(0.0), cd(BLACK) {}
-    Lambertian(const float kd, const RGBColor& cd)
+    Lambertian(const FP_TYPE kd, const RGBColor& cd)
         : kd(kd), cd(cd) {}
     virtual ~Lambertian() {}
-    void SetKd(const float kd) { this->kd = kd; }
-    void SetCd(const RGBColor& cd) { this->cd = cd; }
+    void SetKd(const FP_TYPE newKd) { kd = newKd; }
+    void SetCd(const RGBColor& newCd) { cd = newCd; }
 
 	virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
 	{
@@ -41,15 +41,15 @@ public:
 
 class PerfectSpecular : public BRDF
 {
-    float kd;
+    FP_TYPE kd;
     RGBColor cd;
 public:
     PerfectSpecular() : kd(0.0), cd(BLACK) {}
-    PerfectSpecular(const float kd, const RGBColor& cd)
+    PerfectSpecular(const FP_TYPE kd, const RGBColor& cd)
         : kd(kd), cd(cd) {}
     virtual ~PerfectSpecular() {}
-    void SetKd(const float kd) { this->kd = kd; }
-    void SetCd(const RGBColor& cd) { this->cd = cd; }
+    void SetKd(const FP_TYPE newKd) { kd = newKd; }
+    void SetCd(const RGBColor& newCd) { cd = newCd; }
     
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
     {
@@ -67,16 +67,16 @@ public:
 
 class GlossySpecular : public BRDF
 {
-    float ks, exp;
+    FP_TYPE ks, exp;
     RGBColor cs;
 public:
     GlossySpecular() : ks(1.0), exp(10.0), cs(WHITE) {}
-    GlossySpecular(const float ks, const float exp, const RGBColor& cs)
+    GlossySpecular(const FP_TYPE ks, const FP_TYPE exp, const RGBColor& cs)
         : ks(ks), exp(exp), cs(cs) {}
     virtual ~GlossySpecular() {}
-    void SetKs(const float ks) { this->ks = ks; }
-    void SetCs(const RGBColor& cs) { this->cs = cs; }
-    void SetE(const float exp) { this->exp = exp; }
+    void SetKs(const FP_TYPE newKs) { ks = newKs; }
+    void SetCs(const RGBColor& newCs) { cs = newCs; }
+    void SetE(const FP_TYPE newExp) { exp = newExp; }
     
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
     {

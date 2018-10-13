@@ -14,7 +14,7 @@ MainComponent::MainComponent()
     auto vpWidth = 256, vpHeight = 256;
     world.reset(new World());
     tracer.reset(new RayCast(world));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight, 32));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 32));
     sampler.reset(new PreviewSampler());
     
 	auto r = 3.7; //2.8
@@ -62,8 +62,8 @@ MainComponent::MainComponent()
     }
 
 	int numSphere = 100;
-	float volume = 0.1 / numSphere;
-	float radius = pow(0.75 * volume / PI, 1.0 / 3);
+    FP_TYPE volume = (FP_TYPE)(0.1 / numSphere);
+    FP_TYPE radius = (FP_TYPE)pow(0.75 * volume / PI, 1.0 / 3);
 	//std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -1, 0);
 	Random random;
 
@@ -332,7 +332,7 @@ void MainComponent::resized()
 }
 
 //==============================================================================
-void MainComponent::renderSucceeded(double timeElapsed)
+void MainComponent::renderSucceeded(FP_TYPE timeElapsed)
 {
 	AlertWindow::showMessageBox(AlertWindow::AlertIconType::InfoIcon, "Rendering Finished", "The rendering took " + std::to_string(timeElapsed) + "s.");
 	DBG(timeElapsed);

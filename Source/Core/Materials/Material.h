@@ -49,11 +49,11 @@ class Matte : public Material
 	Lambertian ambientBRDF, diffuseBRDF;
 public:
     virtual ~Matte() {}
-	void SetKa(const float ka)
+	void SetKa(const FP_TYPE ka)
 	{
 		ambientBRDF.SetKd(ka);
 	}
-	void SetKd(const float kd)
+	void SetKd(const FP_TYPE kd)
 	{
 		diffuseBRDF.SetKd(kd);
 	}
@@ -74,15 +74,15 @@ public:
     {
     }
     virtual ~Phong() {}
-    void SetKa(const float ka)
+    void SetKa(const FP_TYPE ka)
     {
         ambientBRDF.SetKd(ka);
     }
-    void SetKd(const float kd)
+    void SetKd(const FP_TYPE kd)
     {
         diffuseBRDF.SetKd(kd);
     }
-    void SetKs(const float ks)
+    void SetKs(const FP_TYPE ks)
     {
         specularBRDF.SetKs(ks);
     }
@@ -95,7 +95,7 @@ public:
     {
         specularBRDF.SetCs(c);
     }
-    void SetE(const float exp)
+    void SetE(const FP_TYPE exp)
     {
         specularBRDF.SetE(exp);
     }

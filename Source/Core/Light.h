@@ -24,11 +24,11 @@ public:
 
 class Ambient : public Light
 {
-    float ls = 1.0;
+    FP_TYPE ls = 1.0;
     RGBColor color = Vec3D(1.0, 1.0, 1.0);
 public:
 	Ambient() = default;
-    Ambient(float ls, RGBColor color) : ls(ls), color(color) {}
+    Ambient(const FP_TYPE ls, RGBColor color) : ls(ls), color(color) {}
     virtual ~Ambient() {}
     inline Vec3D GetDirection(const HitRecord& record)
     {
@@ -46,13 +46,13 @@ public:
 
 class PointLight : public Light
 {
-    float ls;
+    FP_TYPE ls;
     RGBColor color;
     Point3D location;
-	float decay = 0.2;
+    FP_TYPE decay = 0.2;
 public:
-    PointLight(float ls, RGBColor color, Point3D location) : ls(ls), color(color), location(location) {}
-	PointLight(float ls, RGBColor color, Point3D location, float decay) : ls(ls), color(color), location(location), decay(decay) {}
+    PointLight(FP_TYPE ls, RGBColor color, Point3D location) : ls(ls), color(color), location(location) {}
+	PointLight(FP_TYPE ls, RGBColor color, Point3D location, FP_TYPE decay) : ls(ls), color(color), location(location), decay(decay) {}
     virtual ~PointLight() {}
     inline Vec3D GetDirection(const HitRecord& record)
     {
@@ -67,11 +67,11 @@ public:
 
 class ParallelLight : public Light
 {
-	float ls;
+    FP_TYPE ls;
 	RGBColor color;
 	Vec3D direction;
 public:
-	ParallelLight(float ls, RGBColor color, Vec3D direction) : ls(ls), color(color), direction(direction) {}
+	ParallelLight(FP_TYPE ls, RGBColor color, Vec3D direction) : ls(ls), color(color), direction(direction) {}
 	virtual ~ParallelLight() {}
 	inline Vec3D GetDirection(const HitRecord& record)
 	{

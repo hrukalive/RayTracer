@@ -21,11 +21,11 @@ class Renderer
 	size_t renderedCount;
     int threadDim = 8;
 	int priority = 3;
-	std::function<void(float)> successCallback;
+	std::function<void(FP_TYPE)> successCallback;
 	ThreadPool pool;
     CriticalSection criticalSection;
 public:
-	Renderer(std::function<void(double)> successCallback) : renderedCount(0), successCallback(successCallback)
+	Renderer(std::function<void(FP_TYPE)> successCallback) : renderedCount(0), successCallback(successCallback)
 	{
 		pool.setThreadPriorities(priority);
 	}
@@ -102,7 +102,7 @@ public:
 			}
 			DBG("Dispensing thread ends.");
 			auto t1 = Time::getMillisecondCounterHiRes();
-			successCallback((t1 - t0) / 1000.0);
+			successCallback((FP_TYPE)((t1 - t0) / 1000.0));
         });
 	}
 	void Cancel()

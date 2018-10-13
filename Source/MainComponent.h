@@ -10,6 +10,11 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Core/Utility.h"
+#include "Core/GeometricObject/Plane.h"
+#include "Core/GeometricObject/Sphere.h"
+#include "Core/GeometricObject/Mesh.h"
+#include "Core/GeometricObject/Compound.h"
+#include "Core/GeometricObject/Instance.h"
 #include "Core/Materials/BRDF.h"
 #include "Core/Materials/Material.h"
 #include "Core/World.h"
@@ -65,7 +70,7 @@ public:
     void resized() override;
 
 private:
-	void renderSucceeded(double timeElapsed);
+	void renderSucceeded(FP_TYPE timeElapsed);
 	void timerCallback() override;
     //==============================================================================
     // Your private member variables go here...

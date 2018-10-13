@@ -5,19 +5,28 @@
     <GROUP id="{589F4DE8-C9B3-F48E-8155-AEEF7A468CFB}" name="Source">
       <GROUP id="{7A267AD0-4BE3-D2CF-027D-6CFF1B1A60AA}" name="Core">
         <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
+          <FILE id="nCUFm5" name="BBox.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/BBox.cpp"/>
           <FILE id="zrhR0Y" name="BBox.h" compile="0" resource="0" file="Source/Core/GeometricObject/BBox.h"/>
+          <FILE id="mqTV46" name="Compound.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Compound.cpp"/>
           <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.h"/>
+          <FILE id="ZA99cE" name="Grid.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Grid.cpp"/>
           <FILE id="qPlxxx" name="Grid.h" compile="0" resource="0" file="Source/Core/GeometricObject/Grid.h"/>
+          <FILE id="CI2Uk4" name="Instance.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Instance.cpp"/>
           <FILE id="R2Vspv" name="Instance.h" compile="0" resource="0" file="Source/Core/GeometricObject/Instance.h"/>
           <FILE id="WnBLaL" name="IObject.h" compile="0" resource="0" file="Source/Core/GeometricObject/IObject.h"/>
+          <FILE id="dJSMWb" name="Mesh.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Mesh.cpp"/>
           <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
+          <FILE id="G38RHB" name="Plane.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Plane.cpp"/>
           <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
+          <FILE id="fDDvJK" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Sphere.cpp"/>
           <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
+          <FILE id="LzXlBO" name="Triangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Triangle.cpp"/>
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
         </GROUP>
         <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
+          <FILE id="C4VgLH" name="BRDF.cpp" compile="1" resource="0" file="Source/Core/Materials/BRDF.cpp"/>
           <FILE id="DiLnP3" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/BRDF.h"/>
           <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>

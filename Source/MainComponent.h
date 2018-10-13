@@ -36,6 +36,7 @@ public:
         startRender = 1,
         stopRender,
 		saveRender,
+        showHDR,
         settingWorld,
         settingLight,
         settingCamera,
@@ -74,6 +75,7 @@ private:
     std::unique_ptr<ProgressBar> progressBar;
     double progress = -1.0;
 	size_t timerSkip = 0;
+    bool isShowHDR = false;
 	bool rendering = false;
 	bool renderFinished = false;
     

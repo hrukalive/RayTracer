@@ -43,6 +43,8 @@ bool operator<(const Point3D& lhs, const Point3D& rhs);
 std::ostream& operator<<(std::ostream& o, const Vec3D& vec);
 std::ostream& operator<<(std::ostream& o, const Matrix& m);
 
+std::vector<FP_TYPE> bilaterialFilter(const std::vector<FP_TYPE>& I, int width, int height);
+
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {
 	return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);

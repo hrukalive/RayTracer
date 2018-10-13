@@ -11,11 +11,11 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    auto vpWidth = 512, vpHeight = 512;
+    auto vpWidth = 256, vpHeight = 256;
     world.reset(new World());
     tracer.reset(new RayCast(world));
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, 1.0 / vpHeight, 32));
-    sampler.reset(new MultiJittered());
+    sampler.reset(new PreviewSampler());
     
 	auto r = 3.7; //2.8
     auto theta = 30.0 * PI_OVER_180;
@@ -49,7 +49,7 @@ MainComponent::MainComponent()
 	//std::shared_ptr<GeometricObject> comp{ new Compound() };
 	std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
 
-	//std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
 
     File file("D:\\dragon.obj");
     std::shared_ptr<GeometricObject> mesh;
@@ -67,35 +67,35 @@ MainComponent::MainComponent()
 	//std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -1, 0);
 	Random random;
 
-	for (int i = 0; i < numSphere; i++)
-	{
-		std::shared_ptr<Material> phong{ new Phong() };
-		std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
-		std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
-		std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
-		std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
-		std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
-		std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
+	//for (int i = 0; i < numSphere; i++)
+	//{
+	//	std::shared_ptr<Material> phong{ new Phong() };
+	//	std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
+	//	std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
+	//	std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
+	//	std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
+	//	std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
+	//	std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
 
-		std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble()), radius) };
-		sphere->SetMaterial(phong);
-		std::dynamic_pointer_cast<Compound>(comp)->AddObject(sphere);
-	}
+	//	std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble()), radius) };
+	//	sphere->SetMaterial(phong);
+	//	std::dynamic_pointer_cast<Compound>(comp)->AddObject(sphere);
+	//}
 
- //   std::dynamic_pointer_cast<Instance>(plins)->Translate(0, mesh->GetBoundingBox().GetMinPoint().y, 0);
- //   std::shared_ptr<Material> phong{ new Phong() };
- //   std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
- //   std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.3);
- //   std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
- //   std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
- //   std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(1.0, 1.0, 1.0));
- //   std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
- //   mesh->SetMaterial(phong);
+    std::dynamic_pointer_cast<Instance>(plins)->Translate(0, mesh->GetBoundingBox().GetMinPoint().y, 0);
+    std::shared_ptr<Material> phong{ new Phong() };
+    std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
+    std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.3);
+    std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
+    std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
+    std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
+    mesh->SetMaterial(phong);
 
- //   std::shared_ptr<GeometricObject> ins{ new Instance(mesh) };
- //   std::dynamic_pointer_cast<Instance>(ins)->Scale(1, 1, 1);
- //   std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, 0);
-	//std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
+    std::shared_ptr<GeometricObject> ins{ new Instance(mesh) };
+    std::dynamic_pointer_cast<Instance>(ins)->Scale(1, 1, 1);
+    std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, 0);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
 
 
 	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
@@ -123,9 +123,9 @@ MainComponent::MainComponent()
     commandManager.registerAllCommandsForTarget(this);
     addKeyListener(commandManager.getKeyMappings());
 #if JUCE_MAC
-    setSize(vpWidth, vpHeight);
+    setSize(std::max(100, vpWidth), std::max(100, vpHeight));
 #else
-    setSize(vpWidth, vpHeight + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+    setSize(std::max(100, vpWidth), std::max(100, vpHeight) + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 	startTimer(1000);
 }
@@ -162,6 +162,7 @@ PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuNam
         menu.addCommandItem(&commandManager, CommandIDs::startRender);
         menu.addCommandItem(&commandManager, CommandIDs::stopRender);
 		menu.addCommandItem(&commandManager, CommandIDs::saveRender);
+        menu.addCommandItem(&commandManager, CommandIDs::showHDR);
     }
     
     return menu;
@@ -174,9 +175,10 @@ ApplicationCommandTarget* MainComponent::getNextCommandTarget()
 }
 void MainComponent::getAllCommands (Array<CommandID>& c)
 {
-    Array<CommandID> commands { CommandIDs::startRender,
+    Array<CommandID> commands{ CommandIDs::startRender,
         CommandIDs::stopRender,
-		CommandIDs::saveRender,
+        CommandIDs::saveRender,
+        CommandIDs::showHDR,
         CommandIDs::settingMesh,
         CommandIDs::settingMaterial,
         CommandIDs::settingLight,
@@ -210,6 +212,10 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 			result.addDefaultKeypress('s', ModifierKeys::ctrlModifier);
 #endif
 			break;
+        case CommandIDs::showHDR:
+            result.setInfo("Remap Tone", "Convert HDR image to normal range", "Render", 0);
+            result.setTicked(isShowHDR);
+            break;
         case CommandIDs::settingGeometry:
             result.setInfo ("Geometry", "Geometry settings", "Settings", 0);
             break;
@@ -245,9 +251,9 @@ bool MainComponent::perform (const InvocationInfo& info)
 			rendering = true;
 			progressBar->setSize(0, 25);
 #if JUCE_MAC
-			setSize(viewPlane->Width, viewPlane->Height + progressBar->getHeight());
+			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height));
 #else
-			setSize(viewPlane->Width, viewPlane->Height + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 			progressBar->setVisible(true);
 			repaint();
@@ -270,6 +276,17 @@ bool MainComponent::perform (const InvocationInfo& info)
 			}
 			break;
 		}
+        case CommandIDs::showHDR:
+            isShowHDR = !isShowHDR;
+            if (isShowHDR)
+            {
+                viewPlane->ShowHDR();
+            }
+            else
+            {
+                viewPlane->ShowClamped();
+            }
+            break;
         case CommandIDs::settingGeometry:
             break;
         case CommandIDs::settingMesh:
@@ -339,9 +356,9 @@ void MainComponent::timerCallback()
 		progressBar->setSize(0, 0);
 		progressBar->setVisible(false);
 #if JUCE_MAC
-		setSize(viewPlane->Width, viewPlane->Height);
+		setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height));
 #else
-		setSize(viewPlane->Width, viewPlane->Height + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+		setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 		repaint();
 	}

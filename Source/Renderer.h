@@ -68,10 +68,10 @@ public:
 			auto height = viewPlane->Height;
 			auto totalPixel = width * height;
 			auto t0 = Time::getMillisecondCounterHiRes();
-			for (int br = 0; br < ceil(height / threadDim); br++)
+			for (int br = 0; br < (int)ceil((FP_TYPE)height / threadDim); br++)
 			{
 				auto startR = br * threadDim, endR = std::min(height, (br + 1) * threadDim);
-				for (int bc = 0; bc < ceil(width / threadDim); bc++)
+				for (int bc = 0; bc < (int)ceil((FP_TYPE)width / threadDim); bc++)
 				{
 					auto startC = bc * threadDim, endC = std::min(width, (bc + 1) * threadDim);
 					pool.addJob([camera, tracer, viewPlane, startR, endR, startC, endC, totalPixel,

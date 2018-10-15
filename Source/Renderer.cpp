@@ -91,7 +91,8 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
         successCallback((FP_TYPE)((t1 - t0) / 1000.0));
     });
 }
-void Renderer::Cancel()
+bool Renderer::Cancel()
 {
     pool.removeAllJobs(true, 1000);
+    return pool.getNumJobs() == 0;
 }

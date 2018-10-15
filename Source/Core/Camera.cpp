@@ -62,3 +62,27 @@ std::vector<Ray> PinholeCamera::CreateRay(int c, int r) const
     }
     return ret;
 }
+
+ThinLensCamera::ThinLensCamera(Point3D eye, Vec3D lookAt, Vec3D up, float dist, float focalDist, float lensRadius,
+                               std::shared_ptr<ViewPlane>& viewPlane, std::shared_ptr<Sampler>& sampler)
+    : Camera(eye, lookAt, up, viewPlane, sampler), dist(dist), f(focalDist), radius(lensRadius) {}
+
+std::vector<Ray> ThinLensCamera::CreateRay(int c, int r) const
+{
+    std::vector<Ray> ret;
+    auto centerPos = viewPlane->GetPixelCenter(c, r);
+    auto shifts = sampler->SampleSquare(viewPlane->NumPixelSamples);
+    for (auto& shift : shifts)
+    {
+        auto tmp = centerPos + (shift * viewPlane->PixelSize);
+        tmp.x = tmp.x * f / dist;
+        tmp.y = tmp.y * f / dist;
+        
+        auto lensShifts = sampler->SampleCircle(viewPlane->NumLensSamples);
+        for (auto& lensShift : lensShifts)
+        {
+            ret.push_back(Ray(eye, (u * (tmp.x - lensShift.x * radius) + v * (tmp.y - lensShift.y * radius) - w * f).normalised()));
+        }
+    }
+    return ret;
+}

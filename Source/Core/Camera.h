@@ -48,3 +48,16 @@ public:
 
     virtual std::vector<Ray> CreateRay(int c, int r) const;
 };
+
+class ThinLensCamera : public Camera
+{
+    float dist;
+    float f;
+    float radius;
+public:
+    ThinLensCamera(Point3D eye, Vec3D lookAt, Vec3D up, float dist, float focalDist, float lensRadius,
+                   std::shared_ptr<ViewPlane>& viewPlane, std::shared_ptr<Sampler>& sampler);
+    virtual ~ThinLensCamera() = default;
+    
+    virtual std::vector<Ray> CreateRay(int c, int r) const;
+};

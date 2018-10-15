@@ -11,7 +11,7 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    auto vpWidth = 256, vpHeight = 256;
+    auto vpWidth = 512, vpHeight = 512;
     world.reset(new World());
     tracer.reset(new RayCast(world));
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 32));
@@ -51,7 +51,7 @@ MainComponent::MainComponent()
 
 	std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
 
-    File file("D:\\dragon.obj");
+    File file("/Volumes/Document/dragon.obj");
     std::shared_ptr<GeometricObject> mesh;
     if (file.existsAsFile())
     {
@@ -251,7 +251,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 			rendering = true;
 			progressBar->setSize(0, 25);
 #if JUCE_MAC
-			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height));
+			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + progressBar->getHeight());
 #else
 			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif

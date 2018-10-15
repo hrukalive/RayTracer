@@ -19,7 +19,7 @@ protected:
     void UpdateBoundingBox() override;
 public:
     Plane(Point3D origin, Vec3D uDirection, Vec3D vDirection);
-    virtual ~Plane();
+    virtual ~Plane() = default;
 
     void setOrigin(Point3D origin);
     void setU(Vec3D uDirection);

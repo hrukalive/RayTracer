@@ -17,7 +17,7 @@ protected:
 	std::vector<std::shared_ptr<GeometricObject>> objects;
     void UpdateBoundingBox() override;
 public:
-    virtual ~Compound();
+    virtual ~Compound() = default;
     virtual void AddObject(std::shared_ptr<GeometricObject> obj);
     void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
     HitRecord Hit(const Ray& ray) override;

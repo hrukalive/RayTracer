@@ -11,8 +11,6 @@ BBox::BBox(const Point3D min, const Point3D max)
     SetBoundingBox(min, max);
 }
 
-BBox::~BBox() {}
-
 void BBox::SetBoundingBox(const Point3D min, const Point3D max)
 {
     this->bboxMin = min;

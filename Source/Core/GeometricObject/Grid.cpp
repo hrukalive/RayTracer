@@ -1,9 +1,15 @@
 #include "Grid.h"
 #include "BBox.h"
 
-
-RayTracer::Grid::~Grid()
+RayTracer::Grid::GridIndex::GridIndex(size_t i, size_t j, size_t k) : i(i), j(j), k(k) {}
+bool RayTracer::Grid::GridIndex::operator==(const GridIndex& other) const
 {
+    return i == other.i && j == other.j && k == other.k;
+}
+
+std::size_t RayTracer::Grid::GridIndexHasher::operator()(const GridIndex& key) const
+{
+    return m3D_e_magicbits(key.i, key.j, key.k);
 }
 
 void RayTracer::Grid::Setup()

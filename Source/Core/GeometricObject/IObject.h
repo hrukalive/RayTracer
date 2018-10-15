@@ -14,6 +14,6 @@
 class IObject
 {
 public:
-    virtual ~IObject() {}
+    virtual ~IObject() = default;
 	virtual HitRecord Hit(const Ray& ray) = 0;
 };

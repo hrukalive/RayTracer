@@ -7,7 +7,7 @@ void Sphere::UpdateBoundingBox()
 }
 
 Sphere::Sphere(Point3D center, FP_TYPE radius) : Center(center), Radius(radius) { UpdateBoundingBox(); }
-Sphere::~Sphere() {}
+
 void Sphere::setCenter(Point3D center) { Center = center; UpdateBoundingBox(); }
 void Sphere::setRadius(FP_TYPE radius) { Radius = radius; UpdateBoundingBox(); }
 Point3D Sphere::getCenter() { return Center; }

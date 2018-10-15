@@ -20,7 +20,7 @@ class BBox : public IObject
 public:
     BBox();
     BBox(const Point3D min, const Point3D max);
-    virtual ~BBox();
+    virtual ~BBox() = default;
     void SetBoundingBox(const Point3D min, const Point3D max);
     void Merge(const BBox& other);
     Point3D GetMinPoint();

@@ -14,7 +14,6 @@ Plane::Plane(Point3D origin, Vec3D uDirection, Vec3D vDirection)
     n = u ^ v;
     UpdateBoundingBox();
 }
-Plane::~Plane() {}
 
 void Plane::setOrigin(Point3D origin) { a = origin; UpdateBoundingBox(); }
 void Plane::setU(Vec3D uDirection) { u = uDirection; n = u ^ v; UpdateBoundingBox(); }

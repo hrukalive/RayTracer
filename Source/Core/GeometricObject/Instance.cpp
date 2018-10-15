@@ -36,12 +36,10 @@ void Instance::UpdateBoundingBox()
     boundingBox.Merge(BBox(tmp, tmp));
 }
 
-Instance::Instance() {}
 Instance::Instance(std::shared_ptr<GeometricObject> objectPtr) : objectPtr(objectPtr)
 {
     UpdateBoundingBox();
 }
-Instance::~Instance() {}
 
 void Instance::SetObject(std::shared_ptr<GeometricObject> newObjectPtr)
 {

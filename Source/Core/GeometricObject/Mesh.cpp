@@ -15,7 +15,6 @@ void MeshTriangle::UpdateBoundingBox()
     boundingBox.Merge(BBox(c, c));
 }
 
-MeshTriangle::~MeshTriangle() {}
 void MeshTriangle::SetSmooth(bool newIsSmooth) { isSmooth = newIsSmooth; }
 Vec3D MeshTriangle::getA() { return a; }
 Vec3D MeshTriangle::getB() { return b; }
@@ -53,8 +52,6 @@ HitRecord MeshTriangle::Hit(const Ray& ray)
     }
     return record;
 }
-
-Mesh::~Mesh() {}
 
 void Mesh::SetMaterial(std::shared_ptr<Material> newMaterialPtr)
 {

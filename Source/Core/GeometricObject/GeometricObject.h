@@ -21,7 +21,7 @@ protected:
     BBox boundingBox;
 	virtual void UpdateBoundingBox() = 0;
 public:
-	virtual ~GeometricObject() {}
+    virtual ~GeometricObject() = default;
     virtual void SetMaterial(std::shared_ptr<Material> newMaterialPtr) { materialPtr = newMaterialPtr; }
 	BBox& GetBoundingBox() { return boundingBox; }
 };

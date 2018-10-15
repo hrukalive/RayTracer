@@ -23,27 +23,14 @@ class World
 	std::vector<std::shared_ptr<GeometricObject>> objects;
 	std::vector<std::shared_ptr<Light>> lights;
 public:
-    std::shared_ptr<Light>& GetAmbientLightPtr() { return ambientLightPtr; }
-	RGBColor& GetBackgroundColor() { return backgroundColor; }
-    auto& GetObjects() { return objects; }
-	auto& GetLights() { return lights; }
-	void SetAmbient(std::shared_ptr<Light>& ambient) { ambientLightPtr = ambient; }
-    void AddLight(std::shared_ptr<Light>& light) { lights.push_back(light); }
-    void AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
-	HitRecord HitObjects(const Ray& ray)
-    {
-        HitRecord record;
-        FP_TYPE tmin = INFINITY;
-        
-        for (int i = 0; i < objects.size(); i++)
-        {
-            HitRecord tmp = objects[i]->Hit(ray);
-            if (tmp.Hit && tmp.T < tmin)
-            {
-                tmin = tmp.T;
-                record = tmp;
-            }
-        }
-        return record;
-    }
+    std::shared_ptr<Light>& GetAmbientLightPtr();
+    RGBColor& GetBackgroundColor();
+    std::vector<std::shared_ptr<GeometricObject>>& GetObjects();
+    std::vector<std::shared_ptr<Light>>& GetLights();
+
+    void SetAmbient(std::shared_ptr<Light>& ambient);
+    void AddLight(std::shared_ptr<Light>& light);
+    void AddObject(std::shared_ptr<GeometricObject>& obj);
+
+    HitRecord HitObjects(const Ray& ray);
 };

@@ -19,7 +19,7 @@ protected:
     void UpdateBoundingBox() override;
 public:
     Triangle(Vec3D vertexA, Vec3D vertexB, Vec3D vertexC);
-    virtual ~Triangle();
+    virtual ~Triangle() = default;
     void setA(Vec3D vertexA);
     void setB(Vec3D vertexB);
     void setC(Vec3D vertexC);

@@ -11,6 +11,35 @@
 #include "Material.h"
 #include "../World.h"
 
+RGBColor Material::Shade(const HitRecord& record) { return BLACK; }
+RGBColor Material::AreaLightShade(const HitRecord& record) { return BLACK; }
+RGBColor Material::PathShade(const HitRecord& record) { return BLACK; }
+
+ConstColor::ConstColor(RGBColor color) : c(color) {}
+RGBColor ConstColor::Shade(const HitRecord& record)
+{
+    return c;
+}
+
+RGBColor NormalShade::Shade(const HitRecord& record)
+{
+    return (record.Normal + Vec3D(1.0, 1.0, 1.0)) / 2.0;
+}
+
+
+void Matte::SetKa(const FP_TYPE ka)
+{
+    ambientBRDF.SetKd(ka);
+}
+void Matte::SetKd(const FP_TYPE kd)
+{
+    diffuseBRDF.SetKd(kd);
+}
+void Matte::SetCd(const RGBColor& c)
+{
+    ambientBRDF.SetCd(c);
+    diffuseBRDF.SetCd(c);
+}
 RGBColor Matte::Shade(const HitRecord& record)
 {
 	Vec3D wo = -record.Ray.Direction;
@@ -33,6 +62,31 @@ RGBColor Matte::Shade(const HitRecord& record)
 	return L;
 }
 
+void Phong::SetKa(const FP_TYPE ka)
+{
+    ambientBRDF.SetKd(ka);
+}
+void Phong::SetKd(const FP_TYPE kd)
+{
+    diffuseBRDF.SetKd(kd);
+}
+void Phong::SetKs(const FP_TYPE ks)
+{
+    specularBRDF.SetKs(ks);
+}
+void Phong::SetCd(const RGBColor& c)
+{
+    ambientBRDF.SetCd(c);
+    diffuseBRDF.SetCd(c);
+}
+void Phong::SetCs(const RGBColor& c)
+{
+    specularBRDF.SetCs(c);
+}
+void Phong::SetE(const FP_TYPE exp)
+{
+    specularBRDF.SetE(exp);
+}
 RGBColor Phong::Shade(const HitRecord& record)
 {
 	Vec3D wo = -record.Ray.Direction;

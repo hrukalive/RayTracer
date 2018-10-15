@@ -9,8 +9,6 @@ void Compound::UpdateBoundingBox()
         boundingBox.Merge(objects[objects.size() - 1]->GetBoundingBox());
 }
 
-Compound::~Compound() {}
-
 void Compound::AddObject(std::shared_ptr<GeometricObject> obj)
 {
     objects.push_back(obj);

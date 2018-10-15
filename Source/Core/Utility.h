@@ -45,6 +45,8 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m);
 
 std::vector<FP_TYPE> bilaterialFilter(const std::vector<FP_TYPE>& I, int width, int height);
 
+inline long clamp(FP_TYPE x, long min, long max) { return long((x < min ? min : (x > max ? max : x))); }
+
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {
 	return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);

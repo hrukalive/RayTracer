@@ -20,23 +20,16 @@ protected:
 
 	virtual RGBColor Trace(const Ray& ray, int depth) const = 0;
 public:
-	Tracer(std::shared_ptr<World>& world) : worldPtr(world) {}
-    virtual ~Tracer() {}
-	virtual RGBColor Trace(const Ray& ray) const
-	{
-		return Trace(ray, 0);
-	}
+    Tracer(std::shared_ptr<World>& world);
+    virtual ~Tracer() = default;
+    virtual RGBColor Trace(const Ray& ray) const;
 };
 
 class RayCast : public Tracer
 {
+protected:
+    virtual RGBColor Trace(const Ray& ray, int depth) const override;
 public:
-    RayCast(std::shared_ptr<World>& world) : Tracer(world) {}
-    virtual ~RayCast() {}
-	virtual RGBColor Trace(const Ray& ray, int depth) const
-	{
-		HitRecord record = worldPtr->HitObjects(ray);
-		record.WorldPtr = worldPtr;
-		return record.Hit ? (record.MaterialPtr->Shade(record)) : (worldPtr->GetBackgroundColor());
-	}
+    RayCast(std::shared_ptr<World>& world);
+    virtual ~RayCast() = default;
 };

@@ -22,9 +22,9 @@ class Instance : public GeometricObject
 protected:
     void UpdateBoundingBox() override;
 public:
-    Instance();
+    Instance() = default;
     Instance(std::shared_ptr<GeometricObject> objectPtr);
-    virtual ~Instance();
+    virtual ~Instance() = default;
     void SetObject(std::shared_ptr<GeometricObject> newObjectPtr);
     void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
 

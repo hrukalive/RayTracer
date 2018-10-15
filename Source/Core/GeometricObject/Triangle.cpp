@@ -18,7 +18,6 @@ Triangle::Triangle(Vec3D vertexA, Vec3D vertexB, Vec3D vertexC)
     UpdateNormal();
     UpdateBoundingBox();
 }
-Triangle::~Triangle() {}
 
 void Triangle::setA(Vec3D vertexA) { a = vertexA; UpdateNormal(); UpdateBoundingBox(); }
 void Triangle::setB(Vec3D vertexB) { b = vertexB; UpdateNormal(); UpdateBoundingBox(); }

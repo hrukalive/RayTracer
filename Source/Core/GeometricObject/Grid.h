@@ -19,24 +19,17 @@ namespace RayTracer
 		struct GridIndex
 		{
 			size_t i, j, k;
-			GridIndex(size_t i, size_t j, size_t k) : i(i), j(j), k(k) {}
-			bool operator==(const GridIndex& other) const
-			{
-				return i == other.i && j == other.j && k == other.k;
-			}
+            GridIndex(size_t i, size_t j, size_t k);
+            bool operator==(const GridIndex& other) const;
 		};
 		struct GridIndexHasher
 		{
-			std::size_t operator()(const GridIndex& key) const
-			{
-				return m3D_e_magicbits(key.i, key.j, key.k);
-			}
+            std::size_t operator()(const GridIndex& key) const;
 		};
 		std::unordered_map<GridIndex, std::shared_ptr<GeometricObject>, GridIndexHasher> cells;
 		int nx = 1, ny = 1, nz = 1;
-		inline long clamp(FP_TYPE x, long min, long max) { return long((x < min ? min : (x > max ? max : x))); }
 	public:
-        virtual ~Grid();
+        virtual ~Grid() = default;
         void Setup();
         HitRecord Hit(const Ray& ray) override;
 	};

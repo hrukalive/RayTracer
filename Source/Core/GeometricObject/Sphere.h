@@ -19,7 +19,7 @@ protected:
     void UpdateBoundingBox() override;
 public:
     Sphere(Point3D center, FP_TYPE radius);
-    virtual ~Sphere();
+    virtual ~Sphere() = default;
     void setCenter(Point3D center);
     void setRadius(FP_TYPE radius);
     Point3D getCenter();

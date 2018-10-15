@@ -19,7 +19,7 @@ protected:
     void UpdateBoundingBox() override;
 public:
     MeshTriangle(Vec3D vertexA, Vec3D vertexB, Vec3D vertexC, Vec3D normalA, Vec3D normalB, Vec3D normalC);
-    virtual ~MeshTriangle();
+    virtual ~MeshTriangle() = default;
     void SetSmooth(bool newIsSmooth);
     Vec3D getA();
     Vec3D getB();
@@ -32,7 +32,7 @@ public:
 class Mesh : public RayTracer::Grid
 {
 public:
-    virtual ~Mesh();
+    virtual ~Mesh() = default;
     void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
     virtual HitRecord Hit(const Ray& ray) override;
 };

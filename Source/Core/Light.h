@@ -83,3 +83,7 @@ public:
 	}
     bool InShadow(const Ray& ray, const HitRecord& record);
 };
+
+class AreaLight : public Light
+{
+};

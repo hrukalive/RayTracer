@@ -63,3 +63,7 @@ public:
     void SetE(const FP_TYPE exp);
 	RGBColor Shade(const HitRecord& record) override;
 };
+
+class Emissive : public Material
+{
+};

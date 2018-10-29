@@ -66,4 +66,27 @@ public:
 
 class Emissive : public Material
 {
+    float ls;
+    RGBColor ce;
+public:
+    virtual ~Emissive() = default;
+    void SetLs(const FP_TYPE newLs)
+    {
+        ls = newLs;
+    }
+    void SetCe(const RGBColor& newCe)
+    {
+        ce = newCe;
+    }
+    virtual RGBColor GetLe(const HitRecord& record)
+    {
+        return ce * ls;
+    }
+    RGBColor Shade(const HitRecord& record) override
+    {
+        if (-record.Normal * record.Ray.Direction > 0.0)
+            return ce * ls;
+        else
+            return BLACK;
+    }
 };

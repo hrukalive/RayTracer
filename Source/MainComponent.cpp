@@ -23,8 +23,8 @@ MainComponent::MainComponent()
     auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.0, 0.0, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-	//camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
-    camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
+	camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
     
 	std::shared_ptr<Light> parallelLight{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(parallelLight);
@@ -52,7 +52,7 @@ MainComponent::MainComponent()
 
 	//std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
 
-    File file("/Volumes/Document/dragon.obj");
+    File file("D:/dragon.obj");
     std::shared_ptr<GeometricObject> mesh;
     if (file.existsAsFile())
     {

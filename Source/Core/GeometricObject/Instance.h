@@ -28,6 +28,10 @@ public:
     void SetObject(std::shared_ptr<GeometricObject> newObjectPtr);
     void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
 
+    virtual Point3D Sample() override;
+    virtual Vec3D GetNormal(const Point3D p) override;
+    virtual FP_TYPE pdf(const HitRecord& record) override;
+
     void Translate(const FP_TYPE dx, const FP_TYPE dy, const FP_TYPE dz);
     void Scale(const FP_TYPE a, const FP_TYPE b, const FP_TYPE c);
     void RotateX(const FP_TYPE radian);

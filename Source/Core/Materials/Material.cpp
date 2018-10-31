@@ -55,7 +55,14 @@ RGBColor Matte::Shade(const HitRecord& record)
 			Ray shadowRay(record.HitPoint, wi);
 			if (!lights[i]->InShadow(shadowRay, record))
 			{
-				L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+                if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+                {
+                    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+                    L += ElemMul(diffuseBRDF.f(record, wi, wo),
+                        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
+                }
+                else
+                    L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
 			}
 		}
 	}
@@ -102,9 +109,25 @@ RGBColor Phong::Shade(const HitRecord& record)
 			Ray shadowRay(record.HitPoint, wi);
 			if (!lights[i]->InShadow(shadowRay, record))
 			{
-				L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+                if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+                {
+                    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
+                        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
+                }
+                else
+				    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), 
+                        lights[i]->L(record) * ndotwi);
 			}
 		}
 	}
 	return L;
+}
+
+RGBColor Emissive::Shade(const HitRecord& record)
+{
+    if (-record.Normal * record.Ray.Direction > 0.0)
+        return ce * ls;
+    else
+        return BLACK;
 }

@@ -21,7 +21,7 @@ void Plane::setV(Vec3D vDirection) { v = vDirection; n = u ^ v; UpdateBoundingBo
 Point3D Plane::getOrigin() { return a; }
 Vec3D Plane::getU() { return u; }
 Vec3D Plane::getV() { return v; }
-Vec3D Plane::getNormal() { return n.normalised(); }
+Vec3D Plane::GetNormal(const Point3D p) { return n.normalised(); }
 
 HitRecord Plane::Hit(const Ray& ray)
 {

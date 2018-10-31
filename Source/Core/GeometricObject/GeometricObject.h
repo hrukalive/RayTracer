@@ -24,4 +24,7 @@ public:
     virtual ~GeometricObject() = default;
     virtual void SetMaterial(std::shared_ptr<Material> newMaterialPtr) { materialPtr = newMaterialPtr; }
 	BBox& GetBoundingBox() { return boundingBox; }
+    virtual Point3D Sample() = 0;
+    virtual Vec3D GetNormal(const Point3D p) = 0;
+    virtual FP_TYPE pdf(const HitRecord& record) = 0;
 };

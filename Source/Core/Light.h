@@ -86,4 +86,38 @@ public:
 
 class AreaLight : public Light
 {
+    std::shared_ptr<GeometricObject> ObjPtr;
+    std::shared_ptr<Emissive> MaterialPtr;
+    Point3D samplePoint;
+    Vec3D lightNormal;
+    Vec3D wi;
+public:
+    AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Material> material) : ObjPtr(obj), MaterialPtr(material) {}
+    virtual ~AreaLight() {}
+    inline Vec3D GetDirection(const HitRecord& record)
+    {
+        samplePoint = ObjPtr->Sample();
+        lightNormal = ObjPtr->GetNormal(samplePoint);
+        wi = (samplePoint - record.HitPoint).normalised();
+        return wi;
+    }
+    inline RGBColor L(const HitRecord& record)
+    {
+        FP_TYPE ndotd = -lightNormal * wi;
+        if (ndotd > 0.0)
+            return MaterialPtr->GetLe(record);
+        else
+            return BLACK;
+    }
+    inline FP_TYPE G(const HitRecord& record)
+    {
+        FP_TYPE ndotd = -lightNormal * wi;
+        FP_TYPE d2 = (samplePoint - record.HitPoint).lengthSquared();
+        return ndotd / d2;
+    }
+    inline FP_TYPE pdf(const HitRecord& record)
+    {
+        return ObjPtr->pdf(record);
+    }
+    bool InShadow(const Ray& ray, const HitRecord& record);
 };

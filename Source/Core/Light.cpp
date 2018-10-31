@@ -38,3 +38,18 @@ bool ParallelLight::InShadow(const Ray& ray, const HitRecord& record)
     }
     return false;
 }
+
+bool AreaLight::InShadow(const Ray& ray, const HitRecord& record)
+{
+    auto& objs = record.WorldPtr->GetObjects();
+    auto d = (samplePoint - ray.Origin) * ray.Direction.normalised();
+    for (int i = 0; i < objs.size(); i++)
+    {
+        auto tmp = objs[i]->Hit(ray);
+        if (tmp.Hit && tmp.T < d)
+        {
+            return true;
+        }
+    }
+    return false;
+}

@@ -34,5 +34,10 @@ class Mesh : public RayTracer::Grid
 public:
     virtual ~Mesh() = default;
     void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
+
+    virtual Point3D Sample() override;
+    virtual Vec3D GetNormal(const Point3D p) override;
+    virtual FP_TYPE pdf(const HitRecord& record) override;
+
     virtual HitRecord Hit(const Ray& ray) override;
 };

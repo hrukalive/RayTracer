@@ -82,11 +82,5 @@ public:
     {
         return ce * ls;
     }
-    RGBColor Shade(const HitRecord& record) override
-    {
-        if (-record.Normal * record.Ray.Direction > 0.0)
-            return ce * ls;
-        else
-            return BLACK;
-    }
+    RGBColor Shade(const HitRecord& record) override;
 };

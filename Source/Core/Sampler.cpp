@@ -21,6 +21,13 @@ std::vector<Point2D> PreviewSampler::SampleCircle(int count)
     return SampleSquare(count);
 }
 
+std::vector<Point3D> PreviewSampler::SampleHemisphere(int count, const FP_TYPE e)
+{
+    std::vector<Point3D> ret;
+    ret.push_back(Point3D(0.0, 0.0, 1.0));
+    return ret;
+}
+
 std::vector<Point2D> MultiJittered::SampleSquare(int count)
 {
     auto n = int(sqrt(count));
@@ -57,6 +64,50 @@ std::vector<Point2D> MultiJittered::SampleSquare(int count)
     for (int i = 0; i < n * n; i++)
     {
         ret.push_back(Point2D(sampleX[i], sampleY[i]));
+    }
+    return ret;
+}
+
+std::vector<Point3D> MultiJittered::SampleHemisphere(int count, const FP_TYPE e)
+{
+    auto n = int(sqrt(count));
+    auto subCellWidth = 1.0 / count;
+    Random shuffleRand;
+    
+    std::vector<Point3D> ret;
+    std::vector<double> sampleX, sampleY;
+    
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            sampleX.push_back((i * n + j) * subCellWidth + random.nextDouble() * subCellWidth);
+            sampleY.push_back((j * n + i) * subCellWidth + random.nextDouble() * subCellWidth);
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            int k = shuffleRand.nextInt(Range<int>(j, n));
+            std::swap(sampleX[i * n + j], sampleX[i * n + k]);
+        }
+    }
+    for (int i = 0; i < n; i++)
+    {
+        for (int j = 0; j < n; j++)
+        {
+            int k = shuffleRand.nextInt(Range<int>(j, n));
+            std::swap(sampleY[j * n + i], sampleY[k * n + i]);
+        }
+    }
+    for (int i = 0; i < n * n; i++)
+    {
+        FP_TYPE cos_phi = cos(2.0 * PI * sampleX[i]);
+        FP_TYPE sin_phi = sin(2.0 * PI * sampleX[i]);
+        FP_TYPE cos_theta = pow((1.0 - sampleY[i]), 1.0 / (e + 1.0));
+        FP_TYPE sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+        ret.push_back(Point3D(sin_theta * cos_phi, sin_theta * sin_phi, cos_theta));
     }
     return ret;
 }

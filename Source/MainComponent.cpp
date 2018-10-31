@@ -13,7 +13,8 @@ MainComponent::MainComponent()
 {
     auto vpWidth = 512, vpHeight = 512;
     world.reset(new World());
-    tracer.reset(new RayCast(world));
+    // tracer.reset(new RayCast(world));
+    tracer.reset(new Whitted(world));
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4));
     sampler.reset(new MultiJittered());
     
@@ -40,43 +41,53 @@ MainComponent::MainComponent()
 	world->SetAmbient(ambient);
 
 	std::shared_ptr<GeometricObject> plane{ new Plane(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
-	std::shared_ptr<Material> matte{ new Matte() };
-	std::dynamic_pointer_cast<Matte>(matte)->SetKa(0.0);
-	std::dynamic_pointer_cast<Matte>(matte)->SetKd(0.5);
-	std::dynamic_pointer_cast<Matte>(matte)->SetCd(WHITE);
-	plane->SetMaterial(matte);
+    
+    std::shared_ptr<Material> phongplane{ new Reflective() };
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetKa(0.0);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetKd(0.0);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetKs(0.0);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetE(80.0);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetCs(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Reflective>(phongplane)->SetCr(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Reflective>(phongplane)->SetKr(0.5);
+    
+	plane->SetMaterial(phongplane);
 	std::shared_ptr<GeometricObject> plins{ new Instance(plane) };
 
 	//std::shared_ptr<GeometricObject> comp{ new Compound() };
 	std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
 
-	//std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
+	std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
 
-    File file("D:/dragon.obj");
-    std::shared_ptr<GeometricObject> mesh;
-    if (file.existsAsFile())
-    {
-        OBJParser parser;
-        StringArray strarr;
-        file.readLines(strarr);
-        mesh = std::make_shared<Mesh>(parser.parse(strarr));
-    }
+//    File file("D:/dragon.obj");
+//    std::shared_ptr<GeometricObject> mesh;
+//    if (file.existsAsFile())
+//    {
+//        OBJParser parser;
+//        StringArray strarr;
+//        file.readLines(strarr);
+//        mesh = std::make_shared<Mesh>(parser.parse(strarr));
+//    }
 
 	int numSphere = 100;
     FP_TYPE volume = (FP_TYPE)(0.1 / numSphere);
     FP_TYPE radius = (FP_TYPE)pow(0.75 * volume / PI, 1.0 / 3);
-	std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -1, 0);
+	std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -0.8, 0);
+    
 	Random random;
 
     for (int i = 0; i < numSphere; i++)
     {
-        std::shared_ptr<Material> phong{ new Phong() };
+        std::shared_ptr<Material> phong{ new Reflective() };
         std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
         std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
         std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
         std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
         std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
         std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
+        std::dynamic_pointer_cast<Reflective>(phong)->SetCr(RGBColor(1.0, 1.0, 1.0));
+        std::dynamic_pointer_cast<Reflective>(phong)->SetKr(0.5);
 
         std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble()), radius) };
         sphere->SetMaterial(phong);

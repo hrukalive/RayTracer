@@ -21,11 +21,11 @@ RGBColor Lambertian::rho(const HitRecord& record, const Vec3D& wo) const
     return cd * kd;
 }
 
-PerfectSpecular::PerfectSpecular() : kd(0.0), cd(BLACK) {}
-PerfectSpecular::PerfectSpecular(const FP_TYPE kd, const RGBColor& cd) : kd(kd), cd(cd) {}
+PerfectSpecular::PerfectSpecular() : kr(0.0), cr(BLACK) {}
+PerfectSpecular::PerfectSpecular(const FP_TYPE kr, const RGBColor& cr) : kr(kr), cr(cr) {}
 
-void PerfectSpecular::SetKd(const FP_TYPE newKd) { kd = newKd; }
-void PerfectSpecular::SetCd(const RGBColor& newCd) { cd = newCd; }
+void PerfectSpecular::SetKr(const FP_TYPE newKr) { kr = newKr; }
+void PerfectSpecular::SetCr(const RGBColor& newCr) { cr = newCr; }
 
 RGBColor PerfectSpecular::f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
 {
@@ -34,7 +34,9 @@ RGBColor PerfectSpecular::f(const HitRecord& record, const Vec3D& wi, const Vec3
 
 RGBColor PerfectSpecular::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
 {
-    return BLACK;
+    FP_TYPE ndotwo = record.Normal * wo;
+    Vec3D r = -wo + record.Normal * 2.0 * ndotwo;
+    return cr * kr / (record.Normal * r);
 }
 
 RGBColor PerfectSpecular::rho(const HitRecord& record, const Vec3D& wo) const

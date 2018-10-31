@@ -109,10 +109,13 @@ inline size_t m3D_e_magicbits(const size_t x, const size_t y, const size_t z) {
 	return morton3D_SplitBy3bits(x) | (morton3D_SplitBy3bits(y) << 1) | (morton3D_SplitBy3bits(z) << 2);
 }
 
+class Tracer;
+
 struct Ray
 {
 	Point3D Origin;
 	Vec3D Direction;
+    std::shared_ptr<Tracer> TracerPtr = nullptr;
 	Ray() {}
     Ray(Vec3D origin, Vec3D direction) : Origin(origin), Direction(direction) {}
 	inline Point3D GetPoint(FP_TYPE t) const
@@ -129,9 +132,11 @@ struct HitRecord
 	Vec3D Normal;
 	Vec3D HitPoint;
 	FP_TYPE T = 0.0f;
+    int Depth = 0;
 	Ray Ray;
     std::shared_ptr<Material> MaterialPtr = nullptr;
     std::shared_ptr<World> WorldPtr = nullptr;
+    std::shared_ptr<Tracer> TracerPtr = nullptr;
 
 	HitRecord() {}
 	HitRecord(Vec3D normal, Vec3D hitPoint, FP_TYPE t)

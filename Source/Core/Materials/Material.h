@@ -90,3 +90,35 @@ public:
             return BLACK;
     }
 };
+
+class Reflective : public Phong
+{
+    PerfectSpecular reflectiveBRDF;
+public:
+    virtual ~Reflective() = default;
+    void SetKr(const FP_TYPE newKr)
+    {
+        reflectiveBRDF.SetKr(newKr);
+    }
+    void SetCr(const RGBColor& newCr)
+    {
+        reflectiveBRDF.SetCr(newCr);
+    }
+    RGBColor Shade(const HitRecord& record) override;
+};
+
+class GlossyReflector : public Phong
+{
+    GlossySpecular glossyBRDF;
+public:
+    virtual ~GlossyReflector() = default;
+    void SetKr(const FP_TYPE newKr)
+    {
+        glossyBRDF.SetKr(newKr);
+    }
+    void SetExp(const FP_TYPE newExp)
+    {
+        glossyBRDF.SetExp(newExp);
+    }
+    RGBColor Shade(const HitRecord& record) override;
+};

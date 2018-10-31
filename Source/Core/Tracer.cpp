@@ -17,10 +17,25 @@ RGBColor Tracer::Trace(const Ray& ray) const
 }
 
 
+RayCast::RayCast(std::shared_ptr<World>& world) : Tracer(world) {}
 RGBColor RayCast::Trace(const Ray& ray, int depth) const
 {
     HitRecord record = worldPtr->HitObjects(ray);
     record.WorldPtr = worldPtr;
+    record.TracerPtr = ray.TracerPtr;
     return record.Hit ? (record.MaterialPtr->Shade(record)) : (worldPtr->GetBackgroundColor());
 }
-RayCast::RayCast(std::shared_ptr<World>& world) : Tracer(world) {}
+
+
+Whitted::Whitted(std::shared_ptr<World>& world) : Tracer(world), maxDepth(5) {}
+Whitted::Whitted(std::shared_ptr<World>& world, int maxDepth) : Tracer(world), maxDepth(maxDepth) {}
+RGBColor Whitted::Trace(const Ray& ray, int depth) const
+{
+    if (depth >= maxDepth)
+        return BLACK;
+    HitRecord record = worldPtr->HitObjects(ray);
+    record.WorldPtr = worldPtr;
+    record.TracerPtr = ray.TracerPtr;
+    record.Depth = depth;
+    return record.Hit ? (record.MaterialPtr->Shade(record)) : (worldPtr->GetBackgroundColor());
+}

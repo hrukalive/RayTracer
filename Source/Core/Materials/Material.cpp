@@ -10,6 +10,7 @@
 
 #include "Material.h"
 #include "../World.h"
+#include "../Tracer.h"
 
 RGBColor Material::Shade(const HitRecord& record) { return BLACK; }
 RGBColor Material::AreaLightShade(const HitRecord& record) { return BLACK; }
@@ -107,4 +108,31 @@ RGBColor Phong::Shade(const HitRecord& record)
 		}
 	}
 	return L;
+}
+
+RGBColor Reflective::Shade(const HitRecord& record)
+{
+    RGBColor L(Phong::Shade(record));
+    Vec3D wo = -record.Ray.Direction;
+    Vec3D wi;
+    RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo);
+    Ray reflected(record.HitPoint, wi);
+    reflected.TracerPtr = record.TracerPtr;
+    
+    L += ElemMul(fr, record.TracerPtr->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    return L;
+}
+
+RGBColor GlossyReflector::Shade(const HitRecord& record)
+{
+    RGBColor L(Phong::Shade(record));
+    Vec3D wo = -record.Ray.Direction;
+    Vec3D wi;
+    FP_TYPE pdf;
+    RGBColor fr = glossyBRDF.sampleF(record, wi, wo, pdf);
+    Ray reflected(record.HitPoint, wi);
+    reflected.TracerPtr = record.TracerPtr;
+    
+    L += ElemMul(fr, record.TracerPtr->Trace(reflected, record.Depth + 1) * (record.Normal * wi) / pdf);
+    return L;
 }

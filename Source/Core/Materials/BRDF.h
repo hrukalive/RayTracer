@@ -32,15 +32,15 @@ public:
 
 class PerfectSpecular : public BRDF
 {
-    FP_TYPE kd;
-    RGBColor cd;
+    FP_TYPE kr;
+    RGBColor cr;
 public:
     PerfectSpecular();
-    PerfectSpecular(const FP_TYPE kd, const RGBColor& cd);
+    PerfectSpecular(const FP_TYPE kr, const RGBColor& cr);
     virtual ~PerfectSpecular() = default;
 
-    void SetKd(const FP_TYPE newKd);
-    void SetCd(const RGBColor& newCd);
+    void SetKr(const FP_TYPE newKr);
+    void SetCr(const RGBColor& newCr);
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
     virtual RGBColor sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;

@@ -28,9 +28,5 @@ public:
     Vec3D GetNormal(const int face) const;
     bool Inside(const Point3D point);
 
-    virtual Point3D Sample() override;
-    virtual Vec3D GetNormal(const Point3D p) override;
-    virtual FP_TYPE pdf(const HitRecord& record) override;
-
     HitRecord Hit(const Ray& ray) override;
 };

@@ -16,6 +16,7 @@ class Material
 {
 public:
 	virtual ~Material() = default;
+    virtual RGBColor GetLe(const HitRecord& record);
     virtual RGBColor Shade(const HitRecord& record);
     virtual RGBColor AreaLightShade(const HitRecord& record);
     virtual RGBColor PathShade(const HitRecord& record);
@@ -78,7 +79,7 @@ public:
     {
         ce = newCe;
     }
-    virtual RGBColor GetLe(const HitRecord& record)
+    virtual RGBColor GetLe(const HitRecord& record) override
     {
         return ce * ls;
     }
@@ -106,13 +107,13 @@ class GlossyReflector : public Phong
     GlossySpecular glossyBRDF;
 public:
     virtual ~GlossyReflector() = default;
-    void SetKr(const FP_TYPE newKr)
+    void SetKs(const FP_TYPE newKs)
     {
-        glossyBRDF.SetKr(newKr);
+        glossyBRDF.SetKs(newKs);
     }
-    void SetExp(const FP_TYPE newExp)
+    void SetE(const FP_TYPE newE)
     {
-        glossyBRDF.SetExp(newExp);
+        glossyBRDF.SetE(newE);
     }
     RGBColor Shade(const HitRecord& record) override;
 };

@@ -11,7 +11,7 @@ RGBColor Lambertian::f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo
     return (cd * kd) * INV_PI;
 }
 
-RGBColor Lambertian::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
+RGBColor Lambertian::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const
 {
     return BLACK;
 }
@@ -32,7 +32,7 @@ RGBColor PerfectSpecular::f(const HitRecord& record, const Vec3D& wi, const Vec3
     return BLACK;
 }
 
-RGBColor PerfectSpecular::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
+RGBColor PerfectSpecular::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const
 {
     FP_TYPE ndotwo = record.Normal * wo;
     Vec3D r = -wo + record.Normal * 2.0 * ndotwo;
@@ -64,7 +64,7 @@ RGBColor GlossySpecular::f(const HitRecord& record, const Vec3D& wi, const Vec3D
     return L;
 } // From book chapter 15
 
-RGBColor GlossySpecular::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const
+RGBColor GlossySpecular::sampleF(const HitRecord& record, const Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const
 {
     return BLACK;
 }

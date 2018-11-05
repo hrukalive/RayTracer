@@ -19,7 +19,7 @@
 class Renderer
 {
 	size_t renderedCount;
-    int threadDim = 2;
+    int threadDim = 1;
 	int priority = 3;
 	std::function<void(FP_TYPE)> successCallback;
 	ThreadPool pool;

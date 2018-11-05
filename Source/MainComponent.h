@@ -10,7 +10,8 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "Core/Utility.h"
-#include "Core/GeometricObject/Plane.h"
+#include "Core/GeometricObject/Rectangle.h"
+#include "Core/GeometricObject/Box.h"
 #include "Core/GeometricObject/Sphere.h"
 #include "Core/GeometricObject/Mesh.h"
 #include "Core/GeometricObject/Compound.h"
@@ -54,6 +55,7 @@ public:
     MainComponent();
     ~MainComponent();
 
+    void setupWorld();
     //==============================================================================
     StringArray getMenuBarNames() override;
     PopupMenu getMenuForIndex (int menuIndex, const String& /*menuName*/) override;
@@ -84,6 +86,7 @@ private:
 	bool rendering = false;
 	bool renderFinished = false;
 
+    int vpWidth = 512, vpHeight = 512;
     std::shared_ptr<World> world;
     std::shared_ptr<Tracer> tracer;
     std::shared_ptr<Sampler> sampler;

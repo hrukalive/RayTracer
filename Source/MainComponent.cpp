@@ -11,108 +11,13 @@
 //==============================================================================
 MainComponent::MainComponent()
 {
-    auto vpWidth = 512, vpHeight = 512;
     world.reset(new World());
-    // tracer.reset(new RayCast(world));
-    tracer.reset(new Whitted(world));
+    tracer.reset(new RayCast(world));
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4));
     sampler.reset(new PreviewSampler());
     
-	auto r = 3.7; //2.8
-    auto theta = 30.0 * PI_OVER_180;
-    auto phi = 45 * PI_OVER_180;
-    auto roll = 0.0 * PI_OVER_180;
-    auto lookat = Vec3D(0.0, 0.0, 0.0);
-    auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-	camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
-    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
-    
-	std::shared_ptr<Light> parallelLight{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
-    world->AddLight(parallelLight);
-    
-	std::shared_ptr<Light> l2{ new PointLight(5, Vec3D(1, 0, 0), Point3D(-2, 1, 0)) };
-	world->AddLight(l2);
-	std::shared_ptr<Light> l3{ new PointLight(5, Vec3D(0, 1, 0), Point3D(2, 1, 0)) };
-	world->AddLight(l3);
-	std::shared_ptr<Light> l4{ new PointLight(5, Vec3D(0, 0, 1), Point3D(0, 1, 2)) };
-	world->AddLight(l4);
+    setupWorld();
 
-	std::shared_ptr<Light> ambient{ new Ambient(0.8, RGBColor(1.0, 1.0, 1.0)) };
-	world->SetAmbient(ambient);
-
-	std::shared_ptr<GeometricObject> plane{ new Plane(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
-    
-    std::shared_ptr<Material> phongplane{ new Reflective() };
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetKa(0.3);
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetKd(0.3);
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetKs(0.3);
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetE(80.0);
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetCd(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetCs(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<Reflective>(phongplane)->SetCr(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<Reflective>(phongplane)->SetKr(0.5);
-    
-	plane->SetMaterial(phongplane);
-	std::shared_ptr<GeometricObject> plins{ new Instance(plane) };
-
-	//std::shared_ptr<GeometricObject> comp{ new Compound() };
-	std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
-
-	std::dynamic_pointer_cast<Compound>(comp)->AddObject(plins);
-
-//    File file("D:/dragon.obj");
-//    std::shared_ptr<GeometricObject> mesh;
-//    if (file.existsAsFile())
-//    {
-//        OBJParser parser;
-//        StringArray strarr;
-//        file.readLines(strarr);
-//        mesh = std::make_shared<Mesh>(parser.parse(strarr));
-//    }
-
-	int numSphere = 100;
-    FP_TYPE volume = (FP_TYPE)(0.1 / numSphere);
-    FP_TYPE radius = (FP_TYPE)pow(0.75 * volume / PI, 1.0 / 3);
-	std::dynamic_pointer_cast<Instance>(plins)->Translate(0, -0.8, 0);
-    
-	Random random;
-
-    for (int i = 0; i < numSphere; i++)
-    {
-        std::shared_ptr<Material> phong{ new Reflective() };
-        std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
-        std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
-        std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
-        std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
-        std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
-        std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
-        std::dynamic_pointer_cast<Reflective>(phong)->SetCr(RGBColor(1.0, 1.0, 1.0));
-        std::dynamic_pointer_cast<Reflective>(phong)->SetKr(0.5);
-
-        std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble()), radius) };
-        sphere->SetMaterial(phong);
-        std::dynamic_pointer_cast<Compound>(comp)->AddObject(sphere);
-    }
-
-//    std::dynamic_pointer_cast<Instance>(plins)->Translate(0, mesh->GetBoundingBox().GetMinPoint().y, 0);
-//    std::shared_ptr<Material> phong{ new Phong() };
-//    std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
-//    std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.3);
-//    std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
-//    std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
-//    std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(1.0, 1.0, 1.0));
-//    std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
-//    mesh->SetMaterial(phong);
-//
-//    std::shared_ptr<GeometricObject> ins{ new Instance(mesh) };
-//    std::dynamic_pointer_cast<Instance>(ins)->Scale(1, 1, 1);
-//    std::dynamic_pointer_cast<Instance>(ins)->Translate(0, 0, 0);
-//    std::dynamic_pointer_cast<Compound>(comp)->AddObject(ins);
-
-
-	std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
-	world->AddObject(comp);
-    
     menuBar.reset(new MenuBarComponent(this));
     image.reset(new ImageComponent());
     progressBar.reset(new ProgressBar(progress));
@@ -148,6 +53,55 @@ MainComponent::~MainComponent()
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
+}
+
+void MainComponent::setupWorld()
+{
+    auto r = 3.7; //2.8
+    auto theta = 30.0 * PI_OVER_180;
+    auto phi = 45 * PI_OVER_180;
+    auto roll = 0.0 * PI_OVER_180;
+    auto lookat = Vec3D(0.0, 0.0, 0.0);
+    auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
+    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
+
+    std::shared_ptr<Light> parallelLight{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
+    world->AddLight(parallelLight);
+
+    std::shared_ptr<Light> ambient{ new Ambient(0.8, RGBColor(1.0, 1.0, 1.0)) };
+    world->SetAmbient(ambient);
+
+    std::shared_ptr<GeometricObject> plane{ new RayTracer::Rectangle(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
+
+    std::shared_ptr<GeometricObject> box1{ new Box(Point3D(-1, 0, 0), Point3D(-0.7, 1, 0.3)) };
+    std::shared_ptr<GeometricObject> box2{ new Box(Point3D(-0.43, 0, 0), Point3D(-0.13, 1, 0.3)) };
+    std::shared_ptr<GeometricObject> box3{ new Box(Point3D(0.13, 0, 0), Point3D(0.43, 1, 0.3)) };
+    std::shared_ptr<GeometricObject> box4{ new Box(Point3D(0.7, 0, 0), Point3D(1, 1, 0.3)) };
+    std::shared_ptr<Material> boxMat1{ new Reflective() };
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKa(0.3);
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKd(0.3);
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKs(0.3);
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetE(80.0);
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCr(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKr(0.5);
+    box1->SetMaterial(boxMat1);
+    box2->SetMaterial(boxMat1);
+    box3->SetMaterial(boxMat1);
+    box4->SetMaterial(boxMat1);
+
+    std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box1);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box2);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box3);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box4);
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
+
+    world->AddObject(comp);
 }
 
 //==============================================================================

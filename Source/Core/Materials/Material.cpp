@@ -12,6 +12,7 @@
 #include "../World.h"
 #include "../Tracer.h"
 
+RGBColor Material::GetLe(const HitRecord& record) { return BLACK; }
 RGBColor Material::Shade(const HitRecord& record) { return BLACK; }
 RGBColor Material::AreaLightShade(const HitRecord& record) { return BLACK; }
 RGBColor Material::PathShade(const HitRecord& record) { return BLACK; }
@@ -138,7 +139,7 @@ RGBColor Reflective::Shade(const HitRecord& record)
     RGBColor L(Phong::Shade(record));
     Vec3D wo = -record.Ray.Direction;
     Vec3D wi;
-    RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo);
+    RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo, 0);
     Ray reflected(record.HitPoint, wi);
     reflected.TracerPtr = record.TracerPtr;
     

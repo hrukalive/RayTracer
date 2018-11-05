@@ -39,18 +39,6 @@ typedef dsp::Matrix<FP_TYPE> Matrix;
 #define Y_DIR (Vec3D(0.0, 1.0, 0.0))
 #define Z_DIR (Vec3D(0.0, 0.0, 1.0))
 
-
-class Tracer;
-class World;
-class Sampler;
-class ViewPlane;
-class Camera;
-std::shared_ptr<World> world;
-std::shared_ptr<Tracer> tracer;
-std::shared_ptr<Sampler> sampler;
-std::shared_ptr<ViewPlane> viewPlane;
-std::shared_ptr<Camera> camera;
-
 bool operator<(const Point3D& lhs, const Point3D& rhs);
 std::ostream& operator<<(std::ostream& o, const Vec3D& vec);
 std::ostream& operator<<(std::ostream& o, const Matrix& m);
@@ -121,6 +109,7 @@ inline size_t m3D_e_magicbits(const size_t x, const size_t y, const size_t z) {
 	return morton3D_SplitBy3bits(x) | (morton3D_SplitBy3bits(y) << 1) | (morton3D_SplitBy3bits(z) << 2);
 }
 
+class Tracer;
 
 struct Ray
 {

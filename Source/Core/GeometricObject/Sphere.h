@@ -25,9 +25,9 @@ public:
     Point3D getCenter();
     FP_TYPE getRadius();
 
-    virtual Point3D Sample() override;
-    virtual Vec3D GetNormal(const Point3D p) override;
-    virtual FP_TYPE pdf(const HitRecord& record) override;
+    //virtual Point3D Sample() override;
+    //virtual Vec3D GetNormal(const Point3D p) override;
+    //virtual FP_TYPE pdf(const HitRecord& record) override;
 
     virtual HitRecord Hit(const Ray& ray) override;
 };

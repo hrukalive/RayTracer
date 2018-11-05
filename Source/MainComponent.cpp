@@ -16,7 +16,7 @@ MainComponent::MainComponent()
     // tracer.reset(new RayCast(world));
     tracer.reset(new Whitted(world));
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4));
-    sampler.reset(new MultiJittered());
+    sampler.reset(new PreviewSampler());
     
 	auto r = 3.7; //2.8
     auto theta = 30.0 * PI_OVER_180;
@@ -43,9 +43,9 @@ MainComponent::MainComponent()
 	std::shared_ptr<GeometricObject> plane{ new Plane(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
     
     std::shared_ptr<Material> phongplane{ new Reflective() };
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetKa(0.0);
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetKd(0.0);
-    std::dynamic_pointer_cast<Phong>(phongplane)->SetKs(0.0);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetKa(0.3);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetKd(0.3);
+    std::dynamic_pointer_cast<Phong>(phongplane)->SetKs(0.3);
     std::dynamic_pointer_cast<Phong>(phongplane)->SetE(80.0);
     std::dynamic_pointer_cast<Phong>(phongplane)->SetCd(RGBColor(1.0, 1.0, 1.0));
     std::dynamic_pointer_cast<Phong>(phongplane)->SetCs(RGBColor(1.0, 1.0, 1.0));

@@ -57,13 +57,13 @@ RGBColor Matte::Shade(const HitRecord& record)
 			Ray shadowRay(record.HitPoint, wi);
 			if (!lights[i]->InShadow(shadowRay, record))
 			{
-                if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
-                {
-                    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
-                    L += ElemMul(diffuseBRDF.f(record, wi, wo),
-                        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
-                }
-                else
+                //if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+                //{
+                //    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+                //    L += ElemMul(diffuseBRDF.f(record, wi, wo),
+                //        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
+                //}
+                //else
                     L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
 			}
 		}
@@ -111,13 +111,13 @@ RGBColor Phong::Shade(const HitRecord& record)
 			Ray shadowRay(record.HitPoint, wi);
 			if (!lights[i]->InShadow(shadowRay, record))
 			{
-                if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
-                {
-                    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
-                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
-                        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
-                }
-                else
+                //if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+                //{
+                //    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+                //    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
+                //        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
+                //}
+                //else
 				    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), 
                         lights[i]->L(record) * ndotwi);
 			}

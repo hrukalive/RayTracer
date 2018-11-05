@@ -28,9 +28,9 @@ public:
     Vec3D getU();
     Vec3D getV();
 
-    virtual Point3D Sample() override;
-    virtual Vec3D GetNormal(const Point3D p) override;
-    virtual FP_TYPE pdf(const HitRecord& record) override;
+    //virtual Point3D Sample() override;
+    virtual Vec3D GetNormal(const Point3D p);
+    //virtual FP_TYPE pdf(const HitRecord& record) override;
 
     virtual HitRecord Hit(const Ray& ray) override;
 };

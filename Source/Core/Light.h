@@ -84,21 +84,21 @@ public:
     bool InShadow(const Ray& ray, const HitRecord& record);
 };
 
-class Emissive;
-class GeometricObject;
-class AreaLight : public Light
-{
-    std::shared_ptr<GeometricObject> ObjPtr;
-    std::shared_ptr<Emissive> MaterialPtr;
-    Point3D samplePoint;
-    Vec3D lightNormal;
-    Vec3D wi;
-public:
-    AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Emissive> material);
-    virtual ~AreaLight() = default;
-    Vec3D GetDirection(const HitRecord& record);
-    RGBColor L(const HitRecord& record);
-    FP_TYPE G(const HitRecord& record);
-    FP_TYPE pdf(const HitRecord& record);
-    bool InShadow(const Ray& ray, const HitRecord& record);
-};
+//class Emissive;
+//class GeometricObject;
+//class AreaLight : public Light
+//{
+//    std::shared_ptr<GeometricObject> ObjPtr;
+//    std::shared_ptr<Material> MaterialPtr;
+//    Point3D samplePoint;
+//    Vec3D lightNormal;
+//    Vec3D wi;
+//public:
+//    AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Material> material);
+//    virtual ~AreaLight() = default;
+//    Vec3D GetDirection(const HitRecord& record);
+//    RGBColor L(const HitRecord& record);
+//    FP_TYPE G(const HitRecord& record);
+//    FP_TYPE V(const HitRecord& record);
+//    bool InShadow(const Ray& ray, const HitRecord& record);
+//};

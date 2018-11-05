@@ -84,11 +84,6 @@ private:
 	bool rendering = false;
 	bool renderFinished = false;
     
-    std::shared_ptr<World> world;
-    std::shared_ptr<Tracer> tracer;
-    std::shared_ptr<Sampler> sampler;
-    std::shared_ptr<ViewPlane> viewPlane;
-    std::shared_ptr<Camera> camera;
     Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this, std::placeholders::_1))};
 
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainComponent)

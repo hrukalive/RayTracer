@@ -57,11 +57,11 @@ MainComponent::~MainComponent()
 
 void MainComponent::setupWorld()
 {
-    auto r = 3.7; //2.8
-    auto theta = 30.0 * PI_OVER_180;
-    auto phi = 45 * PI_OVER_180;
+    auto r = 2.7;
+    auto theta = 145.0 * PI_OVER_180;
+    auto phi = 70 * PI_OVER_180;
     auto roll = 0.0 * PI_OVER_180;
-    auto lookat = Vec3D(0.0, 0.0, 0.0);
+    auto lookat = Vec3D(0.2, 0.7, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
     camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
     //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
@@ -71,33 +71,49 @@ void MainComponent::setupWorld()
 
     std::shared_ptr<Light> ambient{ new Ambient(0.8, RGBColor(1.0, 1.0, 1.0)) };
     world->SetAmbient(ambient);
+    
+    std::shared_ptr<GeometricObject> lightplane{ new RayTracer::Rectangle(Point3D(-0.3, 0.7, 1.0), Vec3D(0.6, 0, 0), Vec3D(0, 0.5, 0)) };
+    std::shared_ptr<Material> lightMat{ new Emissive() };
+    std::dynamic_pointer_cast<Emissive>(lightMat)->SetLs(0.9);
+    std::dynamic_pointer_cast<Emissive>(lightMat)->SetCe(RGBColor(1.0, 1.0, 1.0));
+    lightplane->SetMaterial(lightMat);
 
     std::shared_ptr<GeometricObject> plane{ new RayTracer::Rectangle(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
+    std::shared_ptr<Material> planeMat{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat)->SetKa(0.3);
+    std::dynamic_pointer_cast<Matte>(planeMat)->SetKd(0.7);
+    std::dynamic_pointer_cast<Matte>(planeMat)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    plane->SetMaterial(planeMat);
 
     std::shared_ptr<GeometricObject> box1{ new Box(Point3D(-1, 0, 0), Point3D(-0.7, 1, 0.3)) };
-    std::shared_ptr<GeometricObject> box2{ new Box(Point3D(-0.43, 0, 0), Point3D(-0.13, 1, 0.3)) };
+    std::shared_ptr<GeometricObject> box2{ new Box(Point3D(-0.43, 0, 0.2), Point3D(-0.13, 1, 0.5)) };
     std::shared_ptr<GeometricObject> box3{ new Box(Point3D(0.13, 0, 0), Point3D(0.43, 1, 0.3)) };
-    std::shared_ptr<GeometricObject> box4{ new Box(Point3D(0.7, 0, 0), Point3D(1, 1, 0.3)) };
-    std::shared_ptr<Material> boxMat1{ new Reflective() };
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKa(0.3);
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKd(0.3);
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKs(0.3);
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetE(80.0);
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCd(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCr(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKr(0.5);
+    std::shared_ptr<GeometricObject> box4{ new Box(Point3D(0.7, 0, 0.2), Point3D(1, 1, 0.5)) };
+    std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(-0.3, 0.3, -0.5), 0.3) };
+    std::shared_ptr<Material> boxMat1{ new Phong() };
+    std::dynamic_pointer_cast<Phong>(boxMat1)->SetKa(0.3);
+    std::dynamic_pointer_cast<Phong>(boxMat1)->SetKd(0.3);
+    std::dynamic_pointer_cast<Phong>(boxMat1)->SetKs(0.3);
+    std::dynamic_pointer_cast<Phong>(boxMat1)->SetE(80.0);
+    std::dynamic_pointer_cast<Phong>(boxMat1)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<Phong>(boxMat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
+//    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetCr(RGBColor(1.0, 1.0, 1.0));
+//    std::dynamic_pointer_cast<Reflective>(boxMat1)->SetKr(0.5);
     box1->SetMaterial(boxMat1);
     box2->SetMaterial(boxMat1);
     box3->SetMaterial(boxMat1);
     box4->SetMaterial(boxMat1);
+    sphere->SetMaterial(boxMat1);
 
     std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
 
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(lightplane);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(plane);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box1);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box2);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box3);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box4);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
 
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 

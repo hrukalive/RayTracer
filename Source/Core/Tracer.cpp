@@ -20,6 +20,8 @@ RGBColor Tracer::Trace(const Ray& ray) const
 RayCast::RayCast(std::shared_ptr<World>& world) : Tracer(world) {}
 RGBColor RayCast::Trace(const Ray& ray, int depth) const
 {
+    if (depth > 0)
+        return BLACK;
     HitRecord record = worldPtr->HitObjects(ray);
     record.WorldPtr = worldPtr;
     record.TracerPtr = ray.TracerPtr;

@@ -20,8 +20,8 @@
           <FILE id="WnBLaL" name="IObject.h" compile="0" resource="0" file="Source/Core/GeometricObject/IObject.h"/>
           <FILE id="dJSMWb" name="Mesh.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Mesh.cpp"/>
           <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
-          <FILE id="G38RHB" name="Plane.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Plane.cpp"/>
-          <FILE id="mTclsE" name="Plane.h" compile="0" resource="0" file="Source/Core/GeometricObject/Plane.h"/>
+          <FILE id="hXKdoO" name="Rectangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Rectangle.cpp"/>
+          <FILE id="VxXFii" name="Rectangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Rectangle.h"/>
           <FILE id="fDDvJK" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Sphere.cpp"/>
           <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
           <FILE id="LzXlBO" name="Triangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Triangle.cpp"/>

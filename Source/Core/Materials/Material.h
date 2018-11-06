@@ -67,7 +67,7 @@ public:
 
 class Emissive : public Material
 {
-    float ls;
+    FP_TYPE ls;
     RGBColor ce;
 public:
     virtual ~Emissive() = default;

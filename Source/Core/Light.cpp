@@ -16,7 +16,7 @@
 
 bool PointLight::InShadow(const Ray& ray, const HitRecord& record)
 {
-    auto& objs = record.WorldPtr->GetObjects();
+    auto& objs = world->GetObjects();
     auto d = (location - ray.Origin).length();
     for (int i = 0; i < objs.size(); i++)
     {
@@ -31,7 +31,7 @@ bool PointLight::InShadow(const Ray& ray, const HitRecord& record)
 
 bool ParallelLight::InShadow(const Ray& ray, const HitRecord& record)
 {
-    auto& objs = record.WorldPtr->GetObjects();
+    auto& objs = world->GetObjects();
     for (int i = 0; i < objs.size(); i++)
     {
         if (objs[i]->Hit(ray).Hit)
@@ -47,7 +47,7 @@ AreaLight::AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Mater
 
 bool AreaLight::InShadow(const Ray& ray, const Point3D samplePoint, const HitRecord& record)
 {
-    auto& objs = record.WorldPtr->GetObjects();
+    auto& objs = world->GetObjects();
     auto d = (samplePoint - ray.Origin) * ray.Direction.normalised();
     for (int i = 0; i < objs.size(); i++)
     {

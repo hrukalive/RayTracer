@@ -76,10 +76,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                     {
                         auto rays = camera->CreateRay(c, r);
                         for (auto& ray : rays)
-                        {
-                            ray.TracerPtr = tracer;
                             viewPlane->SetPixel(c, r, tracer->Trace(ray));
-                        }
                         criticalSection.enter();
                         renderedCount++;
                         progress = renderedCount / double(totalPixel);

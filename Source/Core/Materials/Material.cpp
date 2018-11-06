@@ -8,6 +8,7 @@
   ==============================================================================
 */
 
+#include <algorithm>
 #include "Material.h"
 #include "../World.h"
 #include "../Tracer.h"
@@ -46,8 +47,8 @@ void Matte::SetCd(const RGBColor& c)
 RGBColor Matte::Shade(const HitRecord& record)
 {
 	Vec3D wo = -record.Ray.Direction;
-	RGBColor L = ElemMul(ambientBRDF.rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
-	auto& lights = record.WorldPtr->GetLights();
+	RGBColor L = ElemMul(ambientBRDF.rho(record, wo), world->GetAmbientLightPtr()->L(record));
+	auto& lights = world->GetLights();
 	for (int i = 0; i < lights.size(); i++)
 	{
         if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
@@ -113,8 +114,8 @@ void Phong::SetE(const FP_TYPE exp)
 RGBColor Phong::Shade(const HitRecord& record)
 {
 	Vec3D wo = -record.Ray.Direction;
-	RGBColor L = ElemMul(ambientBRDF.rho(record, wo), record.WorldPtr->GetAmbientLightPtr()->L(record));
-	auto& lights = record.WorldPtr->GetLights();
+	RGBColor L = ElemMul(ambientBRDF.rho(record, wo), world->GetAmbientLightPtr()->L(record));
+	auto& lights = world->GetLights();
 	for (int i = 0; i < lights.size(); i++)
 	{
         if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
@@ -158,7 +159,7 @@ RGBColor Phong::Shade(const HitRecord& record)
 RGBColor Emissive::Shade(const HitRecord& record)
 {
     if (-record.Normal * record.Ray.Direction > 0.0)
-        return ce * ls;
+        return ce * std::min((FP_TYPE)1.0, ls);
     else
         return BLACK;
 }
@@ -170,9 +171,8 @@ RGBColor Reflective::Shade(const HitRecord& record)
     Vec3D wi;
     RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo, 0);
     Ray reflected(record.HitPoint, wi);
-    reflected.TracerPtr = record.TracerPtr;
     
-    L += ElemMul(fr, record.TracerPtr->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    L += ElemMul(fr, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
     return L;
 }
 
@@ -184,8 +184,7 @@ RGBColor GlossyReflector::Shade(const HitRecord& record)
     FP_TYPE pdf;
     RGBColor fr = glossyBRDF.sampleF(record, wi, wo, pdf);
     Ray reflected(record.HitPoint, wi);
-    reflected.TracerPtr = record.TracerPtr;
     
-    L += ElemMul(fr, record.TracerPtr->Trace(reflected, record.Depth + 1) * (record.Normal * wi) / pdf);
+    L += ElemMul(fr, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi) / pdf);
     return L;
 }

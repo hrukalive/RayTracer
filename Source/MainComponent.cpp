@@ -14,7 +14,7 @@ MainComponent::MainComponent()
     world.reset(new World());
     tracer.reset(new RayCast(world));
     viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4));
-    sampler.reset(new PreviewSampler());
+    sampler.reset(new MultiJittered());
     
     setupWorld();
 
@@ -50,6 +50,13 @@ MainComponent::MainComponent()
 MainComponent::~MainComponent()
 {
     while (!renderer.Cancel()) {}
+
+    world = nullptr;
+    tracer = nullptr;
+    sampler = nullptr;
+    viewPlane = nullptr;
+    camera = nullptr;
+
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
@@ -67,16 +74,19 @@ void MainComponent::setupWorld()
     //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
 
     std::shared_ptr<Light> parallelLight{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
-    world->AddLight(parallelLight);
+    //world->AddLight(parallelLight);
 
-    std::shared_ptr<Light> ambient{ new Ambient(0.8, RGBColor(1.0, 1.0, 1.0)) };
+    std::shared_ptr<Light> ambient{ new Ambient(0.2, RGBColor(1.0, 1.0, 1.0)) };
     world->SetAmbient(ambient);
     
-    std::shared_ptr<GeometricObject> lightplane{ new RayTracer::Rectangle(Point3D(-0.3, 0.7, 1.0), Vec3D(0.6, 0, 0), Vec3D(0, 0.5, 0)) };
+    std::shared_ptr<GeometricObject> lightplane{ new RayTracer::Rectangle(Point3D(-0.3, 0.5, 1), Vec3D(0, 0.5, 0), Vec3D(0.6, 0, 0)) };
     std::shared_ptr<Material> lightMat{ new Emissive() };
-    std::dynamic_pointer_cast<Emissive>(lightMat)->SetLs(0.9);
+    std::dynamic_pointer_cast<Emissive>(lightMat)->SetLs(30);
     std::dynamic_pointer_cast<Emissive>(lightMat)->SetCe(RGBColor(1.0, 1.0, 1.0));
     lightplane->SetMaterial(lightMat);
+
+    std::shared_ptr<Light> arealight{ new AreaLight(lightplane, lightMat) };
+    world->AddLight(arealight);
 
     std::shared_ptr<GeometricObject> plane{ new RayTracer::Rectangle(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
     std::shared_ptr<Material> planeMat{ new Matte() };

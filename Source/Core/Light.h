@@ -30,15 +30,15 @@ public:
 	Ambient() = default;
     Ambient(const FP_TYPE ls, RGBColor color) : ls(ls), color(color) {}
     virtual ~Ambient() = default;
-    inline Vec3D GetDirection(const HitRecord& record)
+    inline Vec3D GetDirection(const HitRecord& record) override
     {
         return Vec3D(0.0, 0.0, 0.0);
     }
-    inline RGBColor L(const HitRecord& record)
+    inline RGBColor L(const HitRecord& record) override
     {
         return color * ls;
     }
-    inline bool InShadow(const Ray& ray, const HitRecord& objs)
+    inline bool InShadow(const Ray& ray, const HitRecord& objs) override
     {
         return false;
     }
@@ -54,15 +54,15 @@ public:
     PointLight(FP_TYPE ls, RGBColor color, Point3D location) : ls(ls), color(color), location(location) {}
 	PointLight(FP_TYPE ls, RGBColor color, Point3D location, FP_TYPE decay) : ls(ls), color(color), location(location), decay(decay) {}
     virtual ~PointLight() = default;
-    inline Vec3D GetDirection(const HitRecord& record)
+    inline Vec3D GetDirection(const HitRecord& record) override
     {
         return (location - record.HitPoint).normalised();
     }
-    inline RGBColor L(const HitRecord& record)
+    inline RGBColor L(const HitRecord& record) override
     {
         return color * ls / (decay * (location - record.HitPoint).lengthSquared() + 1);
     }
-    bool InShadow(const Ray& ray, const HitRecord& record);
+    bool InShadow(const Ray& ray, const HitRecord& record) override;
 };
 
 class ParallelLight : public Light
@@ -73,32 +73,31 @@ class ParallelLight : public Light
 public:
 	ParallelLight(FP_TYPE ls, RGBColor color, Vec3D direction) : ls(ls), color(color), direction(direction) {}
     virtual ~ParallelLight() = default;
-	inline Vec3D GetDirection(const HitRecord& record)
+	inline Vec3D GetDirection(const HitRecord& record) override
 	{
 		return -direction.normalised();
 	}
-	inline RGBColor L(const HitRecord& record)
+	inline RGBColor L(const HitRecord& record) override
 	{
 		return color * ls;
 	}
-    bool InShadow(const Ray& ray, const HitRecord& record);
+    bool InShadow(const Ray& ray, const HitRecord& record) override;
 };
 
-//class Emissive;
-//class GeometricObject;
-//class AreaLight : public Light
-//{
-//    std::shared_ptr<GeometricObject> ObjPtr;
-//    std::shared_ptr<Material> MaterialPtr;
-//    Point3D samplePoint;
-//    Vec3D lightNormal;
-//    Vec3D wi;
-//public:
-//    AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Material> material);
-//    virtual ~AreaLight() = default;
-//    Vec3D GetDirection(const HitRecord& record);
-//    RGBColor L(const HitRecord& record);
-//    FP_TYPE G(const HitRecord& record);
-//    FP_TYPE V(const HitRecord& record);
-//    bool InShadow(const Ray& ray, const HitRecord& record);
-//};
+class Emissive;
+class GeometricObject;
+class AreaLight : public Light
+{
+    std::shared_ptr<GeometricObject> ObjPtr;
+    std::shared_ptr<Material> MaterialPtr;
+    FP_TYPE decay = 0.2;
+public:
+    AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Material> material);
+    virtual ~AreaLight() = default;
+    Vec3D GetDirection(const HitRecord& record) override;
+    RGBColor L(const HitRecord& record) override;
+    bool InShadow(const Ray& ray, const HitRecord& record) override { return false; }
+    bool InShadow(const Ray& ray, const Point3D samplePoint, const HitRecord& record);
+
+    std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> GetWiAndLGPDF(const HitRecord& record);
+};

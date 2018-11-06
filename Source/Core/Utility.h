@@ -142,4 +142,3 @@ struct HitRecord
 	HitRecord(Vec3D normal, Vec3D hitPoint, FP_TYPE t)
 		: Normal(normal), HitPoint(hitPoint), T(t) {}
 };
-

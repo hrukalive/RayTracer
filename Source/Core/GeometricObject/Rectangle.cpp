@@ -1,4 +1,5 @@
 #include "Rectangle.h"
+#include "../../Globals.h"
 
 namespace RayTracer
 {
@@ -24,6 +25,15 @@ namespace RayTracer
     Vec3D Rectangle::getU() { return u; }
     Vec3D Rectangle::getV() { return v; }
     Vec3D Rectangle::GetNormal(const Point3D p) { return n.normalised(); }
+
+    std::vector<std::pair<Point3D, Vec3D>> Rectangle::Sample()
+    {
+        auto samplePoints = sampler->SampleSquare(viewPlane->NumAreaLightSamples);
+        std::vector<std::pair<Point3D, Vec3D>> ret;
+        for (auto& shift : samplePoints)
+            ret.push_back(std::make_pair(Point3D(a + u * shift.getX() + v * shift.getY()), n.normalised()));
+        return ret;
+    }
 
     HitRecord Rectangle::Hit(const Ray& ray)
     {

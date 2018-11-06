@@ -50,6 +50,8 @@
         <FILE id="N2Xg9Q" name="OBJParser.cpp" compile="1" resource="0" file="Source/Core/OBJParser.cpp"/>
         <FILE id="W9KjuI" name="OBJParser.h" compile="0" resource="0" file="Source/Core/OBJParser.h"/>
       </GROUP>
+      <FILE id="WGulwe" name="Globals.cpp" compile="1" resource="0" file="Source/Globals.cpp"/>
+      <FILE id="JmUozB" name="Globals.h" compile="0" resource="0" file="Source/Globals.h"/>
       <FILE id="YlPR9Z" name="Renderer.cpp" compile="1" resource="0" file="Source/Renderer.cpp"/>
       <FILE id="WU002s" name="Renderer.h" compile="0" resource="0" file="Source/Renderer.h"/>
       <FILE id="tygI0U" name="MainComponent.h" compile="0" resource="0" file="Source/MainComponent.h"/>

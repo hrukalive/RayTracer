@@ -11,6 +11,7 @@
 #include "Material.h"
 #include "../World.h"
 #include "../Tracer.h"
+#include "../../Globals.h"
 
 RGBColor Material::GetLe(const HitRecord& record) { return BLACK; }
 RGBColor Material::Shade(const HitRecord& record) { return BLACK; }
@@ -49,24 +50,37 @@ RGBColor Matte::Shade(const HitRecord& record)
 	auto& lights = record.WorldPtr->GetLights();
 	for (int i = 0; i < lights.size(); i++)
 	{
-		auto wi = lights[i]->GetDirection(record);
-		auto ndotwi = record.Normal * wi;
-		auto ndotwo = record.Normal * wo;
-		if (ndotwi > 0.0 && ndotwo > 0.0)
-		{
-			Ray shadowRay(record.HitPoint, wi);
-			if (!lights[i]->InShadow(shadowRay, record))
-			{
-                //if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
-                //{
-                //    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
-                //    L += ElemMul(diffuseBRDF.f(record, wi, wo),
-                //        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
-                //}
-                //else
+        if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+        {
+            auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+            auto samples = light->GetWiAndLGPDF(record);
+
+            for (auto& sample : samples)
+            {
+                auto samplePoint = sample.first;
+                auto wi = sample.second.first;
+                auto ndotwi = record.Normal * wi;
+                auto ndotwo = record.Normal * wo;
+                if (ndotwi > 0.0 && ndotwo > 0.0)
+                {
+                    Ray shadowRay(record.HitPoint, wi);
+                    if (!light->InShadow(shadowRay, samplePoint, record))
+                        L += ElemMul(diffuseBRDF.f(record, wi, wo), sample.second.second * ndotwi);
+                }
+            }
+        }
+        else
+        {
+            auto wi = lights[i]->GetDirection(record);
+            auto ndotwi = record.Normal * wi;
+            auto ndotwo = record.Normal * wo;
+            if (ndotwi > 0.0 && ndotwo > 0.0)
+            {
+                Ray shadowRay(record.HitPoint, wi);
+                if (!lights[i]->InShadow(shadowRay, record))
                     L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
-			}
-		}
+            }
+        }
 	}
 	return L;
 }
@@ -103,25 +117,40 @@ RGBColor Phong::Shade(const HitRecord& record)
 	auto& lights = record.WorldPtr->GetLights();
 	for (int i = 0; i < lights.size(); i++)
 	{
-		auto wi = lights[i]->GetDirection(record);
-		auto ndotwi = record.Normal * wi;
-		auto ndotwo = record.Normal * wo;
-		if (ndotwi > 0.0 && ndotwo > 0.0)
-		{
-			Ray shadowRay(record.HitPoint, wi);
-			if (!lights[i]->InShadow(shadowRay, record))
-			{
-                //if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
-                //{
-                //    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
-                //    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
-                //        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
-                //}
-                //else
-				    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), 
+        if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+        {
+            auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+            auto samples = light->GetWiAndLGPDF(record);
+
+            for (auto& sample : samples)
+            {
+                auto samplePoint = sample.first;
+                auto wi = sample.second.first;
+                auto ndotwi = record.Normal * wi;
+                auto ndotwo = record.Normal * wo;
+                if (ndotwi > 0.0 && ndotwo > 0.0)
+                {
+                    Ray shadowRay(record.HitPoint, wi);
+                    if (!light->InShadow(shadowRay, samplePoint, record))
+                        L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), sample.second.second * ndotwi);
+                }
+            }
+        }
+        else
+        {
+            auto wi = lights[i]->GetDirection(record);
+            auto ndotwi = record.Normal * wi;
+            auto ndotwo = record.Normal * wo;
+            if (ndotwi > 0.0 && ndotwo > 0.0)
+            {
+                Ray shadowRay(record.HitPoint, wi);
+                if (!lights[i]->InShadow(shadowRay, record))
+                {
+                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
                         lights[i]->L(record) * ndotwi);
-			}
-		}
+                }
+            }
+        }
 	}
 	return L;
 }

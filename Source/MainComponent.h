@@ -18,11 +18,7 @@
 #include "Core/GeometricObject/Instance.h"
 #include "Core/Materials/BRDF.h"
 #include "Core/Materials/Material.h"
-#include "Core/World.h"
-#include "Core/Sampler.h"
-#include "Core/Tracer.h"
-#include "Core/Camera.h"
-#include "Core/Viewplane.h"
+#include "Globals.h"
 #include "Core/OBJParser.h"
 #include "Renderer.h"
 
@@ -86,12 +82,7 @@ private:
 	bool rendering = false;
 	bool renderFinished = false;
 
-    int vpWidth = 512, vpHeight = 512;
-    std::shared_ptr<World> world;
-    std::shared_ptr<Tracer> tracer;
-    std::shared_ptr<Sampler> sampler;
-    std::shared_ptr<ViewPlane> viewPlane;
-    std::shared_ptr<Camera> camera;
+    int vpWidth = 256, vpHeight = 256;
 
     Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this, std::placeholders::_1))};
 

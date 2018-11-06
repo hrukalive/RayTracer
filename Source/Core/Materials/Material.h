@@ -11,6 +11,7 @@
 #pragma once
 #include "../Utility.h"
 #include "BRDF.h"
+#include "BTDF.h"
 
 class Material
 {
@@ -115,5 +116,24 @@ public:
     {
         glossyBRDF.SetE(newE);
     }
+    RGBColor Shade(const HitRecord& record) override;
+};
+
+class Transparent : public Phong
+{
+    PerfectSpecular reflectiveBRDF;
+    PerfectTransmitter specularBTDF;
+public:
+    virtual ~Transparent() = default;
+    void SetKr(const FP_TYPE newKr)
+    {
+        reflectiveBRDF.SetKr(newKr);
+    }
+    void SetCr(const RGBColor& newCr)
+    {
+        reflectiveBRDF.SetCr(newCr);
+    }
+    void SetKt(FP_TYPE newKt) { specularBTDF.SetKt(newKt); }
+    void SetIOR(FP_TYPE newIOR) { specularBTDF.SetIOR(newIOR); }
     RGBColor Shade(const HitRecord& record) override;
 };

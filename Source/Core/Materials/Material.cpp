@@ -12,7 +12,7 @@
 #include "Material.h"
 #include "../World.h"
 #include "../Tracer.h"
-#include "../../Globals.h"
+#include "../Globals.h"
 
 RGBColor Material::GetLe(const HitRecord& record) { return BLACK; }
 RGBColor Material::Shade(const HitRecord& record) { return BLACK; }
@@ -186,5 +186,26 @@ RGBColor GlossyReflector::Shade(const HitRecord& record)
     Ray reflected(record.HitPoint, wi);
     
     L += ElemMul(fr, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi) / pdf);
+    return L;
+}
+
+RGBColor Transparent::Shade(const HitRecord& record)
+{
+    RGBColor L(Phong::Shade(record));
+    Vec3D wo = -record.Ray.Direction;
+    Vec3D wi;
+    RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo, 0);
+    Ray reflected(record.HitPoint, wi);
+
+    if (specularBTDF.tir(record))
+        L += tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi);
+    else
+    {
+        Vec3D wt;
+        RGBColor ft = specularBTDF.sampleF(record, wo, wt);
+        Ray transmitted(record.HitPoint, wt);
+        L += ElemMul(fr, tracer->Trace(reflected, record.Depth + 1) * fabs(record.Normal * wi));
+        L += ElemMul(ft, tracer->Trace(transmitted, record.Depth + 1) * fabs(record.Normal * wt));
+    }
     return L;
 }

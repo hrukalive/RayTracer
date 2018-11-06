@@ -4,8 +4,6 @@
 
 class BRDF
 {
-protected:
-	std::unique_ptr<Sampler> SamplerPtr;
 public:
     virtual ~BRDF() = default;
 	virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const = 0;

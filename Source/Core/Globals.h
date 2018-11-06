@@ -10,11 +10,11 @@
 
 #pragma once
 
-#include "Core/World.h"
-#include "Core/Tracer.h"
-#include "Core/Sampler.h"
-#include "Core/Viewplane.h"
-#include "Core/Camera.h"
+#include "World.h"
+#include "Tracer.h"
+#include "Sampler.h"
+#include "Viewplane.h"
+#include "Camera.h"
 
 extern std::shared_ptr<World> world;
 extern std::shared_ptr<Tracer> tracer;

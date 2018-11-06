@@ -18,7 +18,7 @@
 #include "Core/GeometricObject/Instance.h"
 #include "Core/Materials/BRDF.h"
 #include "Core/Materials/Material.h"
-#include "Globals.h"
+#include "Core/Globals.h"
 #include "Core/OBJParser.h"
 #include "Renderer.h"
 

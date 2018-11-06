@@ -8,7 +8,7 @@
   ==============================================================================
 */
 
-#include "../Globals.h"
+#include "Globals.h"
 #include "Light.h"
 #include "World.h"
 #include "Materials/Material.h"

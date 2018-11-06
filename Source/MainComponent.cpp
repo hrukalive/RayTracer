@@ -143,13 +143,15 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<Reflective>(sphereMat1)->SetKr(0.8);
     sphere1->SetMaterial(sphereMat1);
     
-    std::shared_ptr<GeometricObject> sphere2{ new Sphere(Point3D(0.6, 0.3, -0.6), 0.3) };
-    std::shared_ptr<Material> sphereMat2{ new Reflective() };
+    std::shared_ptr<GeometricObject> sphere2{ new Sphere(Point3D(0.6, 0.7, -0.6), 0.3) };
+    std::shared_ptr<Material> sphereMat2{ new Transparent() };
     std::dynamic_pointer_cast<Phong>(sphereMat2)->SetKa(0.0);
     std::dynamic_pointer_cast<Phong>(sphereMat2)->SetKd(0.3);
     std::dynamic_pointer_cast<Phong>(sphereMat2)->SetKs(0.0);
-    std::dynamic_pointer_cast<Reflective>(sphereMat2)->SetCr(RGBColor(0.7, 0.7, 1.0));
-    std::dynamic_pointer_cast<Reflective>(sphereMat2)->SetKr(0.8);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetCr(RGBColor(0.7, 0.7, 1.0));
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetKr(0.2);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetKt(0.8);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetIOR(3);
     sphere2->SetMaterial(sphereMat2);
 
     std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };

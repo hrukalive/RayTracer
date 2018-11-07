@@ -61,4 +61,6 @@ public:
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
     virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const override;
     virtual RGBColor rho(const HitRecord& record, const Vec3D& wo) const override;
+
+    std::vector<std::pair<Vec3D, RGBColor>> GetWiAndF(const HitRecord& record, const Vec3D& wo);
 };

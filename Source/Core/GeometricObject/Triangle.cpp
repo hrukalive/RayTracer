@@ -42,6 +42,7 @@ HitRecord Triangle::Hit(const Ray& ray)
         {
             record.Hit = true;
             record.Normal = (n * -ray.Direction > 0.0 ? n.normalised() : -n.normalised());
+            record.NormalFlipped = n * ray.Direction > 0.0;
             record.HitPoint = p;
             record.MaterialPtr = materialPtr;
             record.Ray = ray;

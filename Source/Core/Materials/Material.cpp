@@ -158,7 +158,7 @@ RGBColor Phong::Shade(const HitRecord& record)
 
 RGBColor Emissive::Shade(const HitRecord& record)
 {
-    if (-record.Normal * record.Ray.Direction > 0.0)
+    if (-record.Normal * record.Ray.Direction > 0.0 && !record.NormalFlipped)
         return ce * std::min((FP_TYPE)1.0, ls);
     else
         return BLACK;
@@ -166,7 +166,7 @@ RGBColor Emissive::Shade(const HitRecord& record)
 
 RGBColor Reflective::Shade(const HitRecord& record)
 {
-    RGBColor L(Phong::Shade(record));
+    RGBColor L(Matte::Shade(record));
     Vec3D wo = -record.Ray.Direction;
     Vec3D wi;
     RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo, 0);
@@ -178,14 +178,17 @@ RGBColor Reflective::Shade(const HitRecord& record)
 
 RGBColor GlossyReflector::Shade(const HitRecord& record)
 {
-    RGBColor L(Phong::Shade(record));
+    RGBColor L(Matte::Shade(record));
     Vec3D wo = -record.Ray.Direction;
-    Vec3D wi;
-    FP_TYPE pdf;
-    RGBColor fr = glossyBRDF.sampleF(record, wi, wo, pdf);
-    Ray reflected(record.HitPoint, wi);
-    
-    L += ElemMul(fr, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi) / pdf);
+
+    auto samples = glossyBRDF.GetWiAndF(record, wo);
+    for (auto& sample : samples)
+    {
+        auto wi = sample.first;
+        auto frPDF = sample.second;
+        Ray reflected(record.HitPoint, wi);
+        L += ElemMul(frPDF, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    }
     return L;
 }
 

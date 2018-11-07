@@ -87,7 +87,7 @@ public:
     RGBColor Shade(const HitRecord& record) override;
 };
 
-class Reflective : public Phong
+class Reflective : public Matte
 {
     PerfectSpecular reflectiveBRDF;
 public:
@@ -103,18 +103,22 @@ public:
     RGBColor Shade(const HitRecord& record) override;
 };
 
-class GlossyReflector : public Phong
+class GlossyReflector : public Matte
 {
     GlossySpecular glossyBRDF;
 public:
     virtual ~GlossyReflector() = default;
-    void SetKs(const FP_TYPE newKs)
+    void SetKs(const FP_TYPE kr)
     {
-        glossyBRDF.SetKs(newKs);
+        glossyBRDF.SetKs(kr);
     }
-    void SetE(const FP_TYPE newE)
+    void SetCs(const RGBColor& c)
     {
-        glossyBRDF.SetE(newE);
+        glossyBRDF.SetCs(c);
+    }
+    void SetE(const FP_TYPE exp)
+    {
+        glossyBRDF.SetE(exp);
     }
     RGBColor Shade(const HitRecord& record) override;
 };
@@ -132,6 +136,10 @@ public:
     void SetCr(const RGBColor& newCr)
     {
         reflectiveBRDF.SetCr(newCr);
+    }
+    void SetCt(const RGBColor& newCt)
+    {
+        specularBTDF.SetCt(newCt);
     }
     void SetKt(FP_TYPE newKt) { specularBTDF.SetKt(newKt); }
     void SetIOR(FP_TYPE newIOR) { specularBTDF.SetIOR(newIOR); }

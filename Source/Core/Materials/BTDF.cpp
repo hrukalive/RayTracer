@@ -30,7 +30,7 @@ RGBColor PerfectTransmitter::sampleF(const HitRecord& record, const Vec3D& wo, V
 
     FP_TYPE cosTheta2 = sqrt(1.0 - (1.0 - cosTheta_i * cosTheta_i) / (eta * eta));
     wt = -wo / eta - n * (cosTheta2 - cosTheta_i / eta);
-    return WHITE * (kt / (eta * eta)) / fabs(record.Normal * wt);
+    return ct * (kt / (eta * eta)) / fabs(record.Normal * wt);
 }
 RGBColor PerfectTransmitter::rho(const HitRecord& record, const Vec3D& wo) const
 {

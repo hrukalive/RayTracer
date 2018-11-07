@@ -57,7 +57,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
         std::vector<std::pair<int, int>> blocks;
         for (int i = 0; i < (int)ceil((FP_TYPE)height / threadDim); i++)
             for (int j = 0; j < (int)ceil((FP_TYPE)width / threadDim); j++)
-                blocks.push_back(std::make_pair(j, i));
+                blocks.push_back(std::make_pair(i, j));
         std::random_shuffle(blocks.begin(), blocks.end());
         auto t0 = Time::getMillisecondCounterHiRes();
         for (auto& block : blocks)

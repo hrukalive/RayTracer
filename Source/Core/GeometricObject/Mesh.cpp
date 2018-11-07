@@ -38,11 +38,13 @@ HitRecord MeshTriangle::Hit(const Ray& ray)
             if (!isSmooth)
             {
                 record.Normal = (nf * -ray.Direction > 0.0 ? nf.normalised() : -nf.normalised());
+                record.NormalFlipped = nf * ray.Direction > 0.0;
             }
             else
             {
                 auto tmpn = nc * l1 + na * l2 + nb * l3;
                 record.Normal = (tmpn * -ray.Direction > 0.0 ? tmpn.normalised() : -tmpn.normalised());
+                record.NormalFlipped = tmpn * ray.Direction > 0.0;
             }
             record.HitPoint = p;
             record.MaterialPtr = materialPtr;

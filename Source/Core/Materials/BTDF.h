@@ -23,9 +23,11 @@ public:
 
 class PerfectTransmitter : public BTDF
 {
+    RGBColor ct;
     FP_TYPE kt, ior;
 public:
     virtual ~PerfectTransmitter() = default;
+    void SetCt(RGBColor newCt) { ct = newCt; }
     void SetKt(FP_TYPE newKt) { kt = newKt; }
     void SetIOR(FP_TYPE newIOR) { ior = newIOR; }
     RGBColor f(const HitRecord& record, const Vec3D& wo, Vec3D& wt) const override;

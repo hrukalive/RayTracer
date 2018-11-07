@@ -129,6 +129,7 @@ struct HitRecord
 {
 	bool Hit = false;
 	Vec3D Normal;
+    bool NormalFlipped = false;
 	Vec3D HitPoint;
 	FP_TYPE T = 0.0f;
     int Depth = 0;

@@ -60,6 +60,11 @@ bool AreaLight::InShadow(const Ray& ray, const Point3D samplePoint, const HitRec
     return false;
 }
 
+bool AreaLight::InShadow(const Ray& ray, const HitRecord& record)
+{
+    return InShadow(ray, samplePoint, record);
+}
+
 std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> AreaLight::GetWiAndLGPDF(const HitRecord& record)
 {
     std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> ret;
@@ -89,10 +94,30 @@ std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> AreaLight::GetWiAndL
 
 Vec3D AreaLight::GetDirection(const HitRecord& record)
 {
-    return ZERO;
+    auto sample = ObjPtr->SampleSingle();
+    samplePoint = sample.first;
+    lightNormal = sample.second;
+    wi = (samplePoint - record.HitPoint).normalised();
+    return wi;
 }
 
 RGBColor AreaLight::L(const HitRecord& record)
 {
-    return BLACK;
+    FP_TYPE ndotd = -lightNormal * wi;
+    if (ndotd > 0.0)
+        return MaterialPtr->GetLe(record);
+    else
+        return BLACK;
+}
+
+FP_TYPE AreaLight::G(const HitRecord& record) const
+{
+    FP_TYPE ndotd = -lightNormal * wi;
+    FP_TYPE d2 = decay * (samplePoint - record.HitPoint).lengthSquared() + 1;
+    return ndotd / d2;
+}
+
+FP_TYPE AreaLight::pdf(const HitRecord& record) const
+{
+    return ObjPtr->pdf(record);
 }

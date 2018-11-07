@@ -90,13 +90,17 @@ class AreaLight : public Light
 {
     std::shared_ptr<GeometricObject> ObjPtr;
     std::shared_ptr<Material> MaterialPtr;
+    Vec3D wi, lightNormal;
+    Point3D samplePoint;
     FP_TYPE decay = 0.2;
 public:
     AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Material> material);
     virtual ~AreaLight() = default;
     Vec3D GetDirection(const HitRecord& record) override;
     RGBColor L(const HitRecord& record) override;
-    bool InShadow(const Ray& ray, const HitRecord& record) override { return false; }
+    FP_TYPE G(const HitRecord& record) const;
+    FP_TYPE pdf(const HitRecord& record) const;
+    bool InShadow(const Ray& ray, const HitRecord& record) override;
     bool InShadow(const Ray& ray, const Point3D samplePoint, const HitRecord& record);
 
     std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> GetWiAndLGPDF(const HitRecord& record);

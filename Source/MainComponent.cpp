@@ -22,7 +22,6 @@ MainComponent::MainComponent()
     image.reset(new ImageComponent());
     progressBar.reset(new ProgressBar(progress));
     
-    
     addAndMakeVisible(menuBar.get());
     addAndMakeVisible(image.get());
     addAndMakeVisible(progressBar.get());

@@ -83,6 +83,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                         criticalSection.exit();
                     }
                 }
+                DBG(progress * 100);
             });
         }
         while (pool.getNumJobs())

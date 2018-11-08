@@ -42,3 +42,13 @@ public:
     virtual ~Whitted() = default;
     virtual RGBColor Trace(const Ray& ray, int depth) const override;
 };
+
+class PathTrace : public Tracer
+{
+    int maxDepth;
+public:
+    PathTrace(std::shared_ptr<World>& world);
+    PathTrace(std::shared_ptr<World>& world, int maxDepth);
+    virtual ~PathTrace() = default;
+    virtual RGBColor Trace(const Ray& ray, int depth) const override;
+};

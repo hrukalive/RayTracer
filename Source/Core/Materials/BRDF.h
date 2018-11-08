@@ -7,7 +7,7 @@ class BRDF
 public:
     virtual ~BRDF() = default;
 	virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const = 0;
-	virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const = 0;
+	virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const = 0;
 	virtual RGBColor rho(const HitRecord& record, const Vec3D& wo) const = 0;
 };
 
@@ -24,7 +24,7 @@ public:
     void SetCd(const RGBColor& newCd);
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
-    virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const override;
+    virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;
     virtual RGBColor rho(const HitRecord& record, const Vec3D& wo) const override;
 };
 
@@ -41,7 +41,7 @@ public:
     void SetCr(const RGBColor& newCr);
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
-    virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const override;
+    virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;
     virtual RGBColor rho(const HitRecord& record, const Vec3D& wo) const override;
 };
 
@@ -59,7 +59,7 @@ public:
     void SetE(const FP_TYPE newExp);
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
-    virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, const FP_TYPE& pdf) const override;
+    virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;
     virtual RGBColor rho(const HitRecord& record, const Vec3D& wo) const override;
 
     std::vector<std::pair<Vec3D, RGBColor>> GetWiAndF(const HitRecord& record, const Vec3D& wo);

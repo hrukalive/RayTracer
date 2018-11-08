@@ -37,3 +37,14 @@ RGBColor Whitted::Trace(const Ray& ray, int depth) const
     record.Depth = depth;
     return record.Hit ? (record.MaterialPtr->Shade(record)) : (worldPtr->GetBackgroundColor());
 }
+
+PathTrace::PathTrace(std::shared_ptr<World>& world) : Tracer(world), maxDepth(5) {}
+PathTrace::PathTrace(std::shared_ptr<World>& world, int maxDepth) : Tracer(world), maxDepth(maxDepth) {}
+RGBColor PathTrace::Trace(const Ray& ray, int depth) const
+{
+    if (depth >= maxDepth)
+        return BLACK;
+    HitRecord record = worldPtr->HitObjects(ray);
+    record.Depth = depth;
+    return record.Hit ? (record.MaterialPtr->PathShade(record)) : (worldPtr->GetBackgroundColor());
+}

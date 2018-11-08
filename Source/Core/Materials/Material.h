@@ -19,7 +19,6 @@ public:
 	virtual ~Material() = default;
     virtual RGBColor GetLe(const HitRecord& record);
     virtual RGBColor Shade(const HitRecord& record);
-    virtual RGBColor AreaLightShade(const HitRecord& record);
     virtual RGBColor PathShade(const HitRecord& record);
 };
 
@@ -31,6 +30,7 @@ public:
     ConstColor(RGBColor color);
     virtual ~ConstColor() = default;
     RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class NormalShade : public Material
@@ -38,6 +38,7 @@ class NormalShade : public Material
 public:
 	virtual ~NormalShade() = default;
     RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class Matte : public Material
@@ -49,6 +50,7 @@ public:
     void SetKd(const FP_TYPE kd);
     void SetCd(const RGBColor& c);
 	RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class Phong : public Material
@@ -64,6 +66,7 @@ public:
     void SetCs(const RGBColor& c);
     void SetE(const FP_TYPE exp);
 	RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class Emissive : public Material
@@ -85,6 +88,7 @@ public:
         return ce * ls;
     }
     RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class Reflective : public Matte
@@ -101,6 +105,7 @@ public:
         reflectiveBRDF.SetCr(newCr);
     }
     RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class GlossyReflector : public Matte
@@ -121,6 +126,7 @@ public:
         glossyBRDF.SetE(exp);
     }
     RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };
 
 class Transparent : public Phong
@@ -144,4 +150,5 @@ public:
     void SetKt(FP_TYPE newKt) { specularBTDF.SetKt(newKt); }
     void SetIOR(FP_TYPE newIOR) { specularBTDF.SetIOR(newIOR); }
     RGBColor Shade(const HitRecord& record) override;
+    RGBColor PathShade(const HitRecord& record) override;
 };

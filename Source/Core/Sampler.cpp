@@ -9,6 +9,98 @@
 */
 
 #include "Sampler.h"
+#include <algorithm>
+
+Sampler::Sampler() : numSamples(16), numSets(32)
+{
+    samples.reserve(numSamples * numSets);
+}
+Sampler::Sampler(int numSamples) : numSamples(numSamples), numSets(32)
+{
+    samples.reserve(numSamples * numSets);
+}
+Sampler::Sampler(int numSamples, int numSets) : numSamples(numSamples), numSets(numSets)
+{
+    samples.reserve(numSamples * numSets);
+}
+
+void Sampler::setupShuffledIndices()
+{
+    shuffledIndices.reserve(numSamples * numSets);
+    std::vector<int> indices;
+    for (int i = 0; i < numSamples; i++)
+        indices.push_back(i);
+    for (int p = 0; p < numSets; p++)
+    {
+        random_shuffle(indices.begin(), indices.end());
+        for (int i = 0; i < numSamples; i++)
+            shuffledIndices.push_back(indices[i]);
+    }
+}
+
+Point2D Sampler::SampleSquareSingle()
+{
+    cs.enter();
+    if (count % numSamples == 0)
+        jump = random.nextInt(numSets) * numSamples;
+    auto ret = samples[jump + shuffledIndices[jump + count++ % numSamples]];
+    cs.exit();
+    return ret;
+}
+
+Point2D Sampler::SampleCircleSingle()
+{
+    Point2D p = SampleSquareSingle();
+    auto spx = p.getX(), spy = p.getY();
+    if (spx > -spy)
+    {
+        if (spx > spy)
+        {
+            auto r = spx;
+            auto phi = spy / spx * PI / 4.0;
+            return Point2D(r * cos(phi), r * sin(phi));
+        }
+        else
+        {
+            auto r = spy;
+            auto phi = (2.0 - spx / spy) * PI / 4.0;
+            return Point2D(r * cos(phi), r * sin(phi));
+        }
+    }
+    else
+    {
+        if (spx < spy)
+        {
+            auto r = -spx;
+            auto phi = (4.0 + spy / spx) * PI / 4.0;
+            return Point2D(r * cos(phi), r * sin(phi));
+        }
+        else
+        {
+            auto r = -spy;
+            if (spy != 0.0)
+            {
+                auto phi = (6.0 - spx / spy) * PI / 4.0;
+                return Point2D(r * cos(phi), r * sin(phi));
+            }
+            else
+            {
+                return Point2D(r, 0.0);
+            }
+        }
+    }
+}
+
+Point3D Sampler::SampleHemisphereSingle(const FP_TYPE e)
+{
+    Point2D p = SampleSquareSingle();
+    auto spx = p.getX(), spy = p.getY();
+    FP_TYPE cos_phi = cos(2.0 * PI * spx);
+    FP_TYPE sin_phi = sin(2.0 * PI * spx);
+    FP_TYPE cos_theta = pow((1.0 - spy), 1.0 / (e + 1.0));
+    FP_TYPE sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+    return Point3D(sin_theta * cos_phi, sin_theta * sin_phi, cos_theta);
+}
 
 std::vector<Point2D> PreviewSampler::SampleSquare(int count)
 {
@@ -192,4 +284,44 @@ std::vector<Point2D> MultiJittered::SampleCircle(int count)
         ret.push_back(Point2D(sampleX[i], sampleY[i]));
     }
     return ret;
+}
+
+void MultiJittered::generate()
+{
+    auto n = int(sqrt(numSamples));
+    auto subCellWidth = 1.0 / numSamples;
+    Random shuffleRand;
+
+    std::vector<double> sampleX, sampleY;
+
+    for (int k = 0; k < numSets; k++)
+    {
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                sampleX.push_back((i * n + j) * subCellWidth + random.nextDouble() * subCellWidth);
+                sampleY.push_back((j * n + i) * subCellWidth + random.nextDouble() * subCellWidth);
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int k = shuffleRand.nextInt(Range<int>(j, n));
+                std::swap(sampleX[i * n + j], sampleX[i * n + k]);
+            }
+        }
+        for (int i = 0; i < n; i++)
+        {
+            for (int j = 0; j < n; j++)
+            {
+                int k = shuffleRand.nextInt(Range<int>(j, n));
+                std::swap(sampleY[j * n + i], sampleY[k * n + i]);
+            }
+        }
+        for (int i = 0; i < n * n; i++)
+            samples.push_back(Point2D(sampleX[i], sampleY[i]));
+    }
+    numSamples = samples.size() / numSets;
 }

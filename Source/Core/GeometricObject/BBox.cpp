@@ -115,7 +115,7 @@ HitRecord BBox::Hit(const Ray& ray)
     }
 
     HitRecord record;
-    std::shared_ptr<Material> tmp{ new ConstColor() };
+    // std::shared_ptr<Material> tmp{ new ConstColor() };
 
     if (t0 < t1 && t1 > kEpsilon)
     {
@@ -124,7 +124,7 @@ HitRecord BBox::Hit(const Ray& ray)
             record.Hit = true;
             record.Normal = GetNormal(faceIn);
             record.HitPoint = ray.GetPoint(t0);
-            record.MaterialPtr = tmp;
+            record.MaterialPtr = nullptr;
             record.Ray = ray;
             record.T = t0;
         }
@@ -133,7 +133,7 @@ HitRecord BBox::Hit(const Ray& ray)
             record.Hit = true;
             record.Normal = GetNormal(faceOut);
             record.HitPoint = ray.GetPoint(t1);
-            record.MaterialPtr = tmp;
+            record.MaterialPtr = nullptr;
             record.Ray = ray;
             record.T = t1;
         }

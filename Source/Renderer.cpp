@@ -51,40 +51,77 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
         &renderedCount = renderedCount,
         &progress = progress,
         &criticalSection = criticalSection]() {
+
         auto width = viewPlane->Width;
         auto height = viewPlane->Height;
-        auto totalPixel = width * height;
         std::vector<std::pair<int, int>> blocks;
         for (int i = 0; i < (int)ceil((FP_TYPE)height / threadDim); i++)
             for (int j = 0; j < (int)ceil((FP_TYPE)width / threadDim); j++)
                 blocks.push_back(std::make_pair(i, j));
         std::random_shuffle(blocks.begin(), blocks.end());
         auto t0 = Time::getMillisecondCounterHiRes();
-        for (auto& block : blocks)
+
+        if (dynamic_cast<const PathTrace*>(tracer.get()) != nullptr)
         {
-            int br = block.first;
-            int bc = block.second;
-            auto startR = br * threadDim, endR = std::min(height, (br + 1) * threadDim);
-            auto startC = bc * threadDim, endC = std::min(width, (bc + 1) * threadDim);
-            pool.addJob([camera, tracer, viewPlane, startR, endR, startC, endC, totalPixel,
-                &renderedCount = renderedCount,
-                &progress = progress,
-                &criticalSection = criticalSection]() {
-                for (int r = startR; r < endR; r++)
+            auto totalPixel = width * height * viewPlane->NumPixelSamples;
+            for (int iter = 0; iter < viewPlane->NumPixelSamples; iter++)
+            {
+                for (auto& block : blocks)
                 {
-                    for (int c = startC; c < endC; c++)
-                    {
-                        auto rays = camera->CreateRay(c, r);
-                        for (auto& ray : rays)
-                            viewPlane->SetPixel(c, r, tracer->Trace(ray));
-                        criticalSection.enter();
-                        renderedCount++;
-                        progress = renderedCount / double(totalPixel);
-                        criticalSection.exit();
-                    }
+                    int br = block.first;
+                    int bc = block.second;
+                    auto startR = br * threadDim, endR = std::min(height, (br + 1) * threadDim);
+                    auto startC = bc * threadDim, endC = std::min(width, (bc + 1) * threadDim);
+                    pool.addJob([camera, tracer, viewPlane, startR, endR, startC, endC, totalPixel,
+                        &renderedCount = renderedCount,
+                        &progress = progress,
+                        &criticalSection = criticalSection]() {
+                        for (int r = startR; r < endR; r++)
+                        {
+                            for (int c = startC; c < endC; c++)
+                            {
+                                auto ray = camera->CreateARay(c, r);
+                                viewPlane->SetPixel(c, r, tracer->Trace(ray));
+                                criticalSection.enter();
+                                renderedCount++;
+                                progress = renderedCount / double(totalPixel);
+                                criticalSection.exit();
+                            }
+                        }
+                        DBG(progress * 100);
+                    });
                 }
-                DBG(progress * 100);
-            });
+            }
+        }
+        else
+        {
+            auto totalPixel = width * height;
+            for (auto& block : blocks)
+            {
+                int br = block.first;
+                int bc = block.second;
+                auto startR = br * threadDim, endR = std::min(height, (br + 1) * threadDim);
+                auto startC = bc * threadDim, endC = std::min(width, (bc + 1) * threadDim);
+                pool.addJob([camera, tracer, viewPlane, startR, endR, startC, endC, totalPixel,
+                    &renderedCount = renderedCount,
+                    &progress = progress,
+                    &criticalSection = criticalSection]() {
+                    for (int r = startR; r < endR; r++)
+                    {
+                        for (int c = startC; c < endC; c++)
+                        {
+                            auto rays = camera->CreateRay(c, r);
+                            for (auto& ray : rays)
+                                viewPlane->SetPixel(c, r, tracer->Trace(ray));
+                            criticalSection.enter();
+                            renderedCount++;
+                            progress = renderedCount / double(totalPixel);
+                            criticalSection.exit();
+                        }
+                    }
+                    DBG(progress * 100);
+                });
+            }
         }
         while (pool.getNumJobs())
         {

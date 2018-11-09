@@ -35,6 +35,17 @@ namespace RayTracer
         return ret;
     }
 
+    std::pair<Point3D, Vec3D> Rectangle::SampleSingle()
+    {
+        auto samplePoint = sampler->SampleSquareSingle();
+        return std::make_pair(Point3D(a + u * samplePoint.getX() + v * samplePoint.getY()), n.normalised());
+    }
+
+    FP_TYPE Rectangle::pdf(const HitRecord& record)
+    {
+        return 1.0 / (u * v);
+    }
+
     HitRecord Rectangle::Hit(const Ray& ray)
     {
         HitRecord record;

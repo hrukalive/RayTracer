@@ -28,6 +28,13 @@ public:
     {
         return std::vector<std::pair<Point3D, Vec3D>>();
     }
-    //virtual Vec3D GetNormal(const Point3D p) = 0;
-    //virtual FP_TYPE pdf(const HitRecord& record) = 0;
+    virtual std::pair<Point3D, Vec3D> SampleSingle()
+    {
+        return std::make_pair(ZERO, ZERO);
+    }
+    virtual FP_TYPE pdf(const HitRecord& record)
+    {
+        auto diff = boundingBox.GetMaxPoint() - boundingBox.GetMinPoint();
+        return 1.0 / (2 * (diff.x * diff.y + diff.y * diff.z + diff.x * diff.z));
+    }
 };

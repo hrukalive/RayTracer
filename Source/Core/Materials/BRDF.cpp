@@ -33,7 +33,7 @@ RGBColor Lambertian::sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo
         }
     }
     
-    auto sample = sampler->SampleHemisphereSingle(exp);
+    auto sample = sampler->SampleHemisphereSingle(0.0);
     wi = (u * sample.x + v * sample.y + w * sample.z).normalised();
     pdf = record.Normal * wi * INV_PI;
     return cd * kd * INV_PI;
@@ -111,14 +111,14 @@ RGBColor GlossySpecular::sampleF(const HitRecord& record, Vec3D& wi, const Vec3D
             w = Vec3D(0.0, -1.0, 0.0);
         }
     }
-    auto sample = sampler->SampleHemisphere_A(exp);
+    auto sample = sampler->SampleHemisphereSingle(exp);
     wi = u * sample.x + v * sample.y + w * sample.z;
     if (record.Normal * wi < 0.0)
         wi = -u * sample.x - v * sample.y + w * sample.z;
     wi = wi.normalised();
     FP_TYPE phongLobe = pow(r * wi, exp);
-    FP_TYPE pdf = phongLobe * (record.Normal * wi) + kEpsilon;
-    return cs * ks * phongLobe / pdf;
+    pdf = phongLobe * (record.Normal * wi) + kEpsilon;
+    return cs * ks * phongLobe;
 }
 
 RGBColor GlossySpecular::rho(const HitRecord& record, const Vec3D& wo) const

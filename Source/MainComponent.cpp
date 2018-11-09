@@ -12,9 +12,9 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new Whitted(world, 8));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 32, 4));
-    sampler.reset(new MultiJittered());
+    tracer.reset(new PathTrace(world, 20));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 1000, 4));
+    sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     
     setupWorld();
 

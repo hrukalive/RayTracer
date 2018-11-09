@@ -28,6 +28,7 @@ public:
     virtual ~Camera() = default;
 
     virtual std::vector<Ray> CreateRay(int c, int r) const = 0;
+    virtual Ray CreateARay(int c, int r) const = 0;
 };
 
 class OrthographicCamera : public Camera
@@ -37,6 +38,7 @@ public:
     virtual ~OrthographicCamera() = default;
 
     virtual std::vector<Ray> CreateRay(int c, int r) const;
+    virtual Ray CreateARay(int c, int r) const;
 };
 
 class PinholeCamera : public Camera
@@ -47,6 +49,7 @@ public:
     virtual ~PinholeCamera() = default;
 
     virtual std::vector<Ray> CreateRay(int c, int r) const;
+    virtual Ray CreateARay(int c, int r) const;
 };
 
 class ThinLensCamera : public Camera
@@ -60,4 +63,5 @@ public:
     virtual ~ThinLensCamera() = default;
     
     virtual std::vector<Ray> CreateRay(int c, int r) const;
+    virtual Ray CreateARay(int c, int r) const;
 };

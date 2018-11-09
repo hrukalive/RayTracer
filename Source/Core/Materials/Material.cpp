@@ -172,6 +172,15 @@ RGBColor Phong::Shade(const HitRecord& record)
 	return L;
 }
 
+RGBColor Phong::PathShade(const HitRecord& record)
+{
+    Vec3D wi, wo = -record.Ray.Direction;
+    FP_TYPE pdf;
+    RGBColor f = diffuseBRDF.sampleF(record, wi, wo, pdf);
+    Ray reflected(record.HitPoint, wi);
+    return ElemMul(f / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+}
+
 RGBColor Emissive::Shade(const HitRecord& record)
 {
     if (-record.Normal * record.Ray.Direction > 0.0 && !record.NormalFlipped)

@@ -28,6 +28,10 @@
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
         </GROUP>
         <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
+          <FILE id="v5UdsE" name="Mapping.cpp" compile="1" resource="0" file="Source/Core/Materials/Mapping.cpp"/>
+          <FILE id="ptDQhQ" name="Mapping.h" compile="0" resource="0" file="Source/Core/Materials/Mapping.h"/>
+          <FILE id="DXL9lM" name="Texture.cpp" compile="1" resource="0" file="Source/Core/Materials/Texture.cpp"/>
+          <FILE id="jmWK7F" name="Texture.h" compile="0" resource="0" file="Source/Core/Materials/Texture.h"/>
           <FILE id="C4VgLH" name="BRDF.cpp" compile="1" resource="0" file="Source/Core/Materials/BRDF.cpp"/>
           <FILE id="DiLnP3" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/BRDF.h"/>
           <FILE id="deqYLl" name="BTDF.cpp" compile="1" resource="0" file="Source/Core/Materials/BTDF.cpp"/>
@@ -35,6 +39,8 @@
           <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
         </GROUP>
+        <FILE id="i3uitm" name="photonmap.c" compile="1" resource="0" file="Source/Core/photonmap.c"/>
+        <FILE id="R5UKx4" name="photonmap.h" compile="0" resource="0" file="Source/Core/photonmap.h"/>
         <FILE id="H5QLYT" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility.cpp"/>
         <FILE id="zYCM1q" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility.h"/>
         <FILE id="j7lyGp" name="World.cpp" compile="1" resource="0" file="Source/Core/World.cpp"/>

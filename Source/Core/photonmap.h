@@ -8,7 +8,6 @@
 #ifndef PHOTONMAP_H
 #define PHOTONMAP_H
 
-
 /* This is the photon
  * The power is not compressed so the
  * size is 28 bytes

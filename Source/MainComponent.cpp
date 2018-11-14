@@ -322,17 +322,17 @@ void MainComponent::setupWorld()
 void MainComponent::setupWorld()
 {
     auto r = 2.7;
-    auto theta = 0 * PI_OVER_180;
+    auto theta = 60 * PI_OVER_180;
     auto phi = 60 * PI_OVER_180;
     auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.0, 0.0, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
     camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
 
-    std::shared_ptr<Light> ambient{ new Ambient(0.5, RGBColor(1.0, 1.0, 1.0)) };
+    std::shared_ptr<Light> ambient{ new Ambient(0.7, RGBColor(1.0, 1.0, 1.0)) };
     world->SetAmbient(ambient);
 
-    std::shared_ptr<Light> parallel{ new ParallelLight(3.0, WHITE, Vec3D(-1.0, -1.0, 0.5)) };
+    std::shared_ptr<Light> parallel{ new ParallelLight(5.0, WHITE, Vec3D(-1.0, -1.0, 0.5)) };
     world->AddLight(parallel);
 
     std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(0, 0, 0), 1) };

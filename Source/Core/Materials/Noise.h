@@ -109,6 +109,6 @@ public:
             }
             zps[k + 1] = cubicSpline(fy, yps[0], yps[1], yps[2], yps[3]);
         }
-        return clamp(cubicSpline(fz, zps[0], zps[1], zps[1], zps[2]), (FP_TYPE)-1.0, (FP_TYPE)1.0);
+        return clamp(cubicSpline(fz, zps[0], zps[1], zps[2], zps[3]), (FP_TYPE)-1.0, (FP_TYPE)1.0);
     }
 };

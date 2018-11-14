@@ -19,6 +19,7 @@
 #include <alloca.h>
 #endif
 
+#include "../../JuceLibraryCode/JuceHeader.h"
 #include "photonmap.h"
 
 static	float costheta[256];
@@ -64,7 +65,7 @@ static void initTables(void)
 
 PhotonMap *createPhotonMap(int max_photons)
 	{
-	PhotonMap *map=malloc(sizeof(PhotonMap));
+	PhotonMap *map=(PhotonMap*)malloc(sizeof(PhotonMap));
   map->stored_photons = 0;
   map->prev_scale = 1;
   map->max_photons = max_photons;
@@ -352,7 +353,7 @@ BalancedPhotonMap * balancePhotonMap(PhotonMap *map)
     free(pa1);
   }
 
- bmap=malloc(sizeof(BalancedPhotonMap));
+ bmap=(BalancedPhotonMap*)malloc(sizeof(BalancedPhotonMap));
  bmap->stored_photons      = map->stored_photons;
  bmap->half_stored_photons = map->stored_photons/2-1;
  bmap->photons=map->photons;
@@ -482,7 +483,7 @@ void irradianceEstimate(
 #else
   np.dist2 = (float*)_alloca(sizeof(float)*(nphotons + 1));
   np.index = (const Photon**)_alloca(sizeof(Photon*)*(nphotons + 1));
-#endif // JUCE_WIN
+#endif
 
 
   np.pos[0] = pos[0]; np.pos[1] = pos[1]; np.pos[2] = pos[2];
@@ -601,10 +602,10 @@ BalancedPhotonMap * loadPhotonMap(char *filename)
 	fp=fopen(filename,"rb");
 	assert(fp);
 
-	bmap=malloc(sizeof(BalancedPhotonMap));
+	bmap=(BalancedPhotonMap*)malloc(sizeof(BalancedPhotonMap));
 	stat(filename,&sbuf);
 	bmap->stored_photons=sbuf.st_size/sizeof(Photon);
-	bmap->photons=malloc(sbuf.st_size);
+	bmap->photons=(Photon*)malloc(sbuf.st_size);
 	if (bmap->photons == NULL)
 		  {
 		  fprintf(stderr,"Out of memory initializing photon map\n");

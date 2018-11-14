@@ -1,6 +1,7 @@
 #pragma once
 #include "../Utility.h"
 #include "../Sampler.h"
+#include "Texture.h"
 
 class BRDF
 {
@@ -14,14 +15,14 @@ public:
 class Lambertian : public BRDF
 {
     FP_TYPE kd;
-	RGBColor cd;
+    std::shared_ptr<Texture> cd;
 public:
     Lambertian();
-    Lambertian(const FP_TYPE kd, const RGBColor& cd);
     virtual ~Lambertian() = default;
 
     void SetKd(const FP_TYPE newKd);
     void SetCd(const RGBColor& newCd);
+    void SetCd(const std::shared_ptr<Texture> newCd);
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
     virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;

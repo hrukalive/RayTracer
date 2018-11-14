@@ -18,8 +18,8 @@ public:
     int Width = 512, Height = 512;
     FP_TYPE PixelSize = 1.0f;
 	int NumPixelSamples = 64, NumLensSamples = 1;
-    int NumAreaLightSamples = 4;
-    int NumGlossySamples = 4;
+    int NumAreaLightSamples = 2;
+    int NumGlossySamples = 2;
 	int SqrtNumSamplePixel, SqrtNumSampleLens;
 	std::shared_ptr<Image> RenderedImage;
 private:

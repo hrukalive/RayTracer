@@ -22,6 +22,8 @@
 #define INV_PI 0.3183098861837906715
 #define INV_TWO_PI 0.1591549430918953358
 #define PI_OVER_180 0.0174532925199432957
+#define NOISE_TABLE_SIZE 256
+#define NOISE_TABLE_MASK (NOISE_TABLE_SIZE - 1)
 
 typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;
@@ -45,7 +47,8 @@ std::ostream& operator<<(std::ostream& o, const Matrix& m);
 
 std::vector<FP_TYPE> bilaterialFilter(const std::vector<FP_TYPE>& I, int width, int height);
 
-inline long clamp(FP_TYPE x, long min, long max) { return long((x < min ? min : (x > max ? max : x))); }
+template<class T>
+inline T clamp(FP_TYPE x, T min, T max) { return T((x < min ? min : (x > max ? max : x))); }
 
 inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
 {
@@ -84,6 +87,21 @@ inline Matrix MatrixTranspose(Matrix& m)
 	std::swap(ret(1, 3), ret(3, 1));
 	std::swap(ret(2, 3), ret(3, 2));
 	return ret;
+}
+
+template<class T>
+inline T lerp(const FP_TYPE f, const T& a, const T& b)
+{
+    return a + f * (b - a);
+}
+
+template<class T>
+inline T cubicSpline(const FP_TYPE x, const T p0, const T p1, const T p2, const T p3)
+{
+    T c1 = 0.5 * (-p0 + p2);
+    T c2 = p0 - 2.5 * p1 + 2.0 * p2 - 0.5 * p3;
+    T c3 = -0.5 * p0 + 1.5 * p1 - 1.5 * p2 + 0.5 * p3;
+    return (T)((((c3 * x) + c2) * x + c1) * x + p1);
 }
 
 // https://github.com/Forceflow/libmorton/blob/master/libmorton/include/morton3D.h

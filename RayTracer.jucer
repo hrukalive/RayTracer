@@ -28,6 +28,8 @@
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
         </GROUP>
         <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
+          <FILE id="iwTipt" name="Noise.cpp" compile="1" resource="0" file="Source/Core/Materials/Noise.cpp"/>
+          <FILE id="UrgBKy" name="Noise.h" compile="0" resource="0" file="Source/Core/Materials/Noise.h"/>
           <FILE id="v5UdsE" name="Mapping.cpp" compile="1" resource="0" file="Source/Core/Materials/Mapping.cpp"/>
           <FILE id="ptDQhQ" name="Mapping.h" compile="0" resource="0" file="Source/Core/Materials/Mapping.h"/>
           <FILE id="DXL9lM" name="Texture.cpp" compile="1" resource="0" file="Source/Core/Materials/Texture.cpp"/>

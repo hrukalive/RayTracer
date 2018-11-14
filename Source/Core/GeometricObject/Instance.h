@@ -38,5 +38,7 @@ public:
     void RotateY(const FP_TYPE radian);
     void RotateZ(const FP_TYPE radian);
 
+    Matrix getInvMatrix() { return invMatrix; }
+
     virtual HitRecord Hit(const Ray& ray) override;
 };

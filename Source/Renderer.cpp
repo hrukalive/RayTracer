@@ -81,11 +81,15 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                             for (int c = startC; c < endC; c++)
                             {
                                 auto ray = camera->CreateARay(c, r);
-                                viewPlane->SetPixel(c, r, tracer->Trace(ray));
-                                criticalSection.enter();
-                                renderedCount++;
-                                progress = renderedCount / double(totalPixel);
-                                criticalSection.exit();
+                                RGBColor color = tracer->Trace(ray);
+                                if (color.x > 0 && color.y > 0 && color.z > 0)
+                                {
+                                    viewPlane->SetPixel(c, r, color);
+                                    criticalSection.enter();
+                                    renderedCount++;
+                                    progress = renderedCount / double(totalPixel);
+                                    criticalSection.exit();
+                                }
                             }
                         }
                         DBG(progress * 100);

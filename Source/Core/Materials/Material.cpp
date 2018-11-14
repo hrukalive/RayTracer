@@ -51,6 +51,11 @@ void Matte::SetCd(const RGBColor& c)
     ambientBRDF.SetCd(c);
     diffuseBRDF.SetCd(c);
 }
+void Matte::SetCd(const std::shared_ptr<Texture> c)
+{
+    ambientBRDF.SetCd(c);
+    diffuseBRDF.SetCd(c);
+}
 RGBColor Matte::Shade(const HitRecord& record)
 {
 	Vec3D wo = -record.Ray.Direction;
@@ -115,6 +120,11 @@ void Phong::SetKs(const FP_TYPE ks)
     specularBRDF.SetKs(ks);
 }
 void Phong::SetCd(const RGBColor& c)
+{
+    ambientBRDF.SetCd(c);
+    diffuseBRDF.SetCd(c);
+}
+void Phong::SetCd(const std::shared_ptr<Texture> c)
 {
     ambientBRDF.SetCd(c);
     diffuseBRDF.SetCd(c);

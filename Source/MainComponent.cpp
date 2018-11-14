@@ -12,8 +12,8 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new PathTrace(world, 20));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 1000, 4));
+    tracer.reset(new RayCast(world));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     
     setupWorld();
@@ -61,6 +61,7 @@ MainComponent::~MainComponent()
 #endif
 }
 
+/*
 void MainComponent::setupWorld()
 {
     auto r = 2.7;
@@ -204,6 +205,152 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(box8);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere1);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere2);
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
+
+    world->AddObject(comp);
+}
+*/
+
+/*
+void MainComponent::setupWorld()
+{
+    auto r = 160;
+    auto theta = 0 * PI_OVER_180;
+    auto phi = 90 * PI_OVER_180;
+    auto roll = 0.0 * PI_OVER_180;
+    auto lookat = Vec3D(0.0, 0.0, 0.0);
+    auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
+    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
+
+    std::shared_ptr<Light> ambient{ new Ambient(1.0, RGBColor(1.0, 1.0, 1.0)) };
+    world->SetAmbient(ambient);
+
+    std::shared_ptr<GeometricObject> lightplane1{ new RayTracer::Rectangle(Point3D(-10, 49, 5), Vec3D(0, 0, -10), Vec3D(20, 0, 0)) };
+    std::shared_ptr<Material> lightMat1{ new Emissive() };
+    std::dynamic_pointer_cast<Emissive>(lightMat1)->SetLs(30000);
+    std::dynamic_pointer_cast<Emissive>(lightMat1)->SetCe(RGBColor(0.98039, 0.80784, 0.59608));
+    lightplane1->SetMaterial(lightMat1);
+    std::shared_ptr<Light> arealight1{ new AreaLight(lightplane1, lightMat1) };
+    world->AddLight(arealight1);
+
+    std::shared_ptr<GeometricObject> planeBottom{ new RayTracer::Rectangle(Point3D(-50, -50, 50), Vec3D(100, 0, 0), Vec3D(0, 0, -100)) };
+    std::shared_ptr<Material> planeMat1{ new Matte() };
+    std::shared_ptr<LatticeNoise> planeNoise1{ new CubicNoise() };
+    std::shared_ptr<Texture> planeTex1Original{ new FBmTexture(planeNoise1) };
+    std::dynamic_pointer_cast<FBmTexture>(planeTex1Original)->setColor(RGBColor(0.2, 0.6, 0.3));
+
+    std::shared_ptr<Texture> planeTex1{ new TextureInstance(planeTex1Original) };
+    std::dynamic_pointer_cast<TextureInstance>(planeTex1)->Scale(10, 10, 10);
+
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.9);
+    // std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(RGBColor(1, 1, 1));
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1);
+    planeBottom->SetMaterial(planeMat1);
+
+    std::shared_ptr<GeometricObject> planeTop{ new RayTracer::Rectangle(Point3D(-50, 50, 50), Vec3D(0, 0, -100), Vec3D(100, 0, 0)) };
+    std::shared_ptr<Material> planeMat2{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat2)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(planeMat2)->SetKd(0.9);
+    std::dynamic_pointer_cast<Matte>(planeMat2)->SetCd(RGBColor(1, 1, 1));
+    planeTop->SetMaterial(planeMat2);
+
+    std::shared_ptr<GeometricObject> planeBack{ new RayTracer::Rectangle(Point3D(-50, -50, -50), Vec3D(100, 0, 0), Vec3D(0, 100, 0)) };
+    std::shared_ptr<Material> planeMat3{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat3)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(planeMat3)->SetKd(0.9);
+    std::dynamic_pointer_cast<Matte>(planeMat3)->SetCd(RGBColor(1, 1, 1));
+    planeBack->SetMaterial(planeMat3);
+
+    std::shared_ptr<GeometricObject> planeLeft{ new RayTracer::Rectangle(Point3D(-50, -50, 50), Vec3D(0, 0, -100), Vec3D(0, 100, 0)) };
+    std::shared_ptr<Material> planeMat4{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat4)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(planeMat4)->SetKd(0.9);
+    std::dynamic_pointer_cast<Matte>(planeMat4)->SetCd(RGBColor(0.85490, 0.37647, 0.18431));
+    planeLeft->SetMaterial(planeMat4);
+
+    std::shared_ptr<GeometricObject> planeRight{ new RayTracer::Rectangle(Point3D(50, -50, 50), Vec3D(0, 100, 0), Vec3D(0, 0, -100)) };
+    std::shared_ptr<Material> planeMat5{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat5)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(planeMat5)->SetKd(0.9);
+    std::dynamic_pointer_cast<Matte>(planeMat5)->SetCd(RGBColor(0.40784, 0.49412, 0.33725));
+    planeRight->SetMaterial(planeMat5);
+
+    std::shared_ptr<GeometricObject> boxFrontOriginal{ new Box(Point3D(-15, -15, -15), Point3D(15, 15, 15)) };
+    std::shared_ptr<GeometricObject> boxFront{ new Instance(boxFrontOriginal) };
+    std::dynamic_pointer_cast<Instance>(boxFront)->RotateY(10 / PI_OVER_180);
+    std::dynamic_pointer_cast<Instance>(boxFront)->Translate(18, -35, 20);
+    std::shared_ptr<Texture> boxTex1Original{ new Checker3D() };
+    std::dynamic_pointer_cast<Checker3D>(boxTex1Original)->setSize(5);
+    std::shared_ptr<Texture> boxTex1{ new TextureInstance(boxTex1Original) };
+    std::dynamic_pointer_cast<TextureInstance>(boxTex1)->setInvMatrix(std::dynamic_pointer_cast<Instance>(boxFront)->getInvMatrix());
+    std::shared_ptr<Material> boxMat1{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(boxMat1)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(boxMat1)->SetKd(0.9);
+    std::dynamic_pointer_cast<Matte>(boxMat1)->SetCd(boxTex1);
+    boxFront->SetMaterial(boxMat1);
+
+    std::shared_ptr<GeometricObject> boxBackOriginal{ new Box(Point3D(-15, -30, -15), Point3D(15, 30, 15)) };
+    std::shared_ptr<GeometricObject> boxBack{ new Instance(boxBackOriginal) };
+    std::dynamic_pointer_cast<Instance>(boxBack)->RotateY(-10 / PI_OVER_180);
+    std::dynamic_pointer_cast<Instance>(boxBack)->Translate(-17, -20, -15);
+    std::shared_ptr<Material> boxMat2{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(boxMat2)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(boxMat2)->SetKd(0.9);
+    std::dynamic_pointer_cast<Matte>(boxMat2)->SetCd(RGBColor(1, 1, 1));
+    boxBack->SetMaterial(boxMat2);
+
+    std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(lightplane1);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeBottom);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeTop);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeBack);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeLeft);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeRight);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(boxFront);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(boxBack);
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
+
+    world->AddObject(comp);
+}
+*/
+
+void MainComponent::setupWorld()
+{
+    auto r = 2.7;
+    auto theta = 0 * PI_OVER_180;
+    auto phi = 60 * PI_OVER_180;
+    auto roll = 0.0 * PI_OVER_180;
+    auto lookat = Vec3D(0.0, 0.0, 0.0);
+    auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
+    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+
+    std::shared_ptr<Light> ambient{ new Ambient(0.5, RGBColor(1.0, 1.0, 1.0)) };
+    world->SetAmbient(ambient);
+
+    std::shared_ptr<Light> parallel{ new ParallelLight(3.0, WHITE, Vec3D(-1.0, -1.0, 0.5)) };
+    world->AddLight(parallel);
+
+    std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(0, 0, 0), 1) };
+    std::shared_ptr<LatticeNoise> planeNoise1{ new CubicNoise() };
+    std::shared_ptr<Texture> planeTex1Original{ new FBmTexture(planeNoise1) };
+    std::dynamic_pointer_cast<FBmTexture>(planeTex1Original)->setColor(RGBColor(0.2, 0.6, 0.3));
+    std::dynamic_pointer_cast<FBmTexture>(planeTex1Original)->setRange(-0.1, 1.1);
+    std::shared_ptr<Texture> planeTex1{ new TextureInstance(planeTex1Original) };
+    std::dynamic_pointer_cast<TextureInstance>(planeTex1)->Scale(0.5, 0.5, 2);
+    std::shared_ptr<Material> planeMat1{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.5);
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1);
+    sphere->SetMaterial(planeMat1);
+
+    std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
 
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 

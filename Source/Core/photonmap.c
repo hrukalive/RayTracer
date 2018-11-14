@@ -4,6 +4,8 @@
 * Based on code by Henrik Jensen
 * www.dctsystems.co.uk
 ************************************/
+
+#define _USE_MATH_DEFINES
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdio.h>
@@ -474,9 +476,14 @@ void irradianceEstimate(
   float pdir[3];
   int i;
   irrad[0] = irrad[1] = irrad[2] = 0.0;
-  
-  np.dist2 = (float*)alloca( sizeof(float)*(nphotons+1) );
-  np.index = (const Photon**)alloca( sizeof(Photon*)*(nphotons+1) );
+#if JUCE_MAC
+  np.dist2 = (float*)alloca(sizeof(float)*(nphotons + 1));
+  np.index = (const Photon**)alloca(sizeof(Photon*)*(nphotons + 1));
+#else
+  np.dist2 = (float*)_alloca(sizeof(float)*(nphotons + 1));
+  np.index = (const Photon**)_alloca(sizeof(Photon*)*(nphotons + 1));
+#endif // JUCE_WIN
+
 
   np.pos[0] = pos[0]; np.pos[1] = pos[1]; np.pos[2] = pos[2];
   np.max = nphotons;

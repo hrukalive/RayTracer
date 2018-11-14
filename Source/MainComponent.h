@@ -82,7 +82,7 @@ private:
 	bool rendering = false;
 	bool renderFinished = false;
 
-    int vpWidth = 200 * 4, vpHeight = 128 * 4;
+    int vpWidth = 128 * 4, vpHeight = 128 * 4;
 
     Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this, std::placeholders::_1))};
 

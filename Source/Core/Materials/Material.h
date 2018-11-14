@@ -49,6 +49,7 @@ public:
     void SetKa(const FP_TYPE ka);
     void SetKd(const FP_TYPE kd);
     void SetCd(const RGBColor& c);
+    void SetCd(const std::shared_ptr<Texture> c);
 	RGBColor Shade(const HitRecord& record) override;
     RGBColor PathShade(const HitRecord& record) override;
 };
@@ -63,6 +64,7 @@ public:
     void SetKd(const FP_TYPE kd);
     void SetKs(const FP_TYPE ks);
     void SetCd(const RGBColor& c);
+    void SetCd(const std::shared_ptr<Texture> c);
     void SetCs(const RGBColor& c);
     void SetE(const FP_TYPE exp);
 	RGBColor Shade(const HitRecord& record) override;

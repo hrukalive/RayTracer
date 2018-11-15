@@ -105,14 +105,25 @@ public:
     }
 };
 
-class FBmTexture : public Texture
+enum NoiseTextureType
 {
+    FRACTAL_SUM,
+    TURBULENCE,
+    BROWNIAN
+};
+
+class NoiseTexture : public Texture
+{
+protected:
     std::shared_ptr<LatticeNoise> noisePtr;
     RGBColor color;
     FP_TYPE minVal, maxVal;
+    int numOctaves = 6;
+    FP_TYPE gain = 0.5, lacunarity = 2;
+    NoiseTextureType type = NoiseTextureType::BROWNIAN;
 public:
-    FBmTexture(const std::shared_ptr<LatticeNoise> noisePtr) : noisePtr(noisePtr), color(WHITE), minVal(0.0), maxVal(1.0) {}
-    virtual ~FBmTexture() = default;
+    NoiseTexture(const std::shared_ptr<LatticeNoise> noisePtr) : noisePtr(noisePtr), color(WHITE), minVal(0.0), maxVal(1.0) {}
+    virtual ~NoiseTexture() = default;
     void setColor(RGBColor newColor)
     {
         color = newColor;
@@ -122,13 +133,99 @@ public:
         minVal = newMin;
         maxVal = newMax;
     }
+    void setOctaves(int newOctaves)
+    {
+        numOctaves = newOctaves;
+    }
+    void setGain(FP_TYPE newGain)
+    {
+        gain = newGain;
+    }
+    void setLacunarity(int newLacunarity)
+    {
+        lacunarity = newLacunarity;
+    }
+    void setType(NoiseTextureType newType)
+    {
+        type = newType;
+    }
     RGBColor getColor(const HitRecord& record) const override
     {
-        FP_TYPE value = noisePtr->valuefBm(record.HitPoint);
-        value = minVal + (maxVal - minVal) * value;
-        if (value < 0)
-            value = 0;
+        FP_TYPE value;
+        switch (type)
+        {
+            case NoiseTextureType::FRACTAL_SUM:
+                value = noisePtr->valueFractalSum(record.HitPoint, numOctaves, minVal, maxVal);
+                break;
+            case NoiseTextureType::TURBULENCE:
+                value = noisePtr->valueTurbulence(record.HitPoint, numOctaves, maxVal);
+                break;
+            case NoiseTextureType::BROWNIAN:
+                value = noisePtr->valuefBm(record.HitPoint, numOctaves, gain, lacunarity, minVal, maxVal);
+                break;
+        }
         return color * value;
+    }
+};
+
+class WrappedNoiseTexture : public NoiseTexture
+{
+    FP_TYPE expansion;
+public:
+    WrappedNoiseTexture(const std::shared_ptr<LatticeNoise> noisePtr) : NoiseTexture(noisePtr) {}
+    virtual ~WrappedNoiseTexture() = default;
+    void setExpansion(FP_TYPE newExpansion)
+    {
+        expansion = newExpansion;
+    }
+    RGBColor getColor(const HitRecord& record) const override
+    {
+        FP_TYPE noise;
+        switch (type)
+        {
+            case NoiseTextureType::FRACTAL_SUM:
+                noise = expansion * noisePtr->valueFractalSum(record.HitPoint, numOctaves);
+                break;
+            case NoiseTextureType::TURBULENCE:
+                noise = expansion * noisePtr->valueTurbulence(record.HitPoint, numOctaves);
+                break;
+            case NoiseTextureType::BROWNIAN:
+                noise = expansion * noisePtr->valuefBm(record.HitPoint, numOctaves, gain, lacunarity);
+                break;
+        }
+        FP_TYPE value = noise - floor(noise);
+        return color * value;
+    }
+};
+
+class RampNoiseTexture : public NoiseTexture
+{
+    FP_TYPE amount = 0;
+    std::shared_ptr<ColorRamp> rampPtr;
+public:
+    RampNoiseTexture(const std::shared_ptr<LatticeNoise> noisePtr, const std::shared_ptr<ColorRamp> rampPtr) : NoiseTexture(noisePtr), rampPtr(rampPtr) {}
+    virtual ~RampNoiseTexture() = default;
+    void setAmount(FP_TYPE newAmount)
+    {
+        amount = newAmount;
+    }
+    RGBColor getColor(const HitRecord& record) const override
+    {
+        FP_TYPE noise;
+        switch (type)
+        {
+            case NoiseTextureType::FRACTAL_SUM:
+                noise = noisePtr->valueFractalSum(record.HitPoint, numOctaves, minVal, maxVal);
+                break;
+            case NoiseTextureType::TURBULENCE:
+                noise = noisePtr->valueTurbulence(record.HitPoint, numOctaves, maxVal);
+                break;
+            case NoiseTextureType::BROWNIAN:
+                noise = noisePtr->valuefBm(record.HitPoint, numOctaves, gain, lacunarity, minVal, maxVal);
+                break;
+        }
+        FP_TYPE u = 0.5 * (1 + sin(record.HitPoint.y + amount * noise));
+        return rampPtr->getColor(u);
     }
 };
 

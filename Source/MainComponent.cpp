@@ -337,15 +337,18 @@ void MainComponent::setupWorld()
 
     std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(0, 0, 0), 1) };
     std::shared_ptr<LatticeNoise> planeNoise1{ new CubicNoise() };
-    std::shared_ptr<Texture> planeTex1Original{ new FBmTexture(planeNoise1) };
-    std::dynamic_pointer_cast<FBmTexture>(planeTex1Original)->setColor(RGBColor(0.2, 0.6, 0.3));
-    std::dynamic_pointer_cast<FBmTexture>(planeTex1Original)->setRange(-0.1, 1.1);
+    std::shared_ptr<Texture> planeTex1Original{ new WrappedNoiseTexture(planeNoise1) };
+    std::dynamic_pointer_cast<WrappedNoiseTexture>(planeTex1Original)->setColor(RGBColor(0.2, 0.6, 0.3));
+    std::dynamic_pointer_cast<WrappedNoiseTexture>(planeTex1Original)->setExpansion(5);
+    std::dynamic_pointer_cast<WrappedNoiseTexture>(planeTex1Original)->setOctaves(6);
+    std::dynamic_pointer_cast<WrappedNoiseTexture>(planeTex1Original)->setGain(0.5);
+    std::dynamic_pointer_cast<WrappedNoiseTexture>(planeTex1Original)->setLacunarity(2);
     std::shared_ptr<Texture> planeTex1{ new TextureInstance(planeTex1Original) };
     std::dynamic_pointer_cast<TextureInstance>(planeTex1)->Scale(0.5, 0.5, 2);
     std::shared_ptr<Material> planeMat1{ new Matte() };
     std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.5);
     std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
-    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1);
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1Original);
     sphere->SetMaterial(planeMat1);
 
     std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };

@@ -54,7 +54,7 @@ public:
         turbulence /= fsMax;
         return turbulence;
     }
-    FP_TYPE valuefBm(const Point3D p, int numOctaves = 4, FP_TYPE fsMin = 0.0, FP_TYPE fsMax = 1.0, FP_TYPE gain = 0.6, FP_TYPE lacunarity = 8) const
+    FP_TYPE valuefBm(const Point3D p, int numOctaves = 4, FP_TYPE gain = 0.6, FP_TYPE lacunarity = 8, FP_TYPE fsMin = 0.0, FP_TYPE fsMax = 1.0) const
     {
         FP_TYPE amplitude = 1.0, frequency = 1.0, fBm = 0.0;
         for (int i = 0; i < numOctaves; i++)

@@ -100,11 +100,46 @@ RGBColor Matte::Shade(const HitRecord& record)
 
 RGBColor Matte::PathShade(const HitRecord& record)
 {
-    Vec3D wi, wo = -record.Ray.Direction;
+    Vec3D wo = -record.Ray.Direction;
+
+    RGBColor L;
+    //if (record.Depth == 0)
+    //{
+    //    L = ElemMul(ambientBRDF.rho(record, wo), world->GetAmbientLightPtr()->L(record));
+    //    auto& lights = world->GetLights();
+    //    for (int i = 0; i < lights.size(); i++)
+    //    {
+    //        auto wi = lights[i]->GetDirection(record);
+    //        auto ndotwi = record.Normal * wi;
+    //        auto ndotwo = record.Normal * wo;
+    //        if (ndotwi > 0.0 && ndotwo > 0.0)
+    //        {
+    //            Ray shadowRay(record.HitPoint, wi);
+    //            if (!lights[i]->InShadow(shadowRay, record))
+    //            {
+    //                if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+    //                {
+    //                    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+    //                    L += ElemMul(diffuseBRDF.f(record, wi, wo),
+    //                        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
+    //                }
+    //                else
+    //                    L += ElemMul(diffuseBRDF.f(record, wi, wo), lights[i]->L(record) * ndotwi);
+    //            }
+    //        }
+    //    }
+    //}
+
+    Vec3D wi;
     FP_TYPE pdf;
     RGBColor f = diffuseBRDF.sampleF(record, wi, wo, pdf);
     Ray reflected(record.HitPoint, wi);
-    return ElemMul(f / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    //HitRecord tmp = world->HitObjects(reflected);
+    //if (dynamic_cast<const Emissive*>(tmp.MaterialPtr.get()) != nullptr)
+    //    return L;
+
+    L += ElemMul(f / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    return L;
 }
 
 void Phong::SetKa(const FP_TYPE ka)
@@ -184,11 +219,47 @@ RGBColor Phong::Shade(const HitRecord& record)
 
 RGBColor Phong::PathShade(const HitRecord& record)
 {
-    Vec3D wi, wo = -record.Ray.Direction;
+    Vec3D wo = -record.Ray.Direction;
+
+    RGBColor L;
+    //if (record.Depth == 0)
+    //{
+    //    L = ElemMul(ambientBRDF.rho(record, wo), world->GetAmbientLightPtr()->L(record));
+    //    auto& lights = world->GetLights();
+    //    for (int i = 0; i < lights.size(); i++)
+    //    {
+    //        auto wi = lights[i]->GetDirection(record);
+    //        auto ndotwi = record.Normal * wi;
+    //        auto ndotwo = record.Normal * wo;
+    //        if (ndotwi > 0.0 && ndotwo > 0.0)
+    //        {
+    //            Ray shadowRay(record.HitPoint, wi);
+    //            if (!lights[i]->InShadow(shadowRay, record))
+    //            {
+    //                if (dynamic_cast<const AreaLight*>(lights[i].get()) != nullptr)
+    //                {
+    //                    auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
+    //                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
+    //                        light->L(record) * light->G(record) * ndotwi / light->pdf(record));
+    //                }
+    //                else
+    //                    L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo),
+    //                        lights[i]->L(record) * ndotwi);
+    //            }
+    //        }
+    //    }
+    //}
+
+    Vec3D wi;
     FP_TYPE pdf;
     RGBColor f = diffuseBRDF.sampleF(record, wi, wo, pdf);
     Ray reflected(record.HitPoint, wi);
-    return ElemMul(f / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    //HitRecord tmp = world->HitObjects(reflected);
+    //if (dynamic_cast<const Emissive*>(tmp.MaterialPtr.get()) != nullptr)
+    //    return L;
+
+    L += ElemMul(f / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
+    return L;
 }
 
 RGBColor Emissive::Shade(const HitRecord& record)
@@ -206,15 +277,16 @@ RGBColor Emissive::PathShade(const HitRecord& record)
 
 RGBColor Reflective::Shade(const HitRecord& record)
 {
-    RGBColor L(Matte::Shade(record));
     Vec3D wo = -record.Ray.Direction;
     Vec3D wi;
     FP_TYPE pdf;
     RGBColor fr = reflectiveBRDF.sampleF(record, wi, wo, pdf);
     Ray reflected(record.HitPoint, wi);
     
-    L += ElemMul(fr / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
-    return L;
+    //if (record.Depth == 0)
+    //    return ElemMul(fr / pdf, tracer->Trace(reflected, record.Depth + 2) * (record.Normal * wi));
+    //else
+    return ElemMul(fr / pdf, tracer->Trace(reflected, record.Depth + 1) * (record.Normal * wi));
 }
 
 RGBColor Reflective::PathShade(const HitRecord& record)
@@ -240,6 +312,7 @@ RGBColor GlossyReflector::Shade(const HitRecord& record)
 
 RGBColor GlossyReflector::PathShade(const HitRecord& record)
 {
+    //RGBColor L(Matte::Shade(record));
     RGBColor L;
     Vec3D wo = -record.Ray.Direction;
     Vec3D wi;

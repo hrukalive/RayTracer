@@ -41,7 +41,7 @@
           <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
         </GROUP>
-        <FILE id="i3uitm" name="photonmap.c" compile="1" resource="0" file="Source/Core/photonmap.c"/>
+        <FILE id="i3uitm" name="photonmap.cpp" compile="1" resource="0" file="Source/Core/photonmap.cpp"/>
         <FILE id="R5UKx4" name="photonmap.h" compile="0" resource="0" file="Source/Core/photonmap.h"/>
         <FILE id="H5QLYT" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility.cpp"/>
         <FILE id="zYCM1q" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility.h"/>

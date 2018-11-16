@@ -43,7 +43,7 @@ namespace RayTracer
 
     FP_TYPE Rectangle::pdf(const HitRecord& record)
     {
-        return 1.0 / (u * v);
+        return 1.0 / (u ^ v).length();
     }
 
     HitRecord Rectangle::Hit(const Ray& ray)

@@ -92,7 +92,7 @@ inline Matrix MatrixTranspose(Matrix& m)
 template<class T>
 inline T lerp(const FP_TYPE f, const T& a, const T& b)
 {
-    return a + f * (b - a);
+    return a + (b - a) * f;
 }
 
 template<class T>
@@ -157,4 +157,69 @@ struct HitRecord
 	HitRecord() {}
 	HitRecord(Vec3D normal, Vec3D hitPoint, FP_TYPE t)
 		: Normal(normal), HitPoint(hitPoint), T(t) {}
+};
+
+struct ColorRamp
+{
+    template<class U, class V>
+    struct pairLess
+    {
+        constexpr bool operator()(const std::pair<U, V> &lhs, const std::pair<U, V> &rhs) const
+        {
+            return lhs.first < rhs.first;
+        }
+    };
+    std::vector<std::pair<int, RGBColor>> colorPoints;
+
+    int N;
+    std::vector<RGBColor> colors;
+public:
+    ColorRamp(int N = 100) : N(N) { colors = std::vector<RGBColor>(N + 1); }
+    void addColorPoint(FP_TYPE x, RGBColor color)
+    {
+        int newX = clamp((int)(N * x), 0, N);
+        colorPoints.push_back(std::make_pair(newX, color));
+    }
+    void build()
+    {
+        std::sort(colorPoints.begin(), colorPoints.end(), pairLess<int, RGBColor>());
+        for (size_t i = 0; i < colorPoints.size() - 1; i++)
+        {
+            auto lowIdx = colorPoints[i].first;
+            auto highIdx = colorPoints[i + 1].first;
+            auto lowColor = colorPoints[i].second;
+            auto highColor = colorPoints[i + 1].second;
+            for (size_t j = colorPoints[i].first; j < colorPoints[i + 1].first; j++)
+                colors[j] = lerp(double(j - lowIdx) / double(highIdx - lowIdx), lowColor, highColor);
+        }
+    }
+    void buildFromImage(Image image, bool isHorizontal = true)
+    {
+        if (isHorizontal)
+        {
+            N = image.getWidth();
+            colors = std::vector<RGBColor>(N + 1);
+            for (int i = 0; i < N; i++)
+            {
+                auto c = image.getPixelAt(i, 0);
+                colors[i] = RGBColor(c.getRed() / 255.0, c.getGreen() / 255.0, c.getBlue() / 255.0);
+            }
+        }
+        else
+        {
+            N = image.getHeight();
+            colors = std::vector<RGBColor>(N + 1);
+            for (int i = 0; i < N; i++)
+            {
+                auto c = image.getPixelAt(0, i);
+                colors[i] = RGBColor(c.getRed() / 255.0, c.getGreen() / 255.0, c.getBlue() / 255.0);
+            }
+        }
+    }
+    RGBColor getColor(FP_TYPE x)
+    {
+        auto fx = floor(x * N), cx = ceil(x * N);
+        auto dx = x * N - fx;
+        return lerp(dx, colors[fx], colors[cx]);
+    }
 };

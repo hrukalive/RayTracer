@@ -239,7 +239,7 @@ void MainComponent::setupWorld()
     std::shared_ptr<Material> planeMat1{ new Matte() };
     std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.2);
     std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.9);
-     std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(RGBColor(1, 1, 1));
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(RGBColor(1, 1, 1));
     planeBottom->SetMaterial(planeMat1);
 
     std::shared_ptr<GeometricObject> planeTop{ new RayTracer::Rectangle(Point3D(-50, 50, 50), Vec3D(0, 0, -100), Vec3D(100, 0, 0)) };

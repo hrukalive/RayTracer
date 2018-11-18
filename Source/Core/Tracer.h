@@ -21,8 +21,8 @@ protected:
 public:
     Tracer(std::shared_ptr<World>& world);
     virtual ~Tracer() = default;
-    virtual RGBColor Trace(const Ray& ray, int depth) const = 0;
-    virtual RGBColor Trace(const Ray& ray) const;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const = 0;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray) const;
 };
 
 class RayCast : public Tracer
@@ -30,7 +30,7 @@ class RayCast : public Tracer
 public:
     RayCast(std::shared_ptr<World>& world);
     virtual ~RayCast() = default;
-    virtual RGBColor Trace(const Ray& ray, int depth) const override;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
 };
 
 class Whitted : public Tracer
@@ -40,7 +40,7 @@ public:
     Whitted(std::shared_ptr<World>& world);
     Whitted(std::shared_ptr<World>& world, int maxDepth);
     virtual ~Whitted() = default;
-    virtual RGBColor Trace(const Ray& ray, int depth) const override;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
 };
 
 class PathTrace : public Tracer
@@ -50,5 +50,5 @@ public:
     PathTrace(std::shared_ptr<World>& world);
     PathTrace(std::shared_ptr<World>& world, int maxDepth);
     virtual ~PathTrace() = default;
-    virtual RGBColor Trace(const Ray& ray, int depth) const override;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
 };

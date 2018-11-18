@@ -11,6 +11,8 @@
           <FILE id="ziWJfU" name="Box.h" compile="0" resource="0" file="Source/Core/GeometricObject/Box.h"/>
           <FILE id="mqTV46" name="Compound.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Compound.cpp"/>
           <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
+          <FILE id="P5SwvQ" name="CSG.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/CSG.cpp"/>
+          <FILE id="vf7I0C" name="CSG.h" compile="0" resource="0" file="Source/Core/GeometricObject/CSG.h"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.h"/>
           <FILE id="ZA99cE" name="Grid.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Grid.cpp"/>

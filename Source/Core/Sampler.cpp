@@ -325,3 +325,99 @@ void MultiJittered::generate()
     }
     numSamples = samples.size() / numSets;
 }
+
+FP_TYPE Hammersley::phi(int i)
+{
+    FP_TYPE x = 0.0, f = 0.5;
+    while (i)
+    {
+        x += f * (FP_TYPE)(i & 1);
+        i /= 2;
+        f *= 0.5;
+    }
+    return x;
+}
+
+void Hammersley::generate()
+{
+    for (int k = 0; k < numSets; k++)
+        for (int i = 1; i <= numSamples; i++)
+            samples.push_back(Point2D(1.0 / i, phi(k * numSets + i)));
+    numSamples = samples.size() / numSets;
+}
+
+std::vector<Point2D> Hammersley::SampleSquare(int count)
+{
+    std::vector<Point2D> ret;
+
+    for (int i = 1; i <= count; i++)
+        ret.push_back(Point2D(1.0 / i, phi(sampleCount++ + i)));
+    return ret;
+}
+
+std::vector<Point3D> Hammersley::SampleHemisphere(int count, const FP_TYPE e)
+{
+    std::vector<Point3D> ret;
+
+    for (int i = 1; i <= count; i++)
+    {
+        auto x = 1.0 / i;
+        auto y = phi(sampleCount++ + i);
+
+        FP_TYPE cos_phi = cos(2.0 * PI * x);
+        FP_TYPE sin_phi = sin(2.0 * PI * x);
+        FP_TYPE cos_theta = pow((1.0 - y), 1.0 / (e + 1.0));
+        FP_TYPE sin_theta = sqrt(1.0 - cos_theta * cos_theta);
+        ret.push_back(Point3D(sin_theta * cos_phi, sin_theta * sin_phi, cos_theta));
+    }
+    return ret;
+}
+
+std::vector<Point2D> Hammersley::SampleCircle(int count)
+{
+    std::vector<Point2D> ret;
+
+    for (int i = 1; i <= count; i++)
+    {
+        auto spx = 1.0 / i;
+        auto spy = phi(sampleCount++ + i);
+        if (spx > -spy)
+        {
+            if (spx > spy)
+            {
+                auto r = spx;
+                auto phi = spy / spx * PI / 4.0;
+                ret.push_back(Point2D(r * cos(phi), r * sin(phi)));
+            }
+            else
+            {
+                auto r = spy;
+                auto phi = (2.0 - spx / spy) * PI / 4.0;
+                ret.push_back(Point2D(r * cos(phi), r * sin(phi)));
+            }
+        }
+        else
+        {
+            if (spx < spy)
+            {
+                auto r = -spx;
+                auto phi = (4.0 + spy / spx) * PI / 4.0;
+                ret.push_back(Point2D(r * cos(phi), r * sin(phi)));
+            }
+            else
+            {
+                auto r = -spy;
+                if (spy != 0.0)
+                {
+                    auto phi = (6.0 - spx / spy) * PI / 4.0;
+                    ret.push_back(Point2D(r * cos(phi), r * sin(phi)));
+                }
+                else
+                {
+                    ret.push_back(Point2D(r, 0.0));
+                }
+            }
+        }
+    }
+    return ret;
+}

@@ -62,3 +62,18 @@ public:
     std::vector<Point2D> SampleCircle(int count) override;
     std::vector<Point3D> SampleHemisphere(int count, const FP_TYPE e) override;
 };
+
+class Hammersley : public Sampler
+{
+    FP_TYPE phi(int i);
+    void generate() override;
+    unsigned long sampleCount = 0;
+public:
+    Hammersley() : Sampler() { generate(); setupShuffledIndices(); }
+    Hammersley(int numSamples) : Sampler(numSamples) { generate(); setupShuffledIndices(); }
+    Hammersley(int numSamples, int numSets) : Sampler(numSamples, numSets) { generate(); setupShuffledIndices(); }
+    virtual ~Hammersley() = default;
+    std::vector<Point2D> SampleSquare(int count) override;
+    std::vector<Point2D> SampleCircle(int count) override;
+    std::vector<Point3D> SampleHemisphere(int count, const FP_TYPE e) override;
+};

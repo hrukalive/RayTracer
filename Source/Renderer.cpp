@@ -81,9 +81,9 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                             for (int c = startC; c < endC; c++)
                             {
                                 auto ray = camera->CreateARay(c, r);
-                                RGBColor color = tracer->Trace(ray);
-                                if (color.x > 0 && color.y > 0 && color.z > 0)
-                                    viewPlane->SetPixel(c, r, color);
+                                auto traceResult = tracer->Trace(ray);
+                                if (traceResult.first)
+                                    viewPlane->SetPixel(c, r, traceResult.second);
                                 criticalSection.enter();
                                 renderedCount++;
                                 progress = renderedCount / double(totalPixel);
@@ -114,7 +114,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                         {
                             auto rays = camera->CreateRay(c, r);
                             for (auto& ray : rays)
-                                viewPlane->SetPixel(c, r, tracer->Trace(ray));
+                                viewPlane->SetPixel(c, r, tracer->Trace(ray).second);
                             criticalSection.enter();
                             renderedCount++;
                             progress = renderedCount / double(totalPixel);

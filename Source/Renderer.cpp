@@ -52,7 +52,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
         &progress = progress,
         &criticalSection = criticalSection]() {
 
-        auto width = viewPlane->Width;
+        auto width = viewPlane->isStereo ? 2 * viewPlane->Width : viewPlane->Width;
         auto height = viewPlane->Height;
         std::vector<std::pair<int, int>> blocks;
         for (int i = 0; i < (int)ceil((FP_TYPE)height / threadDim); i++)

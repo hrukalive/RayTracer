@@ -15,6 +15,7 @@
 class ViewPlane
 {
 public:
+    bool isStereo;
     int Width = 512, Height = 512;
     FP_TYPE PixelSize = 1.0f;
 	int NumPixelSamples = 64, NumLensSamples = 1;
@@ -32,10 +33,10 @@ private:
 
     inline void initialize();
 public:
-    ViewPlane();
-    ViewPlane(int width, int height, FP_TYPE pixelSize);
-    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels);
-    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens);
+    ViewPlane(bool isStereo = false);
+    ViewPlane(int width, int height, FP_TYPE pixelSize, bool isStereo = false);
+    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, bool isStereo = false);
+    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens, bool isStereo = false);
 
     inline Point2D GetPixelCenter(int x, int y)
     {

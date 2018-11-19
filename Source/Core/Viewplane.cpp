@@ -14,18 +14,19 @@ void ViewPlane::initialize()
 {
     SqrtNumSamplePixel = (int)sqrt(NumPixelSamples);
     SqrtNumSampleLens = (int)sqrt(NumLensSamples);
+    auto realWidth = isStereo ? 2 * Width : Width;
 
     renderedArray.resize(Height);
     for (auto& row : renderedArray)
-        row.resize(Width);
+        row.resize(realWidth);
     renderedCount.resize(Height);
     for (auto& row : renderedCount)
-        row.resize(Width);
+        row.resize(realWidth);
 
-    logIntensityArray.resize(Height * Width);
+    logIntensityArray.resize(Height * realWidth);
 
-    RenderedImage = std::make_shared<Image>(Image(Image::PixelFormat::RGB, Width, Height, true));
-    for (int i = 0; i < Width; i++) {
+    RenderedImage = std::make_shared<Image>(Image(Image::PixelFormat::RGB, realWidth, Height, true));
+    for (int i = 0; i < realWidth; i++) {
         for (int j = 0; j < Height; j++)
         {
             RenderedImage->setPixelAt(i, j, Colour::fromFloatRGBA(0.0, 0.0, 0.0, 1.0));
@@ -33,19 +34,19 @@ void ViewPlane::initialize()
     }
 }
 
-ViewPlane::ViewPlane() { initialize(); }
-ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize)
-    : Width(width), Height(height), PixelSize(pixelSize)
+ViewPlane::ViewPlane(bool isStereo) : isStereo(isStereo) { initialize(); }
+ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, bool isStereo)
+    : isStereo(isStereo), Width(width), Height(height), PixelSize(pixelSize)
 {
     initialize();
 }
-ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels)
-    : Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels)
+ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, bool isStereo)
+    : isStereo(isStereo), Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels)
 {
     initialize();
 }
-ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens)
-    : Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels), NumLensSamples(numSampleLens)
+ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens, bool isStereo)
+    : isStereo(isStereo), Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels), NumLensSamples(numSampleLens)
 {
     initialize();
 }

@@ -12,8 +12,8 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new Whitted(world, 5));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4));
+    tracer.reset(new Whitted(world, 4));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4, true));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     
     setupWorld();
@@ -39,9 +39,9 @@ MainComponent::MainComponent()
     commandManager.registerAllCommandsForTarget(this);
     addKeyListener(commandManager.getKeyMappings());
 #if JUCE_MAC
-    setSize(std::max(100, vpWidth), std::max(100, vpHeight));
+    setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, vpHeight));
 #else
-    setSize(std::max(100, vpWidth), std::max(100, vpHeight) + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+    setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, vpHeight) + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 	startTimer(1000);
 }
@@ -60,6 +60,61 @@ MainComponent::~MainComponent()
     MenuBarModel::setMacMainMenu (nullptr);
 #endif
 }
+
+/*
+void MainComponent::setupWorld()
+{
+    auto r = 3.7; //2.8
+    auto theta = 0.0 * PI_OVER_180;
+    auto phi = 90 * PI_OVER_180;
+    auto roll = 0.0 * PI_OVER_180;
+    auto lookat = Vec3D(0.0, 0.0, 0.0);
+    auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
+
+    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 4, 0.3));
+    std::shared_ptr<Camera> cam1{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
+    std::shared_ptr<Camera> cam2{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
+    camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
+
+    std::shared_ptr<Light> parallelLight{ new ParallelLight(3.0, RGBColor(1.0, 1.0, 1.0), Vec3D(-1.0, -1.0, 0.5)) };
+    world->AddLight(parallelLight);
+
+    std::shared_ptr<Light> l2{ new PointLight(5, Vec3D(1, 0, 0), Point3D(-2, 1, 0)) };
+    world->AddLight(l2);
+    std::shared_ptr<Light> l3{ new PointLight(5, Vec3D(0, 1, 0), Point3D(2, 1, 0)) };
+    world->AddLight(l3);
+    std::shared_ptr<Light> l4{ new PointLight(5, Vec3D(0, 0, 1), Point3D(0, 1, 2)) };
+    world->AddLight(l4);
+
+    std::shared_ptr<Light> ambient{ new Ambient(0.8, RGBColor(1.0, 1.0, 1.0)) };
+    world->SetAmbient(ambient);
+
+    std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
+
+    int numSphere = 100;
+    FP_TYPE volume = (FP_TYPE)(0.1 / numSphere);
+    FP_TYPE radius = (FP_TYPE)pow(0.75 * volume / PI, 1.0 / 3);
+    Random random;
+
+    for (int i = 0; i < numSphere; i++)
+    {
+        std::shared_ptr<Material> phong{ new Phong() };
+        std::dynamic_pointer_cast<Phong>(phong)->SetKa(0.25);
+        std::dynamic_pointer_cast<Phong>(phong)->SetKd(0.75);
+        std::dynamic_pointer_cast<Phong>(phong)->SetKs(0.4);
+        std::dynamic_pointer_cast<Phong>(phong)->SetE(80.0);
+        std::dynamic_pointer_cast<Phong>(phong)->SetCd(RGBColor(random.nextDouble(), random.nextDouble(), random.nextDouble()));
+        std::dynamic_pointer_cast<Phong>(phong)->SetCs(RGBColor(1.0, 1.0, 1.0));
+
+        std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble(), 1 - 2.0 * random.nextDouble()), radius) };
+        sphere->SetMaterial(phong);
+        std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
+    }
+
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
+    world->AddObject(comp);
+}
+*/
 
 /*
 void MainComponent::setupWorld()
@@ -315,7 +370,11 @@ void MainComponent::setupWorld()
     auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.2, 0.7, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    //camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+
+    std::shared_ptr<Camera> cam1{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
+    std::shared_ptr<Camera> cam2{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
+    camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
     //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
 
     std::shared_ptr<Light> ambient{ new Ambient(0.2, RGBColor(1.0, 1.0, 1.0)) };
@@ -579,9 +638,10 @@ bool MainComponent::perform (const InvocationInfo& info)
 			rendering = true;
 			progressBar->setSize(0, 25);
 #if JUCE_MAC
-			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + progressBar->getHeight());
+			setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, viewPlane->Height) + progressBar->getHeight());
 #else
-			setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + progressBar->getHeight() + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+			setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, viewPlane->Height) + progressBar->getHeight() +
+                LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 			progressBar->setVisible(true);
 			repaint();
@@ -684,9 +744,10 @@ void MainComponent::timerCallback()
 		progressBar->setSize(0, 0);
 		progressBar->setVisible(false);
 #if JUCE_MAC
-		setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height));
+		setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, viewPlane->Height));
 #else
-		setSize(std::max(100, viewPlane->Width), std::max(100, viewPlane->Height) + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+		setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, viewPlane->Height) + 
+            LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 		repaint();
 	}

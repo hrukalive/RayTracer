@@ -34,6 +34,8 @@ typedef dsp::Matrix<FP_TYPE> Matrix;
 #define BLACK (RGBColor(0.0, 0.0, 0.0))
 #define WHITE (RGBColor(1.0, 1.0, 1.0))
 #define RED (RGBColor(1.0, 0.0, 0.0))
+#define GREEN (RGBColor(0.0, 1.0, 0.0))
+#define BLUE (RGBColor(0.0, 0.0, 1.0))
 
 #define ZERO (Vec3D(0.0, 0.0, 0.0))
 #define ONE (Vec3D(1.0, 1.0, 1.0))

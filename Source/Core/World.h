@@ -18,6 +18,7 @@
 
 class World
 {
+    BBox boundingBox;
     std::shared_ptr<Light> ambientLightPtr = nullptr;
 	RGBColor backgroundColor = BLACK;
 	std::vector<std::shared_ptr<GeometricObject>> objects;
@@ -31,6 +32,7 @@ public:
     void SetAmbient(std::shared_ptr<Light>& ambient);
     void AddLight(std::shared_ptr<Light>& light);
     void AddObject(std::shared_ptr<GeometricObject>& obj);
+    BBox GetBoundingBox();
 
     HitRecord HitObjects(const Ray& ray);
 };

@@ -26,7 +26,6 @@ public:
     Instance(std::shared_ptr<GeometricObject> objectPtr);
     virtual ~Instance() = default;
     void SetObject(std::shared_ptr<GeometricObject> newObjectPtr);
-    void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
 
     //virtual Point3D Sample() override;
     //virtual Vec3D GetNormal(const Point3D p) override;

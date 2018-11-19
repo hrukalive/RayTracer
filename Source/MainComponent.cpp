@@ -12,8 +12,8 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new PathTrace(world, 8));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 64, 4));
+    tracer.reset(new Whitted(world, 5));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     
     setupWorld();
@@ -212,7 +212,7 @@ void MainComponent::setupWorld()
 }
 */
 
-
+/*
 void MainComponent::setupWorld()
 {
     auto r = 160;
@@ -305,25 +305,116 @@ void MainComponent::setupWorld()
 
     world->AddObject(comp);
 }
+*/
 
-/*
 void MainComponent::setupWorld()
 {
     auto r = 2.7;
-    auto theta = 60 * PI_OVER_180;
-    auto phi = 60 * PI_OVER_180;
+    auto theta = 145.0 * PI_OVER_180;
+    auto phi = 70 * PI_OVER_180;
     auto roll = 0.0 * PI_OVER_180;
-    auto lookat = Vec3D(0.0, 0.0, 0.0);
+    auto lookat = Vec3D(0.2, 0.7, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
     camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
 
-    std::shared_ptr<Light> ambient{ new Ambient(0.7, RGBColor(1.0, 1.0, 1.0)) };
+    std::shared_ptr<Light> ambient{ new Ambient(0.2, RGBColor(1.0, 1.0, 1.0)) };
     world->SetAmbient(ambient);
 
-    std::shared_ptr<Light> parallel{ new ParallelLight(5.0, WHITE, Vec3D(-1.0, -1.0, 0.5)) };
-    world->AddLight(parallel);
+    std::shared_ptr<GeometricObject> lightplane1{ new RayTracer::Rectangle(Point3D(-0.3, 0.5, 1.5), Vec3D(0, 0.5, 0), Vec3D(0.6, 0, 0)) };
+    std::shared_ptr<Material> lightMat1{ new Emissive() };
+    std::dynamic_pointer_cast<Emissive>(lightMat1)->SetLs(30);
+    std::dynamic_pointer_cast<Emissive>(lightMat1)->SetCe(RGBColor(1.0, 1.0, 1.0));
+    lightplane1->SetMaterial(lightMat1);
+    std::shared_ptr<Light> arealight1{ new AreaLight(lightplane1, lightMat1) };
+    world->AddLight(arealight1);
+
+    std::shared_ptr<GeometricObject> lightplane2{ new RayTracer::Rectangle(Point3D(1.4, 0.9, 0.0), Vec3D(0, 0, 0.6), Vec3D(0, 0.5, 0)) };
+    std::shared_ptr<Material> lightMat2{ new Emissive() };
+    std::dynamic_pointer_cast<Emissive>(lightMat2)->SetLs(25);
+    std::dynamic_pointer_cast<Emissive>(lightMat2)->SetCe(RGBColor(1.0, 1.0, 0.5));
+    lightplane2->SetMaterial(lightMat2);
+    std::shared_ptr<Light> arealight2{ new AreaLight(lightplane2, lightMat2) };
+    world->AddLight(arealight2);
+
+    std::shared_ptr<GeometricObject> lightplane3{ new RayTracer::Rectangle(Point3D(-1.4, 0.9, 0.0), Vec3D(0, 0.5, 0), Vec3D(0, 0, 0.6)) };
+    std::shared_ptr<Material> lightMat3{ new Emissive() };
+    std::dynamic_pointer_cast<Emissive>(lightMat3)->SetLs(25);
+    std::dynamic_pointer_cast<Emissive>(lightMat3)->SetCe(RGBColor(0.5, 1.0, 1.0));
+    lightplane3->SetMaterial(lightMat3);
+    std::shared_ptr<Light> arealight3{ new AreaLight(lightplane3, lightMat3) };
+    world->AddLight(arealight3);
+
+    std::shared_ptr<GeometricObject> plane{ new RayTracer::Rectangle(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
+    std::shared_ptr<Material> planeMat{ new GlossyReflector() };
+    std::dynamic_pointer_cast<GlossyReflector>(planeMat)->SetKa(0.1);
+    std::dynamic_pointer_cast<GlossyReflector>(planeMat)->SetKd(0.4);
+    std::dynamic_pointer_cast<GlossyReflector>(planeMat)->SetKs(0.4);
+    std::dynamic_pointer_cast<GlossyReflector>(planeMat)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<GlossyReflector>(planeMat)->SetCs(RGBColor(1.0, 1.0, 1.0));
+    std::dynamic_pointer_cast<GlossyReflector>(planeMat)->SetE(500.0);
+    plane->SetMaterial(planeMat);
+
+
+    std::shared_ptr<GeometricObject> box{ new Box(Point3D(-1, -1, -1), Point3D(1, 1, 1)) };
+    std::shared_ptr<GeometricObject> sphere1{ new Sphere(Point3D(0, 0, 0), 1.3) };
+    std::shared_ptr<GeometricObject> cy1{ new Cylinder(Point3D(0, -2, 0), 0.65, 4) };
+    std::shared_ptr<GeometricObject> cy2Original{ new Cylinder(Point3D(0, -2, 0), 0.65, 4) };
+    std::shared_ptr<GeometricObject> cy2{ new Instance(cy2Original) };
+    std::dynamic_pointer_cast<Instance>(cy2)->RotateX(90 * PI_OVER_180);
+    std::shared_ptr<GeometricObject> cy3Original{ new Cylinder(Point3D(0, -2, 0), 0.65, 4) };
+    std::shared_ptr<GeometricObject> cy3{ new Instance(cy3Original) };
+    std::dynamic_pointer_cast<Instance>(cy3)->RotateZ(90 * PI_OVER_180);
+
+    std::shared_ptr<Material> cyMat{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(cyMat)->SetKa(0.3);
+    std::dynamic_pointer_cast<Matte>(cyMat)->SetKd(0.7);
+    std::dynamic_pointer_cast<Matte>(cyMat)->SetCd(RED);
+    cy1->SetMaterial(cyMat);
+    cy2->SetMaterial(cyMat);
+    cy3->SetMaterial(cyMat);
+
+    std::shared_ptr<Material> boxMat{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(boxMat)->SetKa(0.3);
+    std::dynamic_pointer_cast<Matte>(boxMat)->SetKd(0.7);
+    std::dynamic_pointer_cast<Matte>(boxMat)->SetCd(GREEN);
+    box->SetMaterial(boxMat);
+    std::shared_ptr<Material> sphereMat{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(sphereMat)->SetKa(0.3);
+    std::dynamic_pointer_cast<Matte>(sphereMat)->SetKd(0.7);
+    std::dynamic_pointer_cast<Matte>(sphereMat)->SetCd(BLUE);
+    sphere1->SetMaterial(sphereMat);
+
+    std::shared_ptr<GeometricObject> csg{ new CSG() };
+    std::dynamic_pointer_cast<CSG>(csg)->addObject(box);
+    std::dynamic_pointer_cast<CSG>(csg)->addObject(sphere1);
+    std::dynamic_pointer_cast<CSG>(csg)->addOperation(CSG::OpType::INTERSECTION);
+    std::dynamic_pointer_cast<CSG>(csg)->addObject(cy1);
+    std::dynamic_pointer_cast<CSG>(csg)->addObject(cy2);
+    std::dynamic_pointer_cast<CSG>(csg)->addOperation(CSG::OpType::UNION);
+    std::dynamic_pointer_cast<CSG>(csg)->addObject(cy3);
+    std::dynamic_pointer_cast<CSG>(csg)->addOperation(CSG::OpType::UNION);
+    std::dynamic_pointer_cast<CSG>(csg)->addOperation(CSG::OpType::DIFFERENCE);
+    std::dynamic_pointer_cast<CSG>(csg)->build();
+
+    std::shared_ptr<GeometricObject> csgins{ new Instance(csg) };
+    std::dynamic_pointer_cast<Instance>(csgins)->Scale(0.4, 0.4, 0.4);
+    std::dynamic_pointer_cast<Instance>(csgins)->Translate(0, 0.4, 0);
+
+    std::shared_ptr<Material> mat1{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetKa(0.05);
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetKd(0.05);
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetKs(0.0);
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetCd(RGBColor(1.0, 0.0, 0.8));
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetCr(RGBColor(1.0, 0.8, 0.8));
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetCt(RGBColor(1.0, 0.8, 0.8));
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetKr(0.5);
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetKt(1.0);
+    std::dynamic_pointer_cast<Transparent>(mat1)->SetIOR(1.15);
+    csgins->SetMaterial(mat1);
 
     //std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(0, 0, 0), 1) };
+    //std::shared_ptr<GeometricObject> sphere{ new Cylinder(Point3D(0, 0, 0), 1, 1) };
     //std::shared_ptr<LatticeNoise> planeNoise1{ new CubicNoise() };
     //std::shared_ptr<Texture> planeTex1Original{ new WrappedNoiseTexture(planeNoise1) };
     //std::dynamic_pointer_cast<WrappedNoiseTexture>(planeTex1Original)->setColor(RGBColor(0.2, 0.6, 0.3));
@@ -338,37 +429,41 @@ void MainComponent::setupWorld()
     //std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
     //std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1Original);
     //sphere->SetMaterial(planeMat1);
-    std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(0, 0, 0), 1) };
-    std::shared_ptr<LatticeNoise> planeNoise1{ new CubicNoise() };
-    std::shared_ptr<ColorRamp> ramp{ new ColorRamp() };
-    ramp->addColorPoint(0, WHITE);
-    ramp->addColorPoint(0.7, RGBColor(0.04314, 0.17647, 0.29412));
-    ramp->addColorPoint(1, BLACK);
-    ramp->build();
+
+    //std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(0, 0, 0), 1) };
+    //std::shared_ptr<LatticeNoise> planeNoise1{ new CubicNoise() };
+    //std::shared_ptr<ColorRamp> ramp{ new ColorRamp() };
+    //ramp->addColorPoint(0, WHITE);
+    //ramp->addColorPoint(0.7, RGBColor(0.04314, 0.17647, 0.29412));
+    //ramp->addColorPoint(1, BLACK);
+    //ramp->build();
     //ramp->buildFromImage(ImageFileFormat::loadFrom(File("D:\\testimg.png")), false);
-    std::shared_ptr<Texture> planeTex1Original{ new RampNoiseTexture(planeNoise1, ramp) };
-    std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setType(NoiseTextureType::BROWNIAN);
-    std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setAmount(0.2);
-    std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setOctaves(6);
-    std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setGain(0.5);
-    std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setLacunarity(6);
-    std::shared_ptr<Texture> planeTex1{ new TextureInstance(planeTex1Original) };
-    std::dynamic_pointer_cast<TextureInstance>(planeTex1)->Scale(0.5, 0.5, 2);
-    std::shared_ptr<Material> planeMat1{ new Matte() };
-    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.5);
-    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
-    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1Original);
-    sphere->SetMaterial(planeMat1);
+    //std::shared_ptr<Texture> planeTex1Original{ new RampNoiseTexture(planeNoise1, ramp) };
+    //std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setType(NoiseTextureType::BROWNIAN);
+    //std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setAmount(0.2);
+    //std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setOctaves(6);
+    //std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setGain(0.5);
+    //std::dynamic_pointer_cast<RampNoiseTexture>(planeTex1Original)->setLacunarity(6);
+    //std::shared_ptr<Texture> planeTex1{ new TextureInstance(planeTex1Original) };
+    //std::dynamic_pointer_cast<TextureInstance>(planeTex1)->Scale(0.5, 0.5, 2);
+    //std::shared_ptr<Material> planeMat1{ new Matte() };
+    //std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.5);
+    //std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
+    //std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1Original);
+    //sphere->SetMaterial(planeMat1);
 
     std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
 
-    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(plane);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(lightplane1);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(lightplane2);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(lightplane3);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(csgins);
 
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 
     world->AddObject(comp);
 }
-*/
 
 //==============================================================================
 StringArray MainComponent::getMenuBarNames()

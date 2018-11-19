@@ -265,7 +265,7 @@ std::pair<bool, RGBColor> GlossyReflector::PathShade(const HitRecord& record)
 
 RGBColor Transparent::Shade(const HitRecord& record)
 {
-    RGBColor L;
+    RGBColor L(Phong::Shade(record));
     Vec3D wo = -record.Ray.Direction;
     Vec3D wi;
     FP_TYPE pdf;

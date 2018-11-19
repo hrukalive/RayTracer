@@ -18,7 +18,20 @@ std::vector<std::shared_ptr<Light>>& World::GetLights() { return lights; }
 
 void World::SetAmbient(std::shared_ptr<Light>& ambient) { ambientLightPtr = ambient; }
 void World::AddLight(std::shared_ptr<Light>& light) { lights.push_back(light); }
-void World::AddObject(std::shared_ptr<GeometricObject>& obj) { objects.push_back(obj); }
+void World::AddObject(std::shared_ptr<GeometricObject>& obj)
+{ 
+    objects.push_back(obj);
+
+    if (objects.size() == 1)
+        boundingBox = objects[0]->GetBoundingBox();
+    else if (objects.size() > 1)
+        boundingBox.Merge(objects[objects.size() - 1]->GetBoundingBox());
+}
+
+BBox World::GetBoundingBox()
+{
+    return boundingBox;
+}
 
 HitRecord World::HitObjects(const Ray& ray)
 {

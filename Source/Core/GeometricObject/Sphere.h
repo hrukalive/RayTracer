@@ -30,4 +30,5 @@ public:
     //virtual FP_TYPE pdf(const HitRecord& record) override;
 
     virtual HitRecord Hit(const Ray& ray) override;
+    std::vector<HitRecord> getHitInterval(const Ray& ray) override;
 };

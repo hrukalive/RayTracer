@@ -13,6 +13,12 @@
           <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
           <FILE id="P5SwvQ" name="CSG.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/CSG.cpp"/>
           <FILE id="vf7I0C" name="CSG.h" compile="0" resource="0" file="Source/Core/GeometricObject/CSG.h"/>
+          <FILE id="ZC1XWk" name="Cylinder.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Cylinder.cpp"/>
+          <FILE id="yRctsQ" name="Cylinder.h" compile="0" resource="0" file="Source/Core/GeometricObject/Cylinder.h"/>
+          <FILE id="RXya8y" name="Disk.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Disk.cpp"/>
+          <FILE id="LVd5dh" name="Disk.h" compile="0" resource="0" file="Source/Core/GeometricObject/Disk.h"/>
+          <FILE id="o8wGan" name="GeometricObject.cpp" compile="1" resource="0"
+                file="Source/Core/GeometricObject/GeometricObject.cpp"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.h"/>
           <FILE id="ZA99cE" name="Grid.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Grid.cpp"/>
@@ -22,6 +28,9 @@
           <FILE id="WnBLaL" name="IObject.h" compile="0" resource="0" file="Source/Core/GeometricObject/IObject.h"/>
           <FILE id="dJSMWb" name="Mesh.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Mesh.cpp"/>
           <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
+          <FILE id="okTpVF" name="OpenCylinder.cpp" compile="1" resource="0"
+                file="Source/Core/GeometricObject/OpenCylinder.cpp"/>
+          <FILE id="wWvQwb" name="OpenCylinder.h" compile="0" resource="0" file="Source/Core/GeometricObject/OpenCylinder.h"/>
           <FILE id="hXKdoO" name="Rectangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Rectangle.cpp"/>
           <FILE id="VxXFii" name="Rectangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Rectangle.h"/>
           <FILE id="fDDvJK" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Sphere.cpp"/>

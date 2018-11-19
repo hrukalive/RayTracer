@@ -37,4 +37,6 @@ public:
         auto diff = boundingBox.GetMaxPoint() - boundingBox.GetMinPoint();
         return 1.0 / (2 * (diff.x * diff.y + diff.y * diff.z + diff.x * diff.z));
     }
+
+    virtual std::vector<HitRecord> getHitInterval(const Ray& ray);
 };

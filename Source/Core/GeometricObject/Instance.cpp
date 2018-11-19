@@ -47,11 +47,6 @@ void Instance::SetObject(std::shared_ptr<GeometricObject> newObjectPtr)
     UpdateBoundingBox();
 }
 
-void Instance::SetMaterial(std::shared_ptr<Material> newMaterialPtr)
-{
-    objectPtr->SetMaterial(newMaterialPtr);
-}
-
 void Instance::Translate(const FP_TYPE dx, const FP_TYPE dy, const FP_TYPE dz)
 {
     auto m = Matrix::identity(4);
@@ -130,5 +125,7 @@ HitRecord Instance::Hit(const Ray& ray)
     record.Ray = ray;
     record.HitPoint = ray.GetPoint(record.T);
     record.Normal = MatrixMulVector(invMatrixT, record.Normal).normalised();
+    if (materialPtr != nullptr)
+        record.MaterialPtr = materialPtr;
     return record;
 }

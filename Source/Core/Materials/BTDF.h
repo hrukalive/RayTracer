@@ -30,6 +30,7 @@ public:
     void SetCt(RGBColor newCt) { ct = newCt; }
     void SetKt(FP_TYPE newKt) { kt = newKt; }
     void SetIOR(FP_TYPE newIOR) { ior = newIOR; }
+    RGBColor GetCt(const HitRecord& record) { return ct * kt; }
     RGBColor f(const HitRecord& record, const Vec3D& wo, Vec3D& wt) const override;
     RGBColor sampleF(const HitRecord& record, const Vec3D& wo, Vec3D& wt) const override;
     RGBColor rho(const HitRecord& record, const Vec3D& wo) const override;

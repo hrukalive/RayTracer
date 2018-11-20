@@ -31,6 +31,6 @@ public:
     Renderer& operator=(const Renderer& other);
     Renderer& operator=(Renderer&& other);
 
-    void Render(double& progress, std::shared_ptr<Camera> camera, std::shared_ptr<Tracer> tracer, std::shared_ptr<ViewPlane> viewPlane);
+    void Render(double& progress);
     bool Cancel();
 };

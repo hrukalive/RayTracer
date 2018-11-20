@@ -15,11 +15,7 @@
 
 class Tracer
 {
-protected:
-	std::shared_ptr<World> worldPtr;
-
 public:
-    Tracer(std::shared_ptr<World>& world);
     virtual ~Tracer() = default;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const = 0;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray) const;
@@ -28,7 +24,7 @@ public:
 class RayCast : public Tracer
 {
 public:
-    RayCast(std::shared_ptr<World>& world);
+    RayCast();
     virtual ~RayCast() = default;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
 };
@@ -37,8 +33,8 @@ class Whitted : public Tracer
 {
     int maxDepth;
 public:
-    Whitted(std::shared_ptr<World>& world);
-    Whitted(std::shared_ptr<World>& world, int maxDepth);
+    Whitted();
+    Whitted(int maxDepth);
     virtual ~Whitted() = default;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
 };
@@ -47,8 +43,28 @@ class PathTrace : public Tracer
 {
     int maxDepth;
 public:
-    PathTrace(std::shared_ptr<World>& world);
-    PathTrace(std::shared_ptr<World>& world, int maxDepth);
+    PathTrace();
+    PathTrace(int maxDepth);
     virtual ~PathTrace() = default;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
+};
+
+class PhotonMapPreTrace : public Tracer
+{
+    int maxDepth;
+public:
+    PhotonMapPreTrace();
+    PhotonMapPreTrace(int maxDepth);
+    virtual ~PhotonMapPreTrace() = default;
+    virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
+};
+
+class PhotonMapTrace : public Tracer
+{
+    int maxDepth;
+public:
+    PhotonMapTrace();
+    PhotonMapTrace(int maxDepth);
+    virtual ~PhotonMapTrace() = default;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const override;
 };

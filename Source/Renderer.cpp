@@ -10,6 +10,7 @@
 
 #include <algorithm>
 #include "Renderer.h"
+#include "Core/Globals.h"
 
 Renderer::Renderer(std::function<void(FP_TYPE)> successCallback) : renderedCount(0), successCallback(successCallback)
 {
@@ -42,11 +43,11 @@ Renderer& Renderer::operator=(Renderer&& other)
     return *this;
 }
 
-void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::shared_ptr<Tracer> tracer, std::shared_ptr<ViewPlane> viewPlane)
+void Renderer::Render(double& progress)
 {
     viewPlane->Reset();
     renderedCount = 0;
-    Thread::launch([camera, tracer, viewPlane, threadDim = threadDim, successCallback = successCallback,
+    Thread::launch([threadDim = threadDim, successCallback = successCallback,
         &pool = pool,
         &renderedCount = renderedCount,
         &progress = progress,
@@ -61,7 +62,47 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
         std::random_shuffle(blocks.begin(), blocks.end());
         auto t0 = Time::getMillisecondCounterHiRes();
 
-        if (dynamic_cast<const PathTrace*>(tracer.get()) != nullptr)
+        if (dynamic_cast<const PhotonMapTrace*>(tracer.get()) != nullptr)
+        {
+            auto tracerBackup = tracer;
+            tracer.reset(new PhotonMapPreTrace());
+            for (auto& l : world->GetLights())
+            {
+                auto photons = l->EmitPhoton();
+                auto totalPixel = (int)photons.size();
+                auto renderCount = 0;
+                for (int block = 0; block < (int)ceil((FP_TYPE)photons.size() / (threadDim * threadDim)); block++)
+                {
+                    auto start = block * (threadDim * threadDim), end = std::min((int)photons.size(), (block + 1) * (threadDim * threadDim));
+                    pool.addJob([start, end, totalPixel,
+                        &rays = photons,
+                        &renderedCount = renderedCount,
+                        &progress = progress,
+                        &criticalSection = criticalSection]() {
+                        for (int r = start; r < end; r++)
+                        {
+                            auto traceResult = tracer->Trace(rays[r]);
+                            criticalSection.enter();
+                            renderedCount++;
+                            progress = renderedCount / double(totalPixel);
+                            criticalSection.exit();
+                        }
+                        DBG(progress * 100);
+                    });
+                }
+
+                while (pool.getNumJobs())
+                {
+                    Thread::sleep(100);
+                }
+                renderedCount = 0;
+                progress = 0;
+            }
+            DBG("Photon tracing done.");
+            tracer = tracerBackup;
+            balancedPhotonMap = balancePhotonMap(photonMap);
+        }
+        if (dynamic_cast<const PathTrace*>(tracer.get()) != nullptr || dynamic_cast<const PhotonMapTrace*>(tracer.get()) != nullptr)
         {
             auto totalPixel = width * height * viewPlane->NumPixelSamples;
             for (int iter = 0; iter < viewPlane->NumPixelSamples; iter++)
@@ -72,7 +113,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                     int bc = block.second;
                     auto startR = br * threadDim, endR = std::min(height, (br + 1) * threadDim);
                     auto startC = bc * threadDim, endC = std::min(width, (bc + 1) * threadDim);
-                    pool.addJob([camera, tracer, viewPlane, startR, endR, startC, endC, totalPixel,
+                    pool.addJob([startR, endR, startC, endC, totalPixel,
                         &renderedCount = renderedCount,
                         &progress = progress,
                         &criticalSection = criticalSection]() {
@@ -104,7 +145,7 @@ void Renderer::Render(double& progress, std::shared_ptr<Camera> camera, std::sha
                 int bc = block.second;
                 auto startR = br * threadDim, endR = std::min(height, (br + 1) * threadDim);
                 auto startC = bc * threadDim, endC = std::min(width, (bc + 1) * threadDim);
-                pool.addJob([camera, tracer, viewPlane, startR, endR, startC, endC, totalPixel,
+                pool.addJob([startR, endR, startC, endC, totalPixel,
                     &renderedCount = renderedCount,
                     &progress = progress,
                     &criticalSection = criticalSection]() {

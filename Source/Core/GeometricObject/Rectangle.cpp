@@ -26,9 +26,11 @@ namespace RayTracer
     Vec3D Rectangle::getV() { return v; }
     Vec3D Rectangle::GetNormal(const Point3D p) { return n.normalised(); }
 
-    std::vector<std::pair<Point3D, Vec3D>> Rectangle::Sample()
+    std::vector<std::pair<Point3D, Vec3D>> Rectangle::Sample(int numSamples)
     {
-        auto samplePoints = sampler->SampleSquare(viewPlane->NumAreaLightSamples);
+        if (numSamples == -1)
+            numSamples = viewPlane->NumAreaLightSamples;
+        auto samplePoints = sampler->SampleSquare(numSamples);
         std::vector<std::pair<Point3D, Vec3D>> ret;
         for (auto& shift : samplePoints)
             ret.push_back(std::make_pair(Point3D(a + u * shift.getX() + v * shift.getY()), n.normalised()));

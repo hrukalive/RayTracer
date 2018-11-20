@@ -30,7 +30,7 @@ namespace RayTracer
         Vec3D getU();
         Vec3D getV();
 
-        std::vector<std::pair<Point3D, Vec3D>> Sample() override;
+        std::vector<std::pair<Point3D, Vec3D>> Sample(int numSamples = -1) override;
         std::pair<Point3D, Vec3D> SampleSingle() override;
         FP_TYPE pdf(const HitRecord& record) override;
         Vec3D GetNormal(const Point3D p);

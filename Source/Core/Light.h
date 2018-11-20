@@ -20,6 +20,8 @@ public:
     virtual Vec3D GetDirection(const HitRecord& record) = 0;
     virtual RGBColor L(const HitRecord& record) = 0;
     virtual bool InShadow(const Ray& ray, const HitRecord& objs) = 0;
+    virtual std::vector<Ray> EmitPhoton();
+    virtual FP_TYPE GetPower() = 0;
 };
 
 class Ambient : public Light
@@ -42,6 +44,10 @@ public:
     {
         return false;
     }
+    inline FP_TYPE GetPower() override
+    {
+        return (color * ls).lengthSquared();
+    }
 };
 
 class PointLight : public Light
@@ -62,6 +68,11 @@ public:
     {
         return color * ls / (decay * (location - record.HitPoint).lengthSquared() + 1);
     }
+    inline FP_TYPE GetPower() override
+    {
+        return (color * ls).lengthSquared();
+    }
+    std::vector<Ray> EmitPhoton() override;
     bool InShadow(const Ray& ray, const HitRecord& record) override;
 };
 
@@ -81,6 +92,10 @@ public:
 	{
 		return color * ls;
 	}
+    inline FP_TYPE GetPower() override
+    {
+        return (color * ls).lengthSquared();
+    }
     bool InShadow(const Ray& ray, const HitRecord& record) override;
 };
 
@@ -102,6 +117,9 @@ public:
     FP_TYPE pdf(const HitRecord& record) const;
     bool InShadow(const Ray& ray, const HitRecord& record) override;
     bool InShadow(const Ray& ray, const Point3D samplePoint, const HitRecord& record);
+
+    std::vector<Ray> EmitPhoton() override;
+    FP_TYPE GetPower() override;
 
     std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> GetWiAndLGPDF(const HitRecord& record);
 };

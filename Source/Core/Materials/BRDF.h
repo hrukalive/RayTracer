@@ -23,6 +23,7 @@ public:
     void SetKd(const FP_TYPE newKd);
     void SetCd(const RGBColor& newCd);
     void SetCd(const std::shared_ptr<Texture> newCd);
+    RGBColor GetCd(const HitRecord& record) { return cd->getColor(record) * kd; }
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
     virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;
@@ -40,6 +41,7 @@ public:
 
     void SetKr(const FP_TYPE newKr);
     void SetCr(const RGBColor& newCr);
+    RGBColor GetCr(const HitRecord& record) { return cr * kr; }
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
     virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;
@@ -58,6 +60,7 @@ public:
     void SetKs(const FP_TYPE newKs);
     void SetCs(const RGBColor& newCs);
     void SetE(const FP_TYPE newExp);
+    RGBColor GetCs(const HitRecord& record) { return cs * ks; }
 
     virtual RGBColor f(const HitRecord& record, const Vec3D& wi, const Vec3D& wo) const override;
     virtual RGBColor sampleF(const HitRecord& record, Vec3D& wi, const Vec3D& wo, FP_TYPE& pdf) const override;

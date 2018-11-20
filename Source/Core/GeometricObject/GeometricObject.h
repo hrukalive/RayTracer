@@ -24,7 +24,7 @@ public:
     virtual ~GeometricObject() = default;
     virtual void SetMaterial(std::shared_ptr<Material> newMaterialPtr) { materialPtr = newMaterialPtr; }
 	BBox& GetBoundingBox() { return boundingBox; }
-    virtual std::vector<std::pair<Point3D, Vec3D>> Sample()
+    virtual std::vector<std::pair<Point3D, Vec3D>> Sample(int numSamples = -1)
     {
         return std::vector<std::pair<Point3D, Vec3D>>();
     }

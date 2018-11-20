@@ -33,6 +33,7 @@ public:
     void AddLight(std::shared_ptr<Light>& light);
     void AddObject(std::shared_ptr<GeometricObject>& obj);
     BBox GetBoundingBox();
+    FP_TYPE TotalLightPower();
 
     HitRecord HitObjects(const Ray& ray);
 };

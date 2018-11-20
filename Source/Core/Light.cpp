@@ -14,6 +14,11 @@
 #include "Materials/Material.h"
 #include "GeometricObject/GeometricObject.h"
 
+std::vector<Ray> Light::EmitPhoton()
+{
+    return std::vector<Ray>();
+}
+
 bool PointLight::InShadow(const Ray& ray, const HitRecord& record)
 {
     auto& objs = world->GetObjects();
@@ -27,6 +32,25 @@ bool PointLight::InShadow(const Ray& ray, const HitRecord& record)
         }
     }
     return false;
+}
+
+std::vector<Ray> PointLight::EmitPhoton()
+{
+    std::vector<Ray> ret;
+    Random rand;
+    int ne = round(GetPower() * TOTAL_PHOTON / world->TotalLightPower());
+    for (int i = 0; i < ne; i++)
+    {
+        FP_TYPE x, y, z;
+        do
+        {
+            x = 1 - 2 * rand.nextDouble();
+            y = 1 - 2 * rand.nextDouble();
+            z = 1 - 2 * rand.nextDouble();
+        } while (x * x + y * y + z * z > 1);
+        ret.push_back(Ray(location, Vec3D(x, y, z).normalised(), color * ls));
+    }
+    return ret;
 }
 
 bool ParallelLight::InShadow(const Ray& ray, const HitRecord& record)
@@ -90,6 +114,46 @@ std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> AreaLight::GetWiAndL
         }
     }
     return ret;
+}
+
+std::vector<Ray> AreaLight::EmitPhoton()
+{
+    std::vector<Ray> ret;
+    int ne = GetPower() * TOTAL_PHOTON / world->TotalLightPower();
+    auto samples = ObjPtr->Sample(ne);
+    for (auto& sample : samples)
+    {
+        auto samplePoint = sample.first;
+        auto r = sample.second;
+
+        auto w = r.normalised();
+        auto u = (Vec3D(0, 1, 0) ^ w).normalised();
+        auto v = (w ^ u).normalised();
+        if (abs(r.x) < 1e-7 && abs(r.z) < 1e-7)
+        {
+            if (r.y > 0)
+            {
+                u = Vec3D(0.0, 0.0, 1.0);
+                v = Vec3D(1.0, 0.0, 0.0);
+                w = Vec3D(0.0, 1.0, 0.0);
+            }
+            else
+            {
+                u = Vec3D(1.0, 0.0, 0.0);
+                v = Vec3D(0.0, 0.0, 1.0);
+                w = Vec3D(0.0, -1.0, 0.0);
+            }
+        }
+        auto hemisample = sampler->SampleHemisphereSingle(1);
+        wi = u * hemisample.x + v * hemisample.y + w * hemisample.z;
+        ret.push_back(Ray(samplePoint, (u * hemisample.x + v * hemisample.y + w * hemisample.z).normalised(), MaterialPtr->GetLe(HitRecord())));
+    }
+    return ret;
+}
+
+FP_TYPE AreaLight::GetPower()
+{
+    return MaterialPtr->GetLe(HitRecord()).lengthSquared();
 }
 
 Vec3D AreaLight::GetDirection(const HitRecord& record)

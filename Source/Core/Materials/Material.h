@@ -20,6 +20,8 @@ public:
     virtual RGBColor GetLe(const HitRecord& record);
     virtual RGBColor Shade(const HitRecord& record);
     virtual std::pair<bool, RGBColor> PathShade(const HitRecord& record);
+    virtual RGBColor PhotonShade(const HitRecord &record);
+    virtual void PhotonMapping(const HitRecord& record) {}
 };
 
 class ConstColor : public Material
@@ -31,6 +33,7 @@ public:
     virtual ~ConstColor() = default;
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
 };
 
 class NormalShade : public Material
@@ -39,10 +42,12 @@ public:
 	virtual ~NormalShade() = default;
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
 };
 
 class Matte : public Material
 {
+protected:
 	Lambertian ambientBRDF, diffuseBRDF;
 public:
     virtual ~Matte() = default;
@@ -52,6 +57,8 @@ public:
     void SetCd(const std::shared_ptr<Texture> c);
 	RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
+    void PhotonMapping(const HitRecord& record) override;
 };
 
 class Phong : public Material
@@ -69,6 +76,8 @@ public:
     void SetE(const FP_TYPE exp);
 	RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
+    void PhotonMapping(const HitRecord& record) override;
 };
 
 class Emissive : public Material
@@ -91,6 +100,7 @@ public:
     }
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
 };
 
 class Reflective : public Matte
@@ -108,6 +118,8 @@ public:
     }
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
+    void PhotonMapping(const HitRecord& record) override;
 };
 
 class GlossyReflector : public Matte
@@ -129,9 +141,11 @@ public:
     }
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
+    void PhotonMapping(const HitRecord& record) override;
 };
 
-class Transparent : public Phong
+class Transparent : public Matte
 {
     PerfectSpecular reflectiveBRDF;
     PerfectTransmitter specularBTDF;
@@ -153,4 +167,6 @@ public:
     void SetIOR(FP_TYPE newIOR) { specularBTDF.SetIOR(newIOR); }
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
+    RGBColor PhotonShade(const HitRecord &record) override;
+    void PhotonMapping(const HitRecord& record) override;
 };

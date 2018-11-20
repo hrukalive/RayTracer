@@ -24,6 +24,7 @@
 #define PI_OVER_180 0.0174532925199432957
 #define NOISE_TABLE_SIZE 256
 #define NOISE_TABLE_MASK (NOISE_TABLE_SIZE - 1)
+#define TOTAL_PHOTON 1000000
 
 typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;
@@ -135,8 +136,10 @@ struct Ray
 {
 	Point3D Origin;
 	Vec3D Direction;
+    RGBColor Power;
 	Ray() {}
     Ray(Vec3D origin, Vec3D direction) : Origin(origin), Direction(direction) {}
+    Ray(Vec3D origin, Vec3D direction, RGBColor power) : Origin(origin), Direction(direction), Power(power) {}
 	inline Point3D GetPoint(FP_TYPE t) const
 	{
 		return Origin + (Direction * t);

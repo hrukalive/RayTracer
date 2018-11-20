@@ -12,9 +12,10 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new Whitted(world, 4));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4, true));
+    tracer.reset(new PhotonMapTrace());
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 64, 4, true));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
+    photonMap = createPhotonMap(TOTAL_PHOTON);
     
     setupWorld();
 
@@ -55,6 +56,13 @@ MainComponent::~MainComponent()
     sampler = nullptr;
     viewPlane = nullptr;
     camera = nullptr;
+    if (balancedPhotonMap != nullptr)
+        destroyPhotonMap(balancedPhotonMap);
+    else
+    {
+        free(photonMap->photons);
+        free(photonMap);
+    }
 
 #if JUCE_MAC
     MenuBarModel::setMacMainMenu (nullptr);
@@ -267,7 +275,6 @@ void MainComponent::setupWorld()
 }
 */
 
-/*
 void MainComponent::setupWorld()
 {
     auto r = 160;
@@ -276,15 +283,17 @@ void MainComponent::setupWorld()
     auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.0, 0.0, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
-    //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
+    //camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0));
+    std::shared_ptr<Camera> cam1{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
+    std::shared_ptr<Camera> cam2{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
+    camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
 
-    std::shared_ptr<Light> ambient{ new Ambient(0.0, RGBColor(1.0, 1.0, 1.0)) };
+    std::shared_ptr<Light> ambient{ new Ambient(0.1, RGBColor(1.0, 1.0, 1.0)) };
     world->SetAmbient(ambient);
 
     std::shared_ptr<GeometricObject> lightplane1{ new RayTracer::Rectangle(Point3D(-10, 49, 5), Vec3D(0, 0, -10), Vec3D(20, 0, 0)) };
     std::shared_ptr<Material> lightMat1{ new Emissive() };
-    std::dynamic_pointer_cast<Emissive>(lightMat1)->SetLs(30);
+    std::dynamic_pointer_cast<Emissive>(lightMat1)->SetLs(10);
     std::dynamic_pointer_cast<Emissive>(lightMat1)->SetCe(RGBColor(0.98039, 0.80784, 0.59608));
     lightplane1->SetMaterial(lightMat1);
     std::shared_ptr<Light> arealight1{ new AreaLight(lightplane1, lightMat1) };
@@ -360,8 +369,8 @@ void MainComponent::setupWorld()
 
     world->AddObject(comp);
 }
-*/
 
+/*
 void MainComponent::setupWorld()
 {
     auto r = 2.7;
@@ -370,11 +379,11 @@ void MainComponent::setupWorld()
     auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.2, 0.7, 0.0);
     auto eyepoint = Vec3D(r * sin(theta) * sin(phi), r * cos(phi), r * cos(theta) * sin(phi)) + lookat;
-    //camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, viewPlane, sampler));
+    camera.reset(new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0));
 
-    std::shared_ptr<Camera> cam1{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
-    std::shared_ptr<Camera> cam2{ new PinholeCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0) };
-    camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
+    //std::shared_ptr<Camera> cam1{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 2.7, 0.2) };
+    //std::shared_ptr<Camera> cam2{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 2.7, 0.2) };
+    //camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
     //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 18000.0, 100.0, viewPlane, sampler));
 
     std::shared_ptr<Light> ambient{ new Ambient(0.2, RGBColor(1.0, 1.0, 1.0)) };
@@ -523,7 +532,7 @@ void MainComponent::setupWorld()
 
     world->AddObject(comp);
 }
-
+*/
 //==============================================================================
 StringArray MainComponent::getMenuBarNames()
 {
@@ -645,7 +654,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 #endif
 			progressBar->setVisible(true);
 			repaint();
-			renderer.Render(progress, camera, tracer, viewPlane);
+			renderer.Render(progress);
             break;
         case CommandIDs::stopRender:
 			renderer.Cancel();

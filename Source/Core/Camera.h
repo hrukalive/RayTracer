@@ -71,6 +71,7 @@ class StereoCamera : public Camera
 {
     std::shared_ptr<Camera> leftCamera, rightCamera;
     FP_TYPE beta, diff;
+    bool sameLookAt;
 public:
     StereoCamera(Point3D eye, Vec3D lookAt, Vec3D up, std::shared_ptr<Camera> leftCamera, std::shared_ptr<Camera> rightCamera, FP_TYPE beta, bool sameLookAt = false);
     virtual ~StereoCamera() = default;

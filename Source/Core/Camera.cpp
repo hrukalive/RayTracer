@@ -131,7 +131,7 @@ Ray ThinLensCamera::CreateARay(int c, int r, FP_TYPE offset) const
 
 StereoCamera::StereoCamera(Point3D eye, Vec3D lookAt, Vec3D up, 
     std::shared_ptr<Camera> leftCamera, std::shared_ptr<Camera> rightCamera, FP_TYPE beta, bool sameLookAt)
-    : Camera(eye, lookAt, up), leftCamera(leftCamera), rightCamera(rightCamera), beta(beta)
+    : Camera(eye, lookAt, up), leftCamera(leftCamera), rightCamera(rightCamera), beta(beta), sameLookAt(sameLookAt)
 {
     auto rad = 0.5 * beta * PI_OVER_180;
     diff = (eye - lookAt).length() * tan(rad);
@@ -149,6 +149,8 @@ StereoCamera::StereoCamera(Point3D eye, Vec3D lookAt, Vec3D up,
         rightCamera->setEyePoint(eye + u * diff);
         rightCamera->setLookAt(lookAt + u * diff);
     }
+    if (sameLookAt)
+        diff = 0;
 }
 
 std::vector<Ray> StereoCamera::CreateRay(int c, int r, FP_TYPE offset) const

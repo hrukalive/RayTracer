@@ -28,6 +28,14 @@ void World::AddObject(std::shared_ptr<GeometricObject>& obj)
         boundingBox.Merge(objects[objects.size() - 1]->GetBoundingBox());
 }
 
+FP_TYPE World::TotalLightPower()
+{
+    FP_TYPE acc = 0;
+    for (auto& l : lights)
+        acc += l->GetPower();
+    return acc;
+}
+
 BBox World::GetBoundingBox()
 {
     return boundingBox;

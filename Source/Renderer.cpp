@@ -65,7 +65,7 @@ void Renderer::Render(double& progress)
         if (dynamic_cast<const PhotonMapTrace*>(tracer.get()) != nullptr)
         {
             auto tracerBackup = tracer;
-            tracer.reset(new PhotonMapPreTrace());
+            tracer.reset(new PhotonMapPreTrace(20));
             for (auto& l : world->GetLights())
             {
                 auto photons = l->EmitPhoton();
@@ -95,13 +95,16 @@ void Renderer::Render(double& progress)
                 {
                     Thread::sleep(100);
                 }
+                scalePhotonPower(photonMap, 1.0 / photons.size());
                 renderedCount = 0;
                 progress = 0;
             }
             DBG("Photon tracing done.");
             tracer = tracerBackup;
+            progress = -1;
             balancedPhotonMap = balancePhotonMap(photonMap);
         }
+        progress = 0;
         if (dynamic_cast<const PathTrace*>(tracer.get()) != nullptr || dynamic_cast<const PhotonMapTrace*>(tracer.get()) != nullptr)
         {
             auto totalPixel = width * height * viewPlane->NumPixelSamples;

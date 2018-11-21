@@ -123,7 +123,7 @@ RGBColor Matte::PhotonShade(const HitRecord& record)
     float irrad[3], pos[3], normal[3];
     pos[0] = record.HitPoint.x; pos[1] = record.HitPoint.y; pos[2] = record.HitPoint.z;
     normal[0] = record.Normal.x; normal[1] = record.Normal.y; normal[2] = record.Normal.z;
-    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, 10);
+    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, N_PHOTON);
     return RGBColor(irrad[0], irrad[1], irrad[2]);
 }
 
@@ -239,7 +239,7 @@ RGBColor Phong::PhotonShade(const HitRecord& record)
     float irrad[3], pos[3], normal[3];
     pos[0] = record.HitPoint.x; pos[1] = record.HitPoint.y; pos[2] = record.HitPoint.z;
     normal[0] = record.Normal.x; normal[1] = record.Normal.y; normal[2] = record.Normal.z;
-    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, 10);
+    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, N_PHOTON);
     return RGBColor(irrad[0], irrad[1], irrad[2]);
 }
 
@@ -356,15 +356,29 @@ RGBColor GlossyReflector::Shade(const HitRecord& record)
 
 std::pair<bool, RGBColor> GlossyReflector::PathShade(const HitRecord& record)
 {
-    RGBColor L;
+    auto d = diffuseBRDF.GetCd(record);
+    auto s = glossyBRDF.GetCs(record);
+    auto pd = (d.x + d.y + d.z) / (d.x + d.y + d.z + s.x + s.y + s.z);
+
     Vec3D wo = -record.Ray.Direction;
     Vec3D wi;
     FP_TYPE pdf;
-    RGBColor fr = glossyBRDF.sampleF(record, wi, wo, pdf);
-    Ray reflected(record.HitPoint, wi);
-    auto traceResult = tracer->Trace(reflected, record.Depth + 1);
-    L += ElemMul(fr / pdf, traceResult.second * (record.Normal * wi));
-    return std::make_pair(traceResult.first, L);
+    Random rand;
+    auto randnum = rand.nextDouble();
+    if (randnum < pd)
+    {
+        RGBColor fr = glossyBRDF.sampleF(record, wi, wo, pdf);
+        Ray reflected(record.HitPoint, wi);
+        auto traceResult = tracer->Trace(reflected, record.Depth + 1);
+        return std::make_pair(traceResult.first, ElemMul(fr / pdf, traceResult.second * (record.Normal * wi)));
+    }
+    else
+    {
+        RGBColor f = diffuseBRDF.sampleF(record, wi, wo, pdf);
+        Ray reflected(record.HitPoint, wi);
+        auto traceResult = tracer->Trace(reflected, record.Depth + 1);
+        return std::make_pair(traceResult.first, ElemMul(f / pdf, traceResult.second * (record.Normal * wi)));
+    }
 }
 
 RGBColor GlossyReflector::PhotonShade(const HitRecord& record)
@@ -372,7 +386,7 @@ RGBColor GlossyReflector::PhotonShade(const HitRecord& record)
     float irrad[3], pos[3], normal[3];
     pos[0] = record.HitPoint.x; pos[1] = record.HitPoint.y; pos[2] = record.HitPoint.z;
     normal[0] = record.Normal.x; normal[1] = record.Normal.y; normal[2] = record.Normal.z;
-    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, 10);
+    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, N_PHOTON);
     return RGBColor(irrad[0], irrad[1], irrad[2]);
 }
 

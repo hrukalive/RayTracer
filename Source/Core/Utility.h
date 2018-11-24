@@ -17,6 +17,7 @@
 #define kHugeValue 1.0E10
 #define kBBOXRatio 0.01
 #define KBBOXMax 1.0
+#define EQN_EPS 1e-9
 #define PI 3.1415926535897932384
 #define TWO_PI 6.2831853071795864769
 #define INV_PI 0.3183098861837906715
@@ -24,7 +25,7 @@
 #define PI_OVER_180 0.0174532925199432957
 #define NOISE_TABLE_SIZE 256
 #define NOISE_TABLE_MASK (NOISE_TABLE_SIZE - 1)
-#define TOTAL_PHOTON 3000000
+#define TOTAL_PHOTON 1000000
 #define N_PHOTON 100
 
 typedef Vector3D<FP_TYPE> Vec3D;
@@ -107,6 +108,10 @@ inline T cubicSpline(const FP_TYPE x, const T p0, const T p1, const T p2, const 
     T c3 = -0.5 * p0 + 1.5 * p1 - 1.5 * p2 + 0.5 * p3;
     return (T)((((c3 * x) + c2) * x + c1) * x + p1);
 }
+
+int SolveQuadric(double c[3], double s[2]);
+int SolveCubic(double c[4], double s[3]);
+int SolveQuartic(double c[5], double s[4]);
 
 // https://github.com/Forceflow/libmorton/blob/master/libmorton/include/morton3D.h
 // Magicbits masks (3D encode)

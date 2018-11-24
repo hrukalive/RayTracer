@@ -3,6 +3,14 @@
 <JUCERPROJECT id="BSMskS" name="RayTracer" projectType="guiapp" jucerVersion="5.3.2">
   <MAINGROUP id="WkbGml" name="RayTracer">
     <GROUP id="{589F4DE8-C9B3-F48E-8155-AEEF7A468CFB}" name="Source">
+      <GROUP id="{AA333B10-9F56-1C2A-13EA-2D54F52036D7}" name="Assets">
+        <FILE id="kNgopa" name="bunny.obj" compile="0" resource="1" file="Source/Assets/bunny.obj"/>
+        <FILE id="MSccTi" name="dragon.obj" compile="0" resource="1" file="Source/Assets/dragon.obj"/>
+        <FILE id="sIzG8a" name="wood1.png" compile="0" resource="1" file="Source/Assets/wood1.png"/>
+        <FILE id="i20Odb" name="wood2.png" compile="0" resource="1" file="Source/Assets/wood2.png"/>
+        <FILE id="FZJDyJ" name="wood3.png" compile="0" resource="1" file="Source/Assets/wood3.png"/>
+        <FILE id="LvyIGQ" name="wood4.png" compile="0" resource="1" file="Source/Assets/wood4.png"/>
+      </GROUP>
       <GROUP id="{7A267AD0-4BE3-D2CF-027D-6CFF1B1A60AA}" name="Core">
         <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
           <FILE id="nCUFm5" name="BBox.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/BBox.cpp"/>
@@ -35,6 +43,8 @@
           <FILE id="VxXFii" name="Rectangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Rectangle.h"/>
           <FILE id="fDDvJK" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Sphere.cpp"/>
           <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
+          <FILE id="Nzz1t8" name="Torus.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Torus.cpp"/>
+          <FILE id="RIXVSl" name="Torus.h" compile="0" resource="0" file="Source/Core/GeometricObject/Torus.h"/>
           <FILE id="LzXlBO" name="Triangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Triangle.cpp"/>
           <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
         </GROUP>

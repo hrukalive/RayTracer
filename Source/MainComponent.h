@@ -1,4 +1,4 @@
-/*
+ /*
   ==============================================================================
 
     This file was auto-generated!
@@ -19,6 +19,8 @@
 #include "Core/GeometricObject/Cylinder.h"
 #include "Core/GeometricObject/OpenCylinder.h"
 #include "Core/GeometricObject/CSG.h"
+#include "Core/GeometricObject/Torus.h"
+#include "Core/GeometricObject/Disk.h"
 #include "Core/Materials/BRDF.h"
 #include "Core/Materials/Material.h"
 #include "Core/Globals.h"
@@ -73,6 +75,7 @@ public:
 private:
 	void renderSucceeded(FP_TYPE timeElapsed);
 	void timerCallback() override;
+    FP_TYPE speed(int x);
     //==============================================================================
     // Your private member variables go here...
     ApplicationCommandManager commandManager;
@@ -85,7 +88,9 @@ private:
 	bool rendering = false;
 	bool renderFinished = false;
 
-    int vpWidth = 128 * 4, vpHeight = 128 * 4;
+    int vpWidth = 800, vpHeight = 450;
+    int time = 0;
+    FP_TYPE theta = 15;
 
     Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this, std::placeholders::_1))};
 

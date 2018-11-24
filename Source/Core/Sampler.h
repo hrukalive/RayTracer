@@ -20,7 +20,7 @@ protected:
     int numSets;
     std::vector<Point2D> samples;
     std::vector<int> shuffledIndices;
-    unsigned long count = 0;
+    unsigned int count = 0;
     int jump = 0;
     CriticalSection cs;
 
@@ -65,9 +65,7 @@ public:
 
 class Hammersley : public Sampler
 {
-    FP_TYPE phi(int i);
     void generate() override;
-    unsigned long sampleCount = 0;
 public:
     Hammersley() : Sampler() { generate(); setupShuffledIndices(); }
     Hammersley(int numSamples) : Sampler(numSamples) { generate(); setupShuffledIndices(); }

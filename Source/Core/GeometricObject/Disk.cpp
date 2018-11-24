@@ -25,6 +25,46 @@ void Disk::UpdateBoundingBox()
 Disk::Disk(Point3D center, FP_TYPE radius, Vec3D normal) : center(center), r(radius), n(normal.normalised())
 {
     UpdateBoundingBox();
+    w = -normal.normalised();
+    u = (Y_DIR ^ w).normalised();
+    v = (w ^ u).normalised();
+    if (abs(w.x) < EQN_EPS && abs(w.z) < EQN_EPS)
+    {
+        if (w.y > 0)
+        {
+            u = Vec3D(0.0, 0.0, 1.0);
+            v = Vec3D(1.0, 0.0, 0.0);
+            w = Vec3D(0.0, 1.0, 0.0);
+        }
+        else if (w.y < 0)
+        {
+            u = Vec3D(1.0, 0.0, 0.0);
+            v = Vec3D(0.0, 0.0, 1.0);
+            w = Vec3D(0.0, -1.0, 0.0);
+        }
+    }
+}
+
+std::vector<std::pair<Point3D, Vec3D>> Disk::Sample(int numSamples)
+{
+    if (numSamples == -1)
+        numSamples = viewPlane->NumAreaLightSamples;
+    auto samplePoints = sampler->SampleCircle(numSamples);
+    std::vector<std::pair<Point3D, Vec3D>> ret;
+    for (auto& shift : samplePoints)
+        ret.push_back(std::make_pair(Point3D(center + u * shift.getX() + v * shift.getY()), n.normalised()));
+    return ret;
+}
+
+std::pair<Point3D, Vec3D> Disk::SampleSingle()
+{
+    auto samplePoint = sampler->SampleCircleSingle();
+    return std::make_pair(Point3D(center + u * samplePoint.getX() + v * samplePoint.getY()), n.normalised());
+}
+
+FP_TYPE Disk::pdf(const HitRecord& record)
+{
+    return 1.0 / (PI * r * r);
 }
 
 HitRecord Disk::Hit(const Ray& ray)
@@ -47,23 +87,3 @@ HitRecord Disk::Hit(const Ray& ray)
     }
     return record;
 }
-
-//std::vector<std::pair<Point3D, Vec3D>> Disk::Sample()
-//{
-//    auto samplePoints = sampler->SampleCircle(viewPlane->NumAreaLightSamples);
-//    std::vector<std::pair<Point3D, Vec3D>> ret;
-//    for (auto& shift : samplePoints)
-//        ret.push_back(std::make_pair(Point3D(center + u * shift.getX() + v * shift.getY()), n.normalised()));
-//    return ret;
-//}
-//
-//std::pair<Point3D, Vec3D> Disk::SampleSingle()
-//{
-//    auto samplePoint = sampler->SampleSquareSingle();
-//    return std::make_pair(Point3D(a + u * samplePoint.getX() + v * samplePoint.getY()), n.normalised());
-//}
-//
-//FP_TYPE Disk::pdf(const HitRecord& record)
-//{
-//    return 1.0 / (PI * r * r);
-//}

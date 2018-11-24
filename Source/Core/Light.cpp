@@ -120,9 +120,14 @@ std::vector<Ray> AreaLight::EmitPhoton()
 {
     std::vector<Ray> ret;
     int ne = GetPower() * TOTAL_PHOTON / world->TotalLightPower();
+    auto backupSampler = sampler;
+    sampler.reset(new Hammersley());
     auto samples = ObjPtr->Sample(ne);
-    for (auto& sample : samples)
+    auto dirs = sampler->SampleHemisphere(ne, 1);
+    Random rand;
+    for (size_t i = 0; i < samples.size(); i++)
     {
+        auto& sample = samples[i];
         auto samplePoint = sample.first;
         auto r = sample.second;
 
@@ -144,11 +149,17 @@ std::vector<Ray> AreaLight::EmitPhoton()
                 w = Vec3D(0.0, -1.0, 0.0);
             }
         }
-        auto hemisample = sampler->SampleHemisphereSingle(1);
+        auto& hemisample = dirs[i];
         wi = u * hemisample.x + v * hemisample.y + w * hemisample.z;
         ret.push_back(Ray(samplePoint, (u * hemisample.x + v * hemisample.y + w * hemisample.z).normalised(), MaterialPtr->GetLe(HitRecord())));
     }
+    sampler = backupSampler;
     return ret;
+}
+
+void AreaLight::setLs(FP_TYPE ls)
+{
+    std::dynamic_pointer_cast<Emissive>(MaterialPtr)->SetLs(ls);
 }
 
 FP_TYPE AreaLight::GetPower()

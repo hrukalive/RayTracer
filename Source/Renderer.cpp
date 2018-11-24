@@ -87,7 +87,6 @@ void Renderer::Render(double& progress)
                             progress = renderedCount / double(totalPixel);
                             criticalSection.exit();
                         }
-                        DBG(progress * 100);
                     });
                 }
 
@@ -134,7 +133,6 @@ void Renderer::Render(double& progress)
                                 criticalSection.exit();
                             }
                         }
-                        DBG(progress * 100);
                     });
                 }
             }
@@ -165,7 +163,6 @@ void Renderer::Render(double& progress)
                             criticalSection.exit();
                         }
                     }
-                    DBG(progress * 100);
                 });
             }
         }

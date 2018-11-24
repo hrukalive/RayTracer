@@ -60,6 +60,10 @@ public:
     PointLight(FP_TYPE ls, RGBColor color, Point3D location) : ls(ls), color(color), location(location) {}
 	PointLight(FP_TYPE ls, RGBColor color, Point3D location, FP_TYPE decay) : ls(ls), color(color), location(location), decay(decay) {}
     virtual ~PointLight() = default;
+    inline void setLs(FP_TYPE newLs)
+    {
+        ls = newLs;
+    }
     inline Vec3D GetDirection(const HitRecord& record) override
     {
         return (location - record.HitPoint).normalised();
@@ -111,6 +115,7 @@ class AreaLight : public Light
 public:
     AreaLight(std::shared_ptr<GeometricObject> obj, std::shared_ptr<Material> material);
     virtual ~AreaLight() = default;
+    void setLs(FP_TYPE ls);
     Vec3D GetDirection(const HitRecord& record) override;
     RGBColor L(const HitRecord& record) override;
     FP_TYPE G(const HitRecord& record) const;

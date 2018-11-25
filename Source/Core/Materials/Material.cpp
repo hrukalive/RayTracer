@@ -76,6 +76,7 @@ RGBColor Matte::Shade(const HitRecord& record)
         {
             auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
             auto samples = light->GetWiAndLGPDF(record);
+            RGBColor tmpL;
 
             for (auto& sample : samples)
             {
@@ -87,9 +88,10 @@ RGBColor Matte::Shade(const HitRecord& record)
                 {
                     Ray shadowRay(record.HitPoint, wi);
                     if (!light->InShadow(shadowRay, samplePoint, record))
-                        L += ElemMul(diffuseBRDF.f(record, wi, wo), sample.second.second * ndotwi);
+                        tmpL += ElemMul(diffuseBRDF.f(record, wi, wo), sample.second.second * ndotwi);
                 }
             }
+            L += tmpL / samples.size();
         }
         else
         {
@@ -189,6 +191,7 @@ RGBColor Phong::Shade(const HitRecord& record)
         {
             auto light = std::dynamic_pointer_cast<AreaLight>(lights[i]);
             auto samples = light->GetWiAndLGPDF(record);
+            RGBColor tmpL;
 
             for (auto& sample : samples)
             {
@@ -200,9 +203,10 @@ RGBColor Phong::Shade(const HitRecord& record)
                 {
                     Ray shadowRay(record.HitPoint, wi);
                     if (!light->InShadow(shadowRay, samplePoint, record))
-                        L += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), sample.second.second * ndotwi);
+                        tmpL += ElemMul(diffuseBRDF.f(record, wi, wo) + specularBRDF.f(record, wi, wo), sample.second.second * ndotwi);
                 }
             }
+            L += tmpL / samples.size();
         }
         else
         {
@@ -344,13 +348,15 @@ RGBColor GlossyReflector::Shade(const HitRecord& record)
     Vec3D wo = -record.Ray.Direction;
 
     auto samples = glossyBRDF.GetWiAndF(record, wo);
+    RGBColor tmpL;
     for (auto& sample : samples)
     {
         auto wi = sample.first;
         auto frPDF = sample.second;
         Ray reflected(record.HitPoint, wi);
-        L += ElemMul(frPDF, tracer->Trace(reflected, record.Depth + 1).second * (record.Normal * wi));
+        tmpL += ElemMul(frPDF, tracer->Trace(reflected, record.Depth + 1).second * (record.Normal * wi));
     }
+    L += tmpL / samples.size();
     return L;
 }
 

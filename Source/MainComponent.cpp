@@ -12,8 +12,8 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new Whitted(6));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 16, 8, true));
+    tracer.reset(new Whitted(5));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4, true));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
@@ -592,9 +592,11 @@ void MainComponent::setupWorld()
 {
     auto r = 2.5;
     //auto theta = 45 * PI_OVER_180;
+    theta += speed(time);
+    time++;
     auto phi = 70 * PI_OVER_180;
     auto roll = 0.0 * PI_OVER_180;
-    auto lookat = Vec3D(0.0, 0.4, 0.0);
+    auto lookat = Vec3D(0.0, 0.3, 0.0);
     auto eyepoint = Vec3D(r * sin(theta * PI_OVER_180) * sin(phi), r * cos(phi), r * cos(theta * PI_OVER_180) * sin(phi)) + lookat;
     // theta curve ((exp(-(x/40)^2)^3+exp(-(((x-365/3)/40))^2)^3+exp(-(((x-365/1.5)/40))^2)^3+exp(-(((x-365)/40))^2)^3) + 0.5)/305.299*365
     //camera.reset(new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05));
@@ -614,7 +616,7 @@ void MainComponent::setupWorld()
         auto center = Point3D(lightR * cos(radian), 2, lightR * sin(radian));
         std::shared_ptr<GeometricObject> lightdisk{ new Disk(center, 0.3, Vec3D(0, -1, 0) * 0.6 + (ZERO - center).normalised() * 0.4) };
         std::shared_ptr<Material> lightMat{ new Emissive() };
-        std::dynamic_pointer_cast<Emissive>(lightMat)->SetLs(8 * abs(cos(2 * (deg * 365 / 8.0) * PI_OVER_180)));
+        std::dynamic_pointer_cast<Emissive>(lightMat)->SetLs(4 * abs(cos(2 * (deg * 365 / 8.0) * PI_OVER_180)));
         auto color = Colour::fromHSV(radian / TWO_PI, 0.9, 1.0, 1.0);
         std::dynamic_pointer_cast<Emissive>(lightMat)->SetCe(RGBColor(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0));
         lightdisk->SetMaterial(lightMat);
@@ -627,22 +629,22 @@ void MainComponent::setupWorld()
     std::shared_ptr<LatticeNoise> cubicNoise{ new CubicNoise() };
 
     std::shared_ptr<GeometricObject> plane{ new RayTracer::Rectangle(Point3D(-3, 0, 3), Vec3D(6, 0, 0), Vec3D(0, 0, -6)) };
-    //std::shared_ptr<Texture> planeTex1Original{ new Checker3D() };
-    //std::dynamic_pointer_cast<Checker3D>(planeTex1Original)->setSize(0.3);
-    //std::dynamic_pointer_cast<Checker3D>(planeTex1Original)->setColor1(WHITE * 0.2);
-    //std::dynamic_pointer_cast<Checker3D>(planeTex1Original)->setColor2(WHITE * 0.6);
-    //std::shared_ptr<Material> planeMat1{ new Matte() };
-    //std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.2);
-    //std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
-    //std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1Original);
+    std::shared_ptr<Texture> planeTex1Original{ new Checker3D() };
+    std::dynamic_pointer_cast<Checker3D>(planeTex1Original)->setSize(0.3);
+    std::dynamic_pointer_cast<Checker3D>(planeTex1Original)->setColor1(WHITE * 0.2);
+    std::dynamic_pointer_cast<Checker3D>(planeTex1Original)->setColor2(WHITE * 0.6);
+    std::shared_ptr<Material> planeMat1{ new Matte() };
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKa(0.2);
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetKd(0.8);
+    std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(planeTex1Original);
     //std::dynamic_pointer_cast<Matte>(planeMat1)->SetCd(WHITE * 0.5);
-    std::shared_ptr<Material> planeMat1{ new GlossyReflector() };
-    std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetKa(0.1);
-    std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetKd(0.4);
-    std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetKs(0.4);
-    std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetCd(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
-    std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetE(500.0);
+    //std::shared_ptr<Material> planeMat1{ new GlossyReflector() };
+    //std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetKa(0.1);
+    //std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetKd(0.4);
+    //std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetKs(0.4);
+    //std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetCd(RGBColor(1.0, 1.0, 1.0));
+    //std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetCs(RGBColor(1.0, 1.0, 1.0));
+    //std::dynamic_pointer_cast<GlossyReflector>(planeMat1)->SetE(500.0);
     plane->SetMaterial(planeMat1);
 
     std::shared_ptr<GeometricObject> platCylinder1{ new Cylinder(Point3D(0.3, -0.05, 0), 0.06, 0.4) };
@@ -813,9 +815,9 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetKa(0.1);
     std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetKd(0.4);
     std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetKs(0.4);
-    std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetCd(RGBColor(0.8, 0.6, 1.0));
-    std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetCs(RGBColor(0.8, 0.6, 1.0));
-    std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetE(100.0);
+    std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetCd(RGBColor(0.4, 0.6, 1.0));
+    std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetCs(RGBColor(0.4, 0.6, 1.0));
+    std::dynamic_pointer_cast<GlossyReflector>(csgmat2)->SetE(700.0);
     //std::shared_ptr<Material> csgmat2{ new Matte() };
     //std::dynamic_pointer_cast<Matte>(csgmat2)->SetKa(0.2);
     //std::dynamic_pointer_cast<Matte>(csgmat2)->SetKd(0.8);
@@ -1131,12 +1133,12 @@ void MainComponent::timerCallback()
         perform(CommandIDs::saveRender);
         if (time < 361)
         {
-            time++;
             auto r = 2.5;
             theta += speed(time);
+            time++;
             auto phi = 70 * PI_OVER_180;
             auto roll = 0.0 * PI_OVER_180;
-            auto lookat = Vec3D(0.0, 0.4, 0.0);
+            auto lookat = Vec3D(0.0, 0.3, 0.0);
             auto eyepoint = Vec3D(r * sin(theta * PI_OVER_180) * sin(phi), r * cos(phi), r * cos(theta * PI_OVER_180) * sin(phi)) + lookat;
             std::shared_ptr<Camera> cam1{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
             std::shared_ptr<Camera> cam2{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
@@ -1144,7 +1146,7 @@ void MainComponent::timerCallback()
             for (size_t i = 0; i < world->GetLights().size(); i++)
             {
                 auto light = world->GetLights()[i];
-                std::dynamic_pointer_cast<AreaLight>(light)->setLs(8 * abs(cos(2 * (time * 3 + i * 365 / 8.0) * PI_OVER_180)));
+                std::dynamic_pointer_cast<AreaLight>(light)->setLs(4 * abs(cos(2 * (time * 3 + i * 365 / 8.0) * PI_OVER_180)));
             }
             perform(CommandIDs::startRender);
         }

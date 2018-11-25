@@ -105,7 +105,7 @@ std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> AreaLight::GetWiAndL
             auto L = MaterialPtr->GetLe(record);
             FP_TYPE d2 = decay * (samplePoint - record.HitPoint).lengthSquared() + 1;
             auto G = ndotd / d2;
-            FP_TYPE pdf = 1.0 / viewPlane->NumAreaLightSamples;
+            FP_TYPE pdf = ObjPtr->pdf(record);
             ret.push_back(std::make_pair(samplePoint, std::make_pair(wi, L * G * pdf)));
         }
         else

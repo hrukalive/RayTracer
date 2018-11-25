@@ -16,12 +16,12 @@ class Sampler
 {
 protected:
     Random random;
-    int numSamples;
-    int numSets;
+    unsigned long numSamples;
+    unsigned long numSets;
     std::vector<Point2D> samples;
     std::vector<int> shuffledIndices;
-    unsigned int count = 0;
-    int jump = 0;
+    unsigned long count = 0;
+    unsigned long jump = 0;
     CriticalSection cs;
 
     virtual void generate() = 0;

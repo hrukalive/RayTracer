@@ -61,9 +61,6 @@ void scalePhotonPower(PhotonMap *map,
 
 BalancedPhotonMap *balancePhotonMap(PhotonMap *map);  // balance the kd-tree
 
-void savePhotonMap(BalancedPhotonMap *bmap,char *filename);
-BalancedPhotonMap * loadPhotonMap(char *filename);
-
 void irradianceEstimate(
   BalancedPhotonMap *map,
   float irrad[3],                // returned irradiance

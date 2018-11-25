@@ -70,7 +70,6 @@ void Renderer::Render(double& progress)
             {
                 auto photons = l->EmitPhoton();
                 auto totalPixel = (int)photons.size();
-                auto renderCount = 0;
                 for (int block = 0; block < (int)ceil((FP_TYPE)photons.size() / (threadDim * threadDim)); block++)
                 {
                     auto start = block * (threadDim * threadDim), end = std::min((int)photons.size(), (block + 1) * (threadDim * threadDim));

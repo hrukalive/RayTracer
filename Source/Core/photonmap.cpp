@@ -314,7 +314,8 @@ BalancedPhotonMap * balancePhotonMap(PhotonMap *map)
   BalancedPhotonMap *bmap;
   if (map->stored_photons>1) {
     int i;
-	int d,j,foo;
+    long d, j;
+	int foo;
 	Photon foo_photon;
     // allocate two temporary arrays for the balancing procedure
     Photon **pa1 = (Photon**)malloc(sizeof(Photon*)*(map->stored_photons+1));
@@ -586,37 +587,3 @@ void autoIrradianceEstimate
     free(np.dist2);
     free(np.index);
 }
-void savePhotonMap(BalancedPhotonMap *bmap,char *filename)
-	{
-	FILE *fp=fopen(filename,"wb");
-	fwrite(bmap->photons,sizeof(Photon),bmap->stored_photons,fp);
-	fclose(fp);
-	}
-
-BalancedPhotonMap * loadPhotonMap(char *filename)
-	{
-	struct stat sbuf;
-	int count;
-	FILE *fp;
-	BalancedPhotonMap *bmap;
-	fp=fopen(filename,"rb");
-	assert(fp);
-
-	bmap=(BalancedPhotonMap*)malloc(sizeof(BalancedPhotonMap));
-	stat(filename,&sbuf);
-	bmap->stored_photons=sbuf.st_size/sizeof(Photon);
-	bmap->photons=(Photon*)malloc(sbuf.st_size);
-	if (bmap->photons == NULL)
-		  {
-		  fprintf(stderr,"Out of memory initializing photon map\n");
-		  exit(-1);
-		  }
-	count= fread(bmap->photons,sizeof(Photon),bmap->stored_photons,fp);
-    assert(count==bmap->stored_photons);
-	fclose(fp);
-	bmap->half_stored_photons = bmap->stored_photons/2-1;
-
-	initTables();
-	return bmap;
-	}
-

@@ -540,7 +540,7 @@ void Transparent::PhotonMapping(const HitRecord& record)
         {
             Vec3D wi, wo = -record.Ray.Direction;
             RGBColor f = reflectiveBRDF.sampleF(record, wi, wo, pdf);
-            Ray reflected(record.HitPoint, wi, ElemMul(fr, record.Ray.Power / pr));
+            Ray reflected(record.HitPoint, wi, ElemMul(f, record.Ray.Power / pr));
             tracer->Trace(reflected, record.Depth + 1);
         }
         else if (randnum < pt + pr)

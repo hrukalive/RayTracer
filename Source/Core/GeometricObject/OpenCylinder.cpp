@@ -16,7 +16,7 @@ void OpenCylinder::UpdateBoundingBox()
     boundingBox = BBox(bc - deltar, bc + deltar + deltay);
 }
 
-OpenCylinder::OpenCylinder(Point3D bottomCenter, FP_TYPE radius, FP_TYPE height) : bc(bottomCenter), r(radius), h(height) { UpdateBoundingBox(); }
+OpenCylinder::OpenCylinder(Point3D bottomCenter, FP_TYPE radius, FP_TYPE height) : h(height), r(radius), bc(bottomCenter) { UpdateBoundingBox(); }
 
 HitRecord OpenCylinder::Hit(const Ray& ray)
 {

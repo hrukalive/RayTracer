@@ -12,8 +12,8 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new Whitted(5));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4, true));
+    tracer.reset(new PhotonMapTrace(6));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4, false));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
@@ -275,7 +275,7 @@ void MainComponent::setupWorld()
 }
 */
 
-/*
+
 void MainComponent::setupWorld()
 {
     auto r = 160;
@@ -383,7 +383,7 @@ void MainComponent::setupWorld()
 
     world->AddObject(comp);
 }
-*/
+
 
 /*
 void MainComponent::setupWorld()
@@ -587,7 +587,7 @@ void MainComponent::setupWorld()
 }
 */
 
-
+/*
 void MainComponent::setupWorld()
 {
     auto r = 2.5;
@@ -888,6 +888,7 @@ void MainComponent::setupWorld()
 
     world->AddObject(comp);
 }
+*/
 
 //==============================================================================
 StringArray MainComponent::getMenuBarNames()
@@ -1017,17 +1018,16 @@ bool MainComponent::perform (const InvocationInfo& info)
 			break;
 		case CommandIDs::saveRender:
 		{
-			//FileChooser chooser("Save", File(), "*.png");
-			//if (chooser.browseForFileToSave(true))
-			//{
-			//File selectedFile = chooser.getResult();
-            File selectedFile("/Volumes/Document/seq/" + std::to_string(time * 0.000001).substr(8 - 3) + ".png");
-			FileOutputStream stream(selectedFile);
-			stream.setPosition(0);
-			stream.truncate();
-			PNGImageFormat pngWriter;
-			pngWriter.writeImageToStream(*viewPlane->RenderedImage, stream);
-			//}
+            FileChooser chooser("Save", File(), "*.png");
+            if (chooser.browseForFileToSave(true))
+            {
+                File selectedFile = chooser.getResult();
+                FileOutputStream stream(selectedFile);
+                stream.setPosition(0);
+                stream.truncate();
+                PNGImageFormat pngWriter;
+                pngWriter.writeImageToStream(*viewPlane->RenderedImage, stream);
+            }
 			break;
 		}
         case CommandIDs::showHDR:
@@ -1088,8 +1088,8 @@ void MainComponent::resized()
 //==============================================================================
 void MainComponent::renderSucceeded(FP_TYPE timeElapsed)
 {
-	//AlertWindow::showMessageBox(AlertWindow::AlertIconType::InfoIcon, "Rendering Finished", "The rendering took " + std::to_string(timeElapsed) + "s.");
-	//DBG(timeElapsed);
+    AlertWindow::showMessageBox(AlertWindow::AlertIconType::InfoIcon, "Rendering Finished", "The rendering took " + std::to_string(timeElapsed) + "s.");
+    DBG(timeElapsed);
 	progress = -1.0;
 	rendering = false;
 	renderFinished = true;
@@ -1130,25 +1130,25 @@ void MainComponent::timerCallback()
             LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 		repaint();
-        perform(CommandIDs::saveRender);
-        if (time < 361)
-        {
-            auto r = 2.5;
-            theta += speed(time);
-            time++;
-            auto phi = 70 * PI_OVER_180;
-            auto roll = 0.0 * PI_OVER_180;
-            auto lookat = Vec3D(0.0, 0.3, 0.0);
-            auto eyepoint = Vec3D(r * sin(theta * PI_OVER_180) * sin(phi), r * cos(phi), r * cos(theta * PI_OVER_180) * sin(phi)) + lookat;
-            std::shared_ptr<Camera> cam1{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
-            std::shared_ptr<Camera> cam2{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
-            camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
-            for (size_t i = 0; i < world->GetLights().size(); i++)
-            {
-                auto light = world->GetLights()[i];
-                std::dynamic_pointer_cast<AreaLight>(light)->setLs(4 * abs(cos(2 * (time * 3 + i * 365 / 8.0) * PI_OVER_180)));
-            }
-            perform(CommandIDs::startRender);
-        }
+//        perform(CommandIDs::saveRender);
+//        if (time < 361)
+//        {
+//            auto r = 2.5;
+//            theta += speed(time);
+//            time++;
+//            auto phi = 70 * PI_OVER_180;
+//            auto roll = 0.0 * PI_OVER_180;
+//            auto lookat = Vec3D(0.0, 0.3, 0.0);
+//            auto eyepoint = Vec3D(r * sin(theta * PI_OVER_180) * sin(phi), r * cos(phi), r * cos(theta * PI_OVER_180) * sin(phi)) + lookat;
+//            std::shared_ptr<Camera> cam1{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
+//            std::shared_ptr<Camera> cam2{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
+//            camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
+//            for (size_t i = 0; i < world->GetLights().size(); i++)
+//            {
+//                auto light = world->GetLights()[i];
+//                std::dynamic_pointer_cast<AreaLight>(light)->setLs(4 * abs(cos(2 * (time * 3 + i * 365 / 8.0) * PI_OVER_180)));
+//            }
+//            perform(CommandIDs::startRender);
+//        }
 	}
 }

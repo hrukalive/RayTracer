@@ -88,7 +88,7 @@ private:
 	bool rendering = false;
 	bool renderFinished = false;
 
-    int vpWidth = 600, vpHeight = 420;
+    int vpWidth = 256, vpHeight = 256;
     int time = 0;
     FP_TYPE theta = 15;
 

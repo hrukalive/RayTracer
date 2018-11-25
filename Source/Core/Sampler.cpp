@@ -42,7 +42,7 @@ Point2D Sampler::SampleSquareSingle()
 {
     cs.enter();
     if (count % numSamples == 0)
-        jump = random.nextInt(numSets) * numSamples;
+        jump = (unsigned long)random.nextInt((int)numSets) * numSamples;
     auto ret = samples[jump + shuffledIndices[jump + count++ % numSamples]];
     cs.exit();
     return ret;

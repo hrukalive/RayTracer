@@ -19,7 +19,7 @@ void Cylinder::UpdateBoundingBox()
     boundingBox = BBox(bc - deltar, bc + deltar + deltay);
 }
 
-Cylinder::Cylinder(Point3D bottomCenter, FP_TYPE radius, FP_TYPE height) : bc(bottomCenter), r(radius), h(height)
+Cylinder::Cylinder(Point3D bottomCenter, FP_TYPE radius, FP_TYPE height) : h(height), r(radius), bc(bottomCenter)
 {
     auto disk1 = std::shared_ptr<Disk>{ new Disk(bottomCenter, radius, -Y_DIR) };
     Point3D deltay(0, h, 0);

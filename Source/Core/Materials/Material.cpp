@@ -140,9 +140,9 @@ void Matte::PhotonMapping(const HitRecord& record)
     if (rand.nextDouble() < pd)
         tracer->Trace(reflected, record.Depth + 1);
 
-    float power[3]{ f.x * record.Ray.Power.x, f.y * record.Ray.Power.y, f.z * record.Ray.Power.z };
-    float pos[3]{ record.HitPoint.x, record.HitPoint.y, record.HitPoint.z };
-    float dir[3]{ record.Ray.Direction.x, record.Ray.Direction.y, record.Ray.Direction.z };
+    float power[3]{ (float)(f.x * record.Ray.Power.x), (float)(f.y * record.Ray.Power.y), (float)(f.z * record.Ray.Power.z) };
+    float pos[3]{ (float)record.HitPoint.x, (float)record.HitPoint.y, (float)record.HitPoint.z };
+    float dir[3]{ (float)record.Ray.Direction.x, (float)record.Ray.Direction.y, (float)record.Ray.Direction.z };
     photonMapLock.enter();
     storePhoton(photonMap, power, pos, dir);
     photonMapLock.exit();
@@ -256,9 +256,9 @@ void Phong::PhotonMapping(const HitRecord& record)
     if (rand.nextDouble() < pd)
         tracer->Trace(reflected, record.Depth + 1);
 
-    float power[3]{ f.x * record.Ray.Power.x, f.y * record.Ray.Power.y, f.z * record.Ray.Power.z };
-    float pos[3]{ record.HitPoint.x, record.HitPoint.y, record.HitPoint.z };
-    float dir[3]{ record.Ray.Direction.x, record.Ray.Direction.y, record.Ray.Direction.z };
+    float power[3]{ (float)(f.x * record.Ray.Power.x), (float)(f.y * record.Ray.Power.y), (float)(f.z * record.Ray.Power.z) };
+    float pos[3]{ (float)record.HitPoint.x, (float)record.HitPoint.y, (float)record.HitPoint.z };
+    float dir[3]{ (float)record.Ray.Direction.x, (float)record.Ray.Direction.y, (float)record.Ray.Direction.z };
     photonMapLock.enter();
     storePhoton(photonMap, power, pos, dir);
     photonMapLock.exit();
@@ -403,9 +403,9 @@ void GlossyReflector::PhotonMapping(const HitRecord& record)
     RGBColor f = diffuseBRDF.sampleF(record, wi, wo, pdf);
     Ray reflected(record.HitPoint, wi, ElemMul(f, record.Ray.Power / pd));
 
-    float power[3]{ f.x * record.Ray.Power.x, f.y * record.Ray.Power.y, f.z * record.Ray.Power.z };
-    float pos[3]{ record.HitPoint.x, record.HitPoint.y, record.HitPoint.z };
-    float dir[3]{ record.Ray.Direction.x, record.Ray.Direction.y, record.Ray.Direction.z };
+    float power[3]{ (float)(f.x * record.Ray.Power.x), (float)(f.y * record.Ray.Power.y), (float)(f.z * record.Ray.Power.z) };
+    float pos[3]{ (float)record.HitPoint.x, (float)record.HitPoint.y, (float)record.HitPoint.z };
+    float dir[3]{ (float)record.Ray.Direction.x, (float)record.Ray.Direction.y, (float)record.Ray.Direction.z };
 
     Random rand;
     auto randnum = rand.nextDouble();

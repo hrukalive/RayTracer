@@ -13,7 +13,7 @@ MainComponent::MainComponent()
 {
     world.reset(new World());
     tracer.reset(new Whitted(6));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 16, 16, true));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 16, 8, true));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
@@ -1019,7 +1019,7 @@ bool MainComponent::perform (const InvocationInfo& info)
 			//if (chooser.browseForFileToSave(true))
 			//{
 			//File selectedFile = chooser.getResult();
-            File selectedFile("G:\\TEMPS\\8-FA18\\CS 419\\MP\\Submission4\\seq\\" + std::to_string(time * 0.000001).substr(8 - 3) + ".png");
+            File selectedFile("/Volumes/Document/seq/" + std::to_string(time * 0.000001).substr(8 - 3) + ".png");
 			FileOutputStream stream(selectedFile);
 			stream.setPosition(0);
 			stream.truncate();

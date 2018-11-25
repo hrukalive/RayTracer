@@ -139,7 +139,7 @@ public:
     {
         UpdateBoundingBox();
     }
-    void SetMaterial(std::shared_ptr<Material> newMaterialPtr)
+    void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override
     {
         for (auto& data : tree)
             if (data.type == DataType::OBJECT)

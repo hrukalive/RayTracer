@@ -21,7 +21,6 @@ std::vector<HitRecord> GeometricObject::getHitInterval(const Ray& ray)
     FP_TYPE tmpT = -dist;
     Ray tmpRay = ray;
     FP_TYPE acc = -dist;
-    bool first = true;
     while (true)
     {
         tmpRay = Ray(tmpRay.GetPoint(tmpT + kEpsilon), ray.Direction);

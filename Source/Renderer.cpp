@@ -81,7 +81,7 @@ void Renderer::Render(double& progress)
                         &criticalSection = criticalSection]() {
                         for (int r = start; r < end; r++)
                         {
-                            auto traceResult = tracer->Trace(rays[r]);
+                            tracer->Trace(rays[r]);
                             criticalSection.enter();
                             renderedCount++;
                             progress = renderedCount / double(totalPixel);

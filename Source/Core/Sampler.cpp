@@ -42,7 +42,10 @@ Point2D Sampler::SampleSquareSingle()
 {
     cs.enter();
     if (count % numSamples == 0)
+    {
         jump = (unsigned long)random.nextInt((int)numSets) * numSamples;
+        count = 0;
+    }
     auto ret = samples[jump + shuffledIndices[jump + count++ % numSamples]];
     cs.exit();
     return ret;
@@ -337,7 +340,7 @@ void Hammersley::generate()
                 if (kk & 1)
                     x += p;
             }
-            FP_TYPE y = (k + 0.5) / count;
+            FP_TYPE y = (k + 0.5) / numSamples;
             samples.push_back(Point2D(x, y));
         }
     numSamples = samples.size() / numSets;

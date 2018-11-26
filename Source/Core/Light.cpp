@@ -131,12 +131,12 @@ std::vector<Ray> AreaLight::EmitPhoton()
         auto samplePoint = sample.first;
         auto r = sample.second;
 
-        auto w = r.normalised();
+        auto w = -r.normalised();
         auto u = (Vec3D(0, 1, 0) ^ w).normalised();
         auto v = (w ^ u).normalised();
-        if (abs(r.x) < 1e-7 && abs(r.z) < 1e-7)
+        if (abs(w.x) < 1e-7 && abs(w.z) < 1e-7)
         {
-            if (r.y > 0)
+            if (w.y > 0)
             {
                 u = Vec3D(0.0, 0.0, 1.0);
                 v = Vec3D(1.0, 0.0, 0.0);
@@ -150,8 +150,8 @@ std::vector<Ray> AreaLight::EmitPhoton()
             }
         }
         auto& hemisample = dirs[i];
-        wi = u * hemisample.x + v * hemisample.y + w * hemisample.z;
-        ret.push_back(Ray(samplePoint, (u * hemisample.x + v * hemisample.y + w * hemisample.z).normalised(), MaterialPtr->GetLe(HitRecord())));
+        auto wi = u * hemisample.x + v * hemisample.y - w * hemisample.z;
+        ret.push_back(Ray(samplePoint - w * kEpsilon, wi.normalised(), MaterialPtr->GetLe(HitRecord())));
     }
     sampler = backupSampler;
     return ret;

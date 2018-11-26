@@ -12,8 +12,8 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new PhotonMapTrace(6));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4, false));
+    tracer.reset(new PhotonMapTrace(10));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4, false));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
@@ -351,9 +351,9 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKd(0.0);
     std::dynamic_pointer_cast<Transparent>(sphereMat)->SetCr(RGBColor(0.7, 0.7, 1.0));
     std::dynamic_pointer_cast<Transparent>(sphereMat)->SetCt(RGBColor(0.7, 0.7, 1.0));
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKr(0.2);
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKt(1.0);
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetIOR(1.5);
+    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKr(0.1);
+    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKt(0.9);
+    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetIOR(1.3);
     sphere->SetMaterial(sphereMat);
 
     std::shared_ptr<GeometricObject> boxBackOriginal{ new Box(Point3D(-15, -30, -15), Point3D(15, 30, 15)) };
@@ -376,8 +376,8 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeBack);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeLeft);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeRight);
-    //std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
-    //std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(boxBack);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(boxBack);
 
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 

@@ -65,7 +65,7 @@ void Renderer::Render(double& progress)
         if (dynamic_cast<const PhotonMapTrace*>(tracer.get()) != nullptr)
         {
             auto tracerBackup = tracer;
-            tracer.reset(new PhotonMapPreTrace(20));
+            tracer.reset(new PhotonMapPreTrace(40));
             for (auto& l : world->GetLights())
             {
                 auto photons = l->EmitPhoton();

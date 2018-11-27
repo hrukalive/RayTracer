@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include "Utility.h"
+#include "../Utility/Utility.h"
 
 class Light
 {
@@ -20,34 +20,22 @@ public:
     virtual Vec3D GetDirection(const HitRecord& record) = 0;
     virtual RGBColor L(const HitRecord& record) = 0;
     virtual bool InShadow(const Ray& ray, const HitRecord& objs) = 0;
-    virtual std::vector<Ray> EmitPhoton();
+    virtual std::vector<Ray> EmitPhoton() { return std::vector<Ray>(); }
     virtual FP_TYPE GetPower() = 0;
 };
 
 class Ambient : public Light
 {
-    FP_TYPE ls = 1.0;
-    RGBColor color = Vec3D(1.0, 1.0, 1.0);
+    FP_TYPE ls;
+    RGBColor color;
 public:
-	Ambient() = default;
-    Ambient(const FP_TYPE ls, RGBColor color) : ls(ls), color(color) {}
+    Ambient();
+    Ambient(const FP_TYPE ls, RGBColor color);
     virtual ~Ambient() = default;
-    inline Vec3D GetDirection(const HitRecord& record) override
-    {
-        return Vec3D(0.0, 0.0, 0.0);
-    }
-    inline RGBColor L(const HitRecord& record) override
-    {
-        return color * ls;
-    }
-    inline bool InShadow(const Ray& ray, const HitRecord& objs) override
-    {
-        return false;
-    }
-    inline FP_TYPE GetPower() override
-    {
-        return (color * ls).lengthSquared();
-    }
+    Vec3D GetDirection(const HitRecord& record) override;
+    RGBColor L(const HitRecord& record) override;
+    bool InShadow(const Ray& ray, const HitRecord& objs) override;
+    FP_TYPE GetPower() override;
 };
 
 class PointLight : public Light

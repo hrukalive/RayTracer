@@ -19,7 +19,7 @@
 #include <alloca.h>
 #endif
 
-#include "../../JuceLibraryCode/JuceHeader.h"
+#include "../../../JuceLibraryCode/JuceHeader.h"
 #include "photonmap.h"
 
 static	float costheta[256];

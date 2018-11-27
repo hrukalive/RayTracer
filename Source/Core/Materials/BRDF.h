@@ -1,6 +1,6 @@
 #pragma once
-#include "../Utility.h"
-#include "../Sampler.h"
+#include "../Utility/Utility.h"
+#include "../Sampler/Sampler.h"
 #include "Texture.h"
 
 class BRDF

@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../Utility.h"
+#include "../Utility/Utility.h"
 #include "Mapping.h"
 #include "Noise.h"
 

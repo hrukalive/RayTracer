@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../Utility.h"
+#include "../Utility/Utility.h"
 
 #define PERM(x) permTable[(x) & NOISE_TABLE_MASK]
 #define INDEX(ix, iy, iz) PERM((ix) + PERM((iy) + PERM(iz)))

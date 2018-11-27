@@ -9,8 +9,8 @@
 */
 
 #pragma once
-#include "../../JuceLibraryCode/JuceHeader.h"
-#include "GeometricObject/Mesh.h"
+
+#include "../GeometricObject/Mesh.h"
 
 class OBJParser
 {

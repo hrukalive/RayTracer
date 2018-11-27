@@ -9,8 +9,7 @@
 */
 
 #pragma once
-#include "../../JuceLibraryCode/JuceHeader.h"
-#include "Utility.h"
+#include "../Utility/Utility.h"
 
 class Camera
 {

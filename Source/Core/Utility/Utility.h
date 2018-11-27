@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "../../JuceLibraryCode/JuceHeader.h"
+#include "../../../JuceLibraryCode/JuceHeader.h"
 
 #define FP_TYPE double
 #define kEpsilon 0.0001
@@ -25,8 +25,8 @@
 #define PI_OVER_180 0.0174532925199432957
 #define NOISE_TABLE_SIZE 256
 #define NOISE_TABLE_MASK (NOISE_TABLE_SIZE - 1)
-#define TOTAL_PHOTON 1000000
-#define N_PHOTON 200
+#define TOTAL_PHOTON 100000
+#define N_PHOTON 100
 
 typedef Vector3D<FP_TYPE> Vec3D;
 typedef Vec3D Point3D;

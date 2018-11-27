@@ -11,7 +11,6 @@
 #pragma once
 
 #include <stack>
-#include "../Utility.h"
 #include "GeometricObject.h"
 
 class CSG : public GeometricObject

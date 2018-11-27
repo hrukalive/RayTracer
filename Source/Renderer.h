@@ -10,11 +10,11 @@
 
 #pragma once
 
-#include "Core/Utility.h"
+#include "Core/Utility/Utility.h"
 #include "Core/World.h"
 #include "Core/Viewplane.h"
-#include "Core/Camera.h"
-#include "Core/Tracer.h"
+#include "Core/Camera/Camera.h"
+#include "Core/Tracer/Tracer.h"
 
 class Renderer
 {

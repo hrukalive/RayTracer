@@ -13,7 +13,7 @@ MainComponent::MainComponent()
 {
     world.reset(new World());
     tracer.reset(new PhotonMapTrace(10));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 4, 4, false));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4, false));
     sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
@@ -591,9 +591,7 @@ void MainComponent::setupWorld()
 void MainComponent::setupWorld()
 {
     auto r = 2.5;
-    //auto theta = 45 * PI_OVER_180;
-    theta += speed(time);
-    time++;
+    auto theta = 160 * PI_OVER_180;
     auto phi = 70 * PI_OVER_180;
     auto roll = 0.0 * PI_OVER_180;
     auto lookat = Vec3D(0.0, 0.3, 0.0);
@@ -621,7 +619,6 @@ void MainComponent::setupWorld()
         std::dynamic_pointer_cast<Emissive>(lightMat)->SetCe(RGBColor(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0));
         lightdisk->SetMaterial(lightMat);
         std::shared_ptr<Light> arealight{ new AreaLight(lightdisk, lightMat) };
-        //std::shared_ptr<Light> tmplight{ new PointLight(10 * clamp(cos(4 * radian), 0.0, 1.0), RGBColor(color.getRed() / 255.0, color.getGreen() / 255.0, color.getBlue() / 255.0), center) };
         world->AddLight(arealight);
         lights.push_back(lightdisk);
     }
@@ -1095,20 +1092,6 @@ void MainComponent::renderSucceeded(FP_TYPE timeElapsed)
 	renderFinished = true;
 }
 
-FP_TYPE MainComponent::speed(int x)
-{
-    // theta curve ((exp(-(x/40)^2)^3+exp(-(((x-365/3)/40))^2)^3+exp(-(((x-365/1.5)/40))^2)^3+exp(-(((x-365)/40))^2)^3) + 0.5)/305.299*365
-    FP_TYPE ret = 0.0;
-    ret += pow(exp(-pow((x / 40.0), 2)), 5);
-    ret += pow(exp(-pow((((x - 365.0 / 3.0) / 40.0)), 2)), 5);
-    ret += pow(exp(-pow((((x - 365.0 / 1.5) / 40.0)), 2)), 5);
-    ret += pow(exp(-pow((((x - 365.0) / 40.0)), 2)), 5);
-    ret += 0.4;
-    ret /= 241.12;
-    ret *= 365;
-    return ret;
-}
-
 void MainComponent::timerCallback()
 {
 	const MessageManagerLock mmLock;
@@ -1130,25 +1113,5 @@ void MainComponent::timerCallback()
             LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
 #endif
 		repaint();
-//        perform(CommandIDs::saveRender);
-//        if (time < 361)
-//        {
-//            auto r = 2.5;
-//            theta += speed(time);
-//            time++;
-//            auto phi = 70 * PI_OVER_180;
-//            auto roll = 0.0 * PI_OVER_180;
-//            auto lookat = Vec3D(0.0, 0.3, 0.0);
-//            auto eyepoint = Vec3D(r * sin(theta * PI_OVER_180) * sin(phi), r * cos(phi), r * cos(theta * PI_OVER_180) * sin(phi)) + lookat;
-//            std::shared_ptr<Camera> cam1{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
-//            std::shared_ptr<Camera> cam2{ new ThinLensCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), 1.0, 1.3, 0.05) };
-//            camera.reset(new StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0), cam1, cam2, 5, true));
-//            for (size_t i = 0; i < world->GetLights().size(); i++)
-//            {
-//                auto light = world->GetLights()[i];
-//                std::dynamic_pointer_cast<AreaLight>(light)->setLs(4 * abs(cos(2 * (time * 3 + i * 365 / 8.0) * PI_OVER_180)));
-//            }
-//            perform(CommandIDs::startRender);
-//        }
 	}
 }

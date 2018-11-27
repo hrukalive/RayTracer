@@ -11,7 +11,7 @@
 #include <algorithm>
 #include "Material.h"
 #include "../World.h"
-#include "../Tracer.h"
+#include "../Tracer/Tracer.h"
 #include "../Globals.h"
 
 RGBColor Material::GetLe(const HitRecord& record) { return BLACK; }
@@ -538,7 +538,7 @@ void Transparent::PhotonMapping(const HitRecord& record)
         auto randnum = rand.nextDouble();
         if (randnum < pr)
         {
-            Vec3D wi, wo = -record.Ray.Direction;
+            Vec3D wi;
             RGBColor f = reflectiveBRDF.sampleF(record, wi, wo, pdf);
             Ray reflected(record.HitPoint, wi, ElemMul(f, record.Ray.Power / pr));
             tracer->Trace(reflected, record.Depth + 1);

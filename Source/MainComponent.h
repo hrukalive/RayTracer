@@ -9,7 +9,7 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "Core/Utility.h"
+#include "Core/Utility/Utility.h"
 #include "Core/GeometricObject/Rectangle.h"
 #include "Core/GeometricObject/Box.h"
 #include "Core/GeometricObject/Sphere.h"
@@ -24,7 +24,7 @@
 #include "Core/Materials/BRDF.h"
 #include "Core/Materials/Material.h"
 #include "Core/Globals.h"
-#include "Core/OBJParser.h"
+#include "Core/Utility/OBJParser.h"
 #include "Renderer.h"
 
 //==============================================================================
@@ -75,7 +75,6 @@ public:
 private:
 	void renderSucceeded(FP_TYPE timeElapsed);
 	void timerCallback() override;
-    FP_TYPE speed(int x);
     //==============================================================================
     // Your private member variables go here...
     ApplicationCommandManager commandManager;
@@ -89,8 +88,6 @@ private:
 	bool renderFinished = false;
 
     int vpWidth = 512, vpHeight = 512;
-    int time = 0;
-    FP_TYPE theta = 15;
 
     Renderer renderer{Renderer(std::bind(&MainComponent::renderSucceeded, this, std::placeholders::_1))};
 

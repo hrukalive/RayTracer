@@ -12,7 +12,6 @@
 
 #include "IObject.h"
 #include "BBox.h"
-#include "../Utility.h"
 
 class GeometricObject : public IObject
 {

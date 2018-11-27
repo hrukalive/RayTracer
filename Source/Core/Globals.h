@@ -12,11 +12,11 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "World.h"
-#include "Tracer.h"
-#include "Sampler.h"
+#include "Tracer/Tracer.h"
+#include "Sampler/Sampler.h"
 #include "Viewplane.h"
-#include "Camera.h"
-#include "photonmap.h"
+#include "Camera/Camera.h"
+#include "Utility/photonmap.h"
 
 extern std::shared_ptr<World> world;
 extern std::shared_ptr<Tracer> tracer;

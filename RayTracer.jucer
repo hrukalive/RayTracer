@@ -62,24 +62,54 @@
           <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
         </GROUP>
-        <FILE id="i3uitm" name="photonmap.cpp" compile="1" resource="0" file="Source/Core/photonmap.cpp"/>
-        <FILE id="R5UKx4" name="photonmap.h" compile="0" resource="0" file="Source/Core/photonmap.h"/>
-        <FILE id="H5QLYT" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility.cpp"/>
-        <FILE id="zYCM1q" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility.h"/>
+        <GROUP id="{24511632-BEF7-7A6D-3FC7-8646127B43A5}" name="Camera">
+          <FILE id="lGy23n" name="Camera.cpp" compile="1" resource="0" file="Source/Core/Camera/Camera.cpp"/>
+          <FILE id="yQ0jTl" name="Camera.h" compile="0" resource="0" file="Source/Core/Camera/Camera.h"/>
+          <FILE id="oRoqNX" name="OrthographicCamera.cpp" compile="1" resource="0"
+                file="Source/Core/Camera/OrthographicCamera.cpp"/>
+          <FILE id="Q62h3o" name="PinholeCamera.cpp" compile="1" resource="0"
+                file="Source/Core/Camera/PinholeCamera.cpp"/>
+          <FILE id="RVyF3S" name="StereoCamera.cpp" compile="1" resource="0"
+                file="Source/Core/Camera/StereoCamera.cpp"/>
+          <FILE id="hk8Ggt" name="ThinLensCamera.cpp" compile="1" resource="0"
+                file="Source/Core/Camera/ThinLensCamera.cpp"/>
+        </GROUP>
+        <GROUP id="{EF26E0BE-804B-99EF-68AC-8BD0BC5C341A}" name="Light">
+          <FILE id="eq7u9R" name="Ambient.cpp" compile="1" resource="0" file="Source/Core/Light/Ambient.cpp"/>
+          <FILE id="Ya2sCw" name="AreaLight.cpp" compile="1" resource="0" file="Source/Core/Light/AreaLight.cpp"/>
+          <FILE id="eWWEC8" name="Light.cpp" compile="1" resource="0" file="Source/Core/Light/Light.cpp"/>
+          <FILE id="AoX2N0" name="Light.h" compile="0" resource="0" file="Source/Core/Light/Light.h"/>
+          <FILE id="i3WMOb" name="Parallel.cpp" compile="1" resource="0" file="Source/Core/Light/Parallel.cpp"/>
+          <FILE id="L5sgrW" name="PointLight.cpp" compile="1" resource="0" file="Source/Core/Light/PointLight.cpp"/>
+        </GROUP>
+        <GROUP id="{31FF6276-4B75-A7DE-A448-227A3A389DA2}" name="Sampler">
+          <FILE id="W57Tv5" name="Hammersley.cpp" compile="1" resource="0" file="Source/Core/Sampler/Hammersley.cpp"/>
+          <FILE id="Q596aJ" name="MultiJittered.cpp" compile="1" resource="0"
+                file="Source/Core/Sampler/MultiJittered.cpp"/>
+          <FILE id="wd4RG7" name="Sampler.cpp" compile="1" resource="0" file="Source/Core/Sampler/Sampler.cpp"/>
+          <FILE id="sZfUc2" name="Sampler.h" compile="0" resource="0" file="Source/Core/Sampler/Sampler.h"/>
+        </GROUP>
+        <GROUP id="{4B08F627-2E0A-5B73-D6B4-C43E26450414}" name="Tracer">
+          <FILE id="y7z1is" name="PathTrace.cpp" compile="1" resource="0" file="Source/Core/Tracer/PathTrace.cpp"/>
+          <FILE id="OArRQY" name="PhotonTrace.cpp" compile="1" resource="0" file="Source/Core/Tracer/PhotonTrace.cpp"/>
+          <FILE id="smNzZN" name="RayCast.cpp" compile="1" resource="0" file="Source/Core/Tracer/RayCast.cpp"/>
+          <FILE id="ggZKIv" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer/Tracer.cpp"/>
+          <FILE id="Tfh7lm" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer/Tracer.h"/>
+          <FILE id="XZLc7Q" name="Whitted.cpp" compile="1" resource="0" file="Source/Core/Tracer/Whitted.cpp"/>
+        </GROUP>
+        <GROUP id="{D9933741-7BC7-093C-2414-AAAC5A22BA2A}" name="Utility">
+          <FILE id="kq9gJH" name="Math.cpp" compile="1" resource="0" file="Source/Core/Utility/Math.cpp"/>
+          <FILE id="fvPHKf" name="OBJParser.cpp" compile="1" resource="0" file="Source/Core/Utility/OBJParser.cpp"/>
+          <FILE id="pR9Sh1" name="OBJParser.h" compile="0" resource="0" file="Source/Core/Utility/OBJParser.h"/>
+          <FILE id="znOQkR" name="photonmap.cpp" compile="1" resource="0" file="Source/Core/Utility/photonmap.cpp"/>
+          <FILE id="cAGaeC" name="photonmap.h" compile="0" resource="0" file="Source/Core/Utility/photonmap.h"/>
+          <FILE id="SLRmYw" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility/Utility.cpp"/>
+          <FILE id="MMMVkQ" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility/Utility.h"/>
+        </GROUP>
         <FILE id="j7lyGp" name="World.cpp" compile="1" resource="0" file="Source/Core/World.cpp"/>
         <FILE id="TErAPK" name="World.h" compile="0" resource="0" file="Source/Core/World.h"/>
         <FILE id="LTIfwl" name="Viewplane.cpp" compile="1" resource="0" file="Source/Core/Viewplane.cpp"/>
         <FILE id="LqX6nC" name="Viewplane.h" compile="0" resource="0" file="Source/Core/Viewplane.h"/>
-        <FILE id="pe0J2K" name="Camera.cpp" compile="1" resource="0" file="Source/Core/Camera.cpp"/>
-        <FILE id="krQKRc" name="Camera.h" compile="0" resource="0" file="Source/Core/Camera.h"/>
-        <FILE id="cyUYZX" name="Light.cpp" compile="1" resource="0" file="Source/Core/Light.cpp"/>
-        <FILE id="qLTDxy" name="Light.h" compile="0" resource="0" file="Source/Core/Light.h"/>
-        <FILE id="qaF6cr" name="Sampler.cpp" compile="1" resource="0" file="Source/Core/Sampler.cpp"/>
-        <FILE id="bzmdNw" name="Sampler.h" compile="0" resource="0" file="Source/Core/Sampler.h"/>
-        <FILE id="So80cU" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer.cpp"/>
-        <FILE id="U1xv86" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer.h"/>
-        <FILE id="N2Xg9Q" name="OBJParser.cpp" compile="1" resource="0" file="Source/Core/OBJParser.cpp"/>
-        <FILE id="W9KjuI" name="OBJParser.h" compile="0" resource="0" file="Source/Core/OBJParser.h"/>
         <FILE id="tEano7" name="Globals.cpp" compile="1" resource="0" file="Source/Core/Globals.cpp"/>
         <FILE id="Pkcvzw" name="Globals.h" compile="0" resource="0" file="Source/Core/Globals.h"/>
       </GROUP>
@@ -177,7 +207,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="0" windowsTargetPlatformVersion="10.0.17134.0"/>
-    <OSX buildEnabled="1"/>
+    <OSX buildEnabled="0"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS/>
 </JUCERPROJECT>

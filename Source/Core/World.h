@@ -10,11 +10,11 @@
 
 #pragma once
 
-#include "Utility.h"
+#include "Utility/Utility.h"
 #include "GeometricObject/GeometricObject.h"
 #include "Viewplane.h"
-#include "Camera.h"
-#include "Light.h"
+#include "Camera/Camera.h"
+#include "Light/Light.h"
 
 class World
 {

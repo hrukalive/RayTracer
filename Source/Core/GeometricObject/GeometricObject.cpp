@@ -11,6 +11,30 @@
 #include "GeometricObject.h"
 #include "../Globals.h"
 
+void GeometricObject::SetMaterial(std::shared_ptr<Material> newMaterialPtr) {
+    materialPtr = newMaterialPtr;
+}
+
+BBox& GeometricObject::GetBoundingBox() {
+    return boundingBox;
+}
+
+std::vector<std::pair<Point3D, Vec3D>> GeometricObject::Sample(int numSamples)
+{
+    return std::vector<std::pair<Point3D, Vec3D>>();
+}
+
+std::pair<Point3D, Vec3D> GeometricObject::SampleSingle()
+{
+    return std::make_pair(ZERO, ZERO);
+}
+
+FP_TYPE GeometricObject::pdf(const HitRecord& record)
+{
+    auto diff = boundingBox.GetMaxPoint() - boundingBox.GetMinPoint();
+    return 1.0 / (2 * (diff.x * diff.y + diff.y * diff.z + diff.x * diff.z));
+}
+
 std::vector<HitRecord> GeometricObject::getHitInterval(const Ray& ray)
 {
     BBox box = world->GetBoundingBox();

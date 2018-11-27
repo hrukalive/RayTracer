@@ -275,7 +275,6 @@ void MainComponent::setupWorld()
 }
 */
 
-
 void MainComponent::setupWorld()
 {
     auto r = 160;
@@ -383,7 +382,6 @@ void MainComponent::setupWorld()
 
     world->AddObject(comp);
 }
-
 
 /*
 void MainComponent::setupWorld()

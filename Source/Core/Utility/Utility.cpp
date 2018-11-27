@@ -254,3 +254,52 @@ int SolveQuartic(double c[5], double s[4])
 
     return num;
 }
+
+ColorRamp::ColorRamp(int N) : N(N) { colors = std::vector<RGBColor>(N + 1); }
+void ColorRamp::addColorPoint(FP_TYPE x, RGBColor color)
+{
+    int newX = clamp((int)(N * x), 0, N);
+    colorPoints.push_back(std::make_pair(newX, color));
+}
+void ColorRamp::build()
+{
+    std::sort(colorPoints.begin(), colorPoints.end(), pairLess<int, RGBColor>());
+    for (size_t i = 0; i < colorPoints.size() - 1; i++)
+    {
+        auto lowIdx = colorPoints[i].first;
+        auto highIdx = colorPoints[i + 1].first;
+        auto lowColor = colorPoints[i].second;
+        auto highColor = colorPoints[i + 1].second;
+        for (size_t j = colorPoints[i].first; j < colorPoints[i + 1].first; j++)
+            colors[j] = lerp(double(j - lowIdx) / double(highIdx - lowIdx), lowColor, highColor);
+    }
+}
+void ColorRamp::buildFromImage(Image image, bool isHorizontal)
+{
+    if (isHorizontal)
+    {
+        N = image.getWidth();
+        colors = std::vector<RGBColor>(N + 1);
+        for (int i = 0; i < N; i++)
+        {
+            auto c = image.getPixelAt(i, 0);
+            colors[i] = RGBColor(c.getRed() / 255.0, c.getGreen() / 255.0, c.getBlue() / 255.0);
+        }
+    }
+    else
+    {
+        N = image.getHeight();
+        colors = std::vector<RGBColor>(N + 1);
+        for (int i = 0; i < N; i++)
+        {
+            auto c = image.getPixelAt(0, i);
+            colors[i] = RGBColor(c.getRed() / 255.0, c.getGreen() / 255.0, c.getBlue() / 255.0);
+        }
+    }
+}
+RGBColor ColorRamp::getColor(FP_TYPE x)
+{
+    auto fx = floor(x * N), cx = ceil(x * N);
+    auto dx = x * N - fx;
+    return lerp(dx, colors[fx], colors[cx]);
+}

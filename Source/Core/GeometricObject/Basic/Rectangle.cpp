@@ -1,5 +1,5 @@
 #include "Rectangle.h"
-#include "../Globals.h"
+#include "../../Globals.h"
 
 namespace RayTracer
 {

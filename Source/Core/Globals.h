@@ -10,7 +10,6 @@
 
 #pragma once
 
-#include "../JuceLibraryCode/JuceHeader.h"
 #include "World.h"
 #include "Tracer/Tracer.h"
 #include "Sampler/Sampler.h"
@@ -23,6 +22,5 @@ extern std::shared_ptr<Tracer> tracer;
 extern std::shared_ptr<Sampler> sampler;
 extern std::shared_ptr<ViewPlane> viewPlane;
 extern std::shared_ptr<Camera> camera;
-extern CriticalSection photonMapLock;
 extern PhotonMap* photonMap;
 extern BalancedPhotonMap* balancedPhotonMap;

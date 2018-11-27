@@ -9,7 +9,7 @@
 */
 
 #include "Disk.h"
-#include "../Globals.h"
+#include "../../Globals.h"
 
 void Disk::UpdateBoundingBox()
 {

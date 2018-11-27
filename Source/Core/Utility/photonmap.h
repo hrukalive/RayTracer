@@ -49,7 +49,6 @@ typedef struct PhotonMap{
   float bbox_max[3];		// use bbox_max;
 } PhotonMap;
 
-
 PhotonMap *createPhotonMap(int max_photons);
 void storePhoton(PhotonMap *map,
     const float power[3],          // photon power

@@ -1,7 +1,7 @@
 #pragma once
-#include "../Utility/Utility.h"
-#include "../Sampler/Sampler.h"
-#include "Texture.h"
+#include "../../Utility/Utility.h"
+#include "../../Sampler/Sampler.h"
+#include "../Texture/Texture.h"
 
 class BRDF
 {

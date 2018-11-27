@@ -55,45 +55,6 @@ std::vector<FP_TYPE> bilaterialFilter(const std::vector<FP_TYPE>& I, int width, 
 template<class T>
 inline T clamp(FP_TYPE x, T min, T max) { return T((x < min ? min : (x > max ? max : x))); }
 
-inline Vec3D ElemMul(const Vec3D& a, const Vec3D& b)
-{
-	return Vec3D(a.x * b.x, a.y * b.y, a.z * b.z);
-}
-
-inline Point3D MatrixMulPoint(const Matrix& m, const Point3D& p)
-{
-	Matrix pm = Matrix(4, 1);
-	pm(0, 0) = p.x;
-	pm(1, 0) = p.y;
-	pm(2, 0) = p.z;
-	pm(3, 0) = 1.0;
-	auto res = m * pm;
-	return Point3D(res(0, 0) / res(3, 0), res(1, 0) / res(3, 0), res(2, 0) / res(3, 0));
-}
-
-inline Point3D MatrixMulVector(const Matrix& m, const Vec3D& n)
-{
-	Matrix nm = Matrix(4, 1);
-	nm(0, 0) = n.x;
-	nm(1, 0) = n.y;
-	nm(2, 0) = n.z;
-	nm(3, 0) = 0.0;
-	auto res = m * nm;
-	return Point3D(res(0, 0), res(1, 0), res(2, 0));
-}
-
-inline Matrix MatrixTranspose(Matrix& m)
-{
-	Matrix ret(m);
-	std::swap(ret(0, 1), ret(1, 0));
-	std::swap(ret(0, 2), ret(2, 0));
-	std::swap(ret(0, 3), ret(3, 0));
-	std::swap(ret(1, 2), ret(2, 1));
-	std::swap(ret(1, 3), ret(3, 1));
-	std::swap(ret(2, 3), ret(3, 2));
-	return ret;
-}
-
 template<class T>
 inline T lerp(const FP_TYPE f, const T& a, const T& b)
 {
@@ -108,6 +69,11 @@ inline T cubicSpline(const FP_TYPE x, const T p0, const T p1, const T p2, const 
     T c3 = -0.5 * p0 + 1.5 * p1 - 1.5 * p2 + 0.5 * p3;
     return (T)((((c3 * x) + c2) * x + c1) * x + p1);
 }
+
+Vec3D ElemMul(const Vec3D& a, const Vec3D& b);
+Point3D MatrixMulPoint(const Matrix& m, const Point3D& p);
+Point3D MatrixMulVector(const Matrix& m, const Vec3D& n);
+Matrix MatrixTranspose(Matrix& m);
 
 int SolveQuadric(double c[3], double s[2]);
 int SolveCubic(double c[4], double s[3]);
@@ -185,52 +151,9 @@ struct ColorRamp
     int N;
     std::vector<RGBColor> colors;
 public:
-    ColorRamp(int N = 100) : N(N) { colors = std::vector<RGBColor>(N + 1); }
-    void addColorPoint(FP_TYPE x, RGBColor color)
-    {
-        int newX = clamp((int)(N * x), 0, N);
-        colorPoints.push_back(std::make_pair(newX, color));
-    }
-    void build()
-    {
-        std::sort(colorPoints.begin(), colorPoints.end(), pairLess<int, RGBColor>());
-        for (size_t i = 0; i < colorPoints.size() - 1; i++)
-        {
-            auto lowIdx = colorPoints[i].first;
-            auto highIdx = colorPoints[i + 1].first;
-            auto lowColor = colorPoints[i].second;
-            auto highColor = colorPoints[i + 1].second;
-            for (size_t j = colorPoints[i].first; j < colorPoints[i + 1].first; j++)
-                colors[j] = lerp(double(j - lowIdx) / double(highIdx - lowIdx), lowColor, highColor);
-        }
-    }
-    void buildFromImage(Image image, bool isHorizontal = true)
-    {
-        if (isHorizontal)
-        {
-            N = image.getWidth();
-            colors = std::vector<RGBColor>(N + 1);
-            for (int i = 0; i < N; i++)
-            {
-                auto c = image.getPixelAt(i, 0);
-                colors[i] = RGBColor(c.getRed() / 255.0, c.getGreen() / 255.0, c.getBlue() / 255.0);
-            }
-        }
-        else
-        {
-            N = image.getHeight();
-            colors = std::vector<RGBColor>(N + 1);
-            for (int i = 0; i < N; i++)
-            {
-                auto c = image.getPixelAt(0, i);
-                colors[i] = RGBColor(c.getRed() / 255.0, c.getGreen() / 255.0, c.getBlue() / 255.0);
-            }
-        }
-    }
-    RGBColor getColor(FP_TYPE x)
-    {
-        auto fx = floor(x * N), cx = ceil(x * N);
-        auto dx = x * N - fx;
-        return lerp(dx, colors[fx], colors[cx]);
-    }
+    ColorRamp(int N = 100);
+    void addColorPoint(FP_TYPE x, RGBColor color);
+    void build();
+    void buildFromImage(Image image, bool isHorizontal = true);
+    RGBColor getColor(FP_TYPE x);
 };

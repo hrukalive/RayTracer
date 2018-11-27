@@ -15,6 +15,5 @@ std::shared_ptr<Tracer> tracer = nullptr;
 std::shared_ptr<Sampler> sampler = nullptr;
 std::shared_ptr<ViewPlane> viewPlane = nullptr;
 std::shared_ptr<Camera> camera = nullptr;
-CriticalSection photonMapLock;
 PhotonMap* photonMap = nullptr;
 BalancedPhotonMap* balancedPhotonMap = nullptr;

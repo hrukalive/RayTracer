@@ -21,9 +21,5 @@ public:
     virtual void AddObject(std::shared_ptr<GeometricObject> obj);
     void SetMaterial(std::shared_ptr<Material> newMaterialPtr) override;
 
-    //virtual Point3D Sample() override;
-    //virtual Vec3D GetNormal(const Point3D p) override;
-    //virtual FP_TYPE pdf(const HitRecord& record) override;
-
     HitRecord Hit(const Ray& ray) override;
 };

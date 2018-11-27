@@ -9,7 +9,7 @@
 */
 
 #pragma once
-#include "GeometricObject.h"
+#include "../GeometricObject.h"
 
 class Disk : public GeometricObject
 {

@@ -10,8 +10,8 @@
 
 #pragma once
 #include "../Utility/Utility.h"
-#include "BRDF.h"
-#include "BTDF.h"
+#include "Base/BRDF.h"
+#include "Base/BTDF.h"
 
 class Material
 {

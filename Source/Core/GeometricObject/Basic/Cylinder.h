@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "Compound.h"
+#include "../Compound.h"
 
 class Cylinder : public Compound
 {

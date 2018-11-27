@@ -13,18 +13,31 @@
       </GROUP>
       <GROUP id="{7A267AD0-4BE3-D2CF-027D-6CFF1B1A60AA}" name="Core">
         <GROUP id="{63E25525-A9A0-D680-65BB-5F4FF1D04E1A}" name="GeometricObject">
+          <GROUP id="{61CB692A-4303-2E8A-E7CE-06A1154497B5}" name="Basic">
+            <FILE id="MuJat2" name="Box.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Box.cpp"/>
+            <FILE id="AIcUeB" name="Box.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Box.h"/>
+            <FILE id="TZdXgT" name="CSG.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/CSG.cpp"/>
+            <FILE id="RBakXK" name="CSG.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/CSG.h"/>
+            <FILE id="DJ7SCk" name="Cylinder.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Cylinder.cpp"/>
+            <FILE id="XmScXk" name="Cylinder.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Cylinder.h"/>
+            <FILE id="j4Wved" name="Disk.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Disk.cpp"/>
+            <FILE id="Sy193K" name="Disk.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Disk.h"/>
+            <FILE id="bDgwi2" name="OpenCylinder.cpp" compile="1" resource="0"
+                  file="Source/Core/GeometricObject/Basic/OpenCylinder.cpp"/>
+            <FILE id="rMUoiG" name="OpenCylinder.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/OpenCylinder.h"/>
+            <FILE id="RdDi7u" name="Rectangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Rectangle.cpp"/>
+            <FILE id="XuocwR" name="Rectangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Rectangle.h"/>
+            <FILE id="AZfGDe" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Sphere.cpp"/>
+            <FILE id="ySmste" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Sphere.h"/>
+            <FILE id="kKzxfu" name="Torus.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Torus.cpp"/>
+            <FILE id="BDhwbQ" name="Torus.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Torus.h"/>
+            <FILE id="GFxzqY" name="Triangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Basic/Triangle.cpp"/>
+            <FILE id="ngRKSb" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Basic/Triangle.h"/>
+          </GROUP>
           <FILE id="nCUFm5" name="BBox.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/BBox.cpp"/>
           <FILE id="zrhR0Y" name="BBox.h" compile="0" resource="0" file="Source/Core/GeometricObject/BBox.h"/>
-          <FILE id="xTFicd" name="Box.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Box.cpp"/>
-          <FILE id="ziWJfU" name="Box.h" compile="0" resource="0" file="Source/Core/GeometricObject/Box.h"/>
           <FILE id="mqTV46" name="Compound.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Compound.cpp"/>
           <FILE id="VJcpWi" name="Compound.h" compile="0" resource="0" file="Source/Core/GeometricObject/Compound.h"/>
-          <FILE id="P5SwvQ" name="CSG.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/CSG.cpp"/>
-          <FILE id="vf7I0C" name="CSG.h" compile="0" resource="0" file="Source/Core/GeometricObject/CSG.h"/>
-          <FILE id="ZC1XWk" name="Cylinder.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Cylinder.cpp"/>
-          <FILE id="yRctsQ" name="Cylinder.h" compile="0" resource="0" file="Source/Core/GeometricObject/Cylinder.h"/>
-          <FILE id="RXya8y" name="Disk.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Disk.cpp"/>
-          <FILE id="LVd5dh" name="Disk.h" compile="0" resource="0" file="Source/Core/GeometricObject/Disk.h"/>
           <FILE id="o8wGan" name="GeometricObject.cpp" compile="1" resource="0"
                 file="Source/Core/GeometricObject/GeometricObject.cpp"/>
           <FILE id="wna0vg" name="GeometricObject.h" compile="0" resource="0"
@@ -36,31 +49,59 @@
           <FILE id="WnBLaL" name="IObject.h" compile="0" resource="0" file="Source/Core/GeometricObject/IObject.h"/>
           <FILE id="dJSMWb" name="Mesh.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Mesh.cpp"/>
           <FILE id="NLWKhv" name="Mesh.h" compile="0" resource="0" file="Source/Core/GeometricObject/Mesh.h"/>
-          <FILE id="okTpVF" name="OpenCylinder.cpp" compile="1" resource="0"
-                file="Source/Core/GeometricObject/OpenCylinder.cpp"/>
-          <FILE id="wWvQwb" name="OpenCylinder.h" compile="0" resource="0" file="Source/Core/GeometricObject/OpenCylinder.h"/>
-          <FILE id="hXKdoO" name="Rectangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Rectangle.cpp"/>
-          <FILE id="VxXFii" name="Rectangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Rectangle.h"/>
-          <FILE id="fDDvJK" name="Sphere.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Sphere.cpp"/>
-          <FILE id="kDzBb0" name="Sphere.h" compile="0" resource="0" file="Source/Core/GeometricObject/Sphere.h"/>
-          <FILE id="Nzz1t8" name="Torus.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Torus.cpp"/>
-          <FILE id="RIXVSl" name="Torus.h" compile="0" resource="0" file="Source/Core/GeometricObject/Torus.h"/>
-          <FILE id="LzXlBO" name="Triangle.cpp" compile="1" resource="0" file="Source/Core/GeometricObject/Triangle.cpp"/>
-          <FILE id="ftFJNR" name="Triangle.h" compile="0" resource="0" file="Source/Core/GeometricObject/Triangle.h"/>
         </GROUP>
         <GROUP id="{762247FB-5AB0-6C27-AD20-16471B2CEB51}" name="Materials">
-          <FILE id="iwTipt" name="Noise.cpp" compile="1" resource="0" file="Source/Core/Materials/Noise.cpp"/>
-          <FILE id="UrgBKy" name="Noise.h" compile="0" resource="0" file="Source/Core/Materials/Noise.h"/>
-          <FILE id="v5UdsE" name="Mapping.cpp" compile="1" resource="0" file="Source/Core/Materials/Mapping.cpp"/>
-          <FILE id="ptDQhQ" name="Mapping.h" compile="0" resource="0" file="Source/Core/Materials/Mapping.h"/>
-          <FILE id="DXL9lM" name="Texture.cpp" compile="1" resource="0" file="Source/Core/Materials/Texture.cpp"/>
-          <FILE id="jmWK7F" name="Texture.h" compile="0" resource="0" file="Source/Core/Materials/Texture.h"/>
-          <FILE id="C4VgLH" name="BRDF.cpp" compile="1" resource="0" file="Source/Core/Materials/BRDF.cpp"/>
-          <FILE id="DiLnP3" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/BRDF.h"/>
-          <FILE id="deqYLl" name="BTDF.cpp" compile="1" resource="0" file="Source/Core/Materials/BTDF.cpp"/>
-          <FILE id="DxduH6" name="BTDF.h" compile="0" resource="0" file="Source/Core/Materials/BTDF.h"/>
+          <GROUP id="{3C074CDF-E1DA-13E1-DFBD-5170EFA5F285}" name="Base">
+            <FILE id="rJndZV" name="BRDF.h" compile="0" resource="0" file="Source/Core/Materials/Base/BRDF.h"/>
+            <FILE id="yXpTdX" name="Lambertian.cpp" compile="1" resource="0" file="Source/Core/Materials/Base/Lambertian.cpp"/>
+            <FILE id="jFa6vv" name="PerfectSpecular.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Base/PerfectSpecular.cpp"/>
+            <FILE id="qGNtWy" name="GlossySpecular.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Base/GlossySpecular.cpp"/>
+            <FILE id="LtTvLd" name="BTDF.h" compile="0" resource="0" file="Source/Core/Materials/Base/BTDF.h"/>
+            <FILE id="iYXVC4" name="PerfectTransmitter.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Base/PerfectTransmitter.cpp"/>
+          </GROUP>
+          <GROUP id="{299D7BFF-1D9A-2996-D395-ECC0D3EAD797}" name="Noise">
+            <FILE id="LEaV9t" name="Noise.cpp" compile="1" resource="0" file="Source/Core/Materials/Noise/Noise.cpp"/>
+            <FILE id="Q8OS5g" name="Noise.h" compile="0" resource="0" file="Source/Core/Materials/Noise/Noise.h"/>
+            <FILE id="c0ESqY" name="LatticeNoise.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Noise/LatticeNoise.cpp"/>
+            <FILE id="PGP7kj" name="LinearNoise.cpp" compile="1" resource="0" file="Source/Core/Materials/Noise/LinearNoise.cpp"/>
+            <FILE id="z67H5a" name="CubicNoise.cpp" compile="1" resource="0" file="Source/Core/Materials/Noise/CubicNoise.cpp"/>
+          </GROUP>
+          <GROUP id="{EA3B7152-6CBD-5E8E-E961-B6B4AF615BFB}" name="Texture">
+            <FILE id="WaeRFp" name="Texture.cpp" compile="1" resource="0" file="Source/Core/Materials/Texture/Texture.cpp"/>
+            <FILE id="YRYwG8" name="Texture.h" compile="0" resource="0" file="Source/Core/Materials/Texture/Texture.h"/>
+            <FILE id="QpEKmL" name="ConstTexture.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Texture/ConstTexture.cpp"/>
+            <FILE id="Iewe92" name="Checker3D.cpp" compile="1" resource="0" file="Source/Core/Materials/Texture/Checker3D.cpp"/>
+            <FILE id="iQIzHc" name="NoiseTexture.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Texture/NoiseTexture.cpp"/>
+            <FILE id="KjsZuF" name="WrappedNoiseTexture.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Texture/WrappedNoiseTexture.cpp"/>
+            <FILE id="PfGhsu" name="RampNoiseTexture.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Texture/RampNoiseTexture.cpp"/>
+            <FILE id="e7QEf1" name="TextureInstance.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Texture/TextureInstance.cpp"/>
+          </GROUP>
+          <GROUP id="{6BA1D895-EBB4-2530-2380-CCEB4290550C}" name="Mapping">
+            <FILE id="jm1XNP" name="Mapping.h" compile="0" resource="0" file="Source/Core/Materials/Mapping/Mapping.h"/>
+            <FILE id="oxocUn" name="LightProbe.cpp" compile="1" resource="0" file="Source/Core/Materials/Mapping/LightProbe.cpp"/>
+            <FILE id="e5mhPl" name="SphericalMap.cpp" compile="1" resource="0"
+                  file="Source/Core/Materials/Mapping/SphericalMap.cpp"/>
+          </GROUP>
           <FILE id="ZHtPL6" name="Material.cpp" compile="1" resource="0" file="Source/Core/Materials/Material.cpp"/>
           <FILE id="w9l0jr" name="Material.h" compile="0" resource="0" file="Source/Core/Materials/Material.h"/>
+          <FILE id="BL5Fve" name="ConstColor.cpp" compile="1" resource="0" file="Source/Core/Materials/ConstColor.cpp"/>
+          <FILE id="Tb6Aq8" name="NormalShade.cpp" compile="1" resource="0" file="Source/Core/Materials/NormalShade.cpp"/>
+          <FILE id="HgZYQx" name="Matte.cpp" compile="1" resource="0" file="Source/Core/Materials/Matte.cpp"/>
+          <FILE id="x2ExzN" name="Phong.cpp" compile="1" resource="0" file="Source/Core/Materials/Phong.cpp"/>
+          <FILE id="TAlTHZ" name="GlossyReflector.cpp" compile="1" resource="0"
+                file="Source/Core/Materials/GlossyReflector.cpp"/>
+          <FILE id="wtDbVF" name="Reflective.cpp" compile="1" resource="0" file="Source/Core/Materials/Reflective.cpp"/>
+          <FILE id="hEUC0e" name="Transparent.cpp" compile="1" resource="0" file="Source/Core/Materials/Transparent.cpp"/>
+          <FILE id="UfaHMg" name="Emissive.cpp" compile="1" resource="0" file="Source/Core/Materials/Emissive.cpp"/>
         </GROUP>
         <GROUP id="{24511632-BEF7-7A6D-3FC7-8646127B43A5}" name="Camera">
           <FILE id="lGy23n" name="Camera.cpp" compile="1" resource="0" file="Source/Core/Camera/Camera.cpp"/>
@@ -77,7 +118,6 @@
         <GROUP id="{EF26E0BE-804B-99EF-68AC-8BD0BC5C341A}" name="Light">
           <FILE id="eq7u9R" name="Ambient.cpp" compile="1" resource="0" file="Source/Core/Light/Ambient.cpp"/>
           <FILE id="Ya2sCw" name="AreaLight.cpp" compile="1" resource="0" file="Source/Core/Light/AreaLight.cpp"/>
-          <FILE id="eWWEC8" name="Light.cpp" compile="1" resource="0" file="Source/Core/Light/Light.cpp"/>
           <FILE id="AoX2N0" name="Light.h" compile="0" resource="0" file="Source/Core/Light/Light.h"/>
           <FILE id="i3WMOb" name="Parallel.cpp" compile="1" resource="0" file="Source/Core/Light/Parallel.cpp"/>
           <FILE id="L5sgrW" name="PointLight.cpp" compile="1" resource="0" file="Source/Core/Light/PointLight.cpp"/>
@@ -93,7 +133,6 @@
           <FILE id="y7z1is" name="PathTrace.cpp" compile="1" resource="0" file="Source/Core/Tracer/PathTrace.cpp"/>
           <FILE id="OArRQY" name="PhotonTrace.cpp" compile="1" resource="0" file="Source/Core/Tracer/PhotonTrace.cpp"/>
           <FILE id="smNzZN" name="RayCast.cpp" compile="1" resource="0" file="Source/Core/Tracer/RayCast.cpp"/>
-          <FILE id="ggZKIv" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer/Tracer.cpp"/>
           <FILE id="Tfh7lm" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer/Tracer.h"/>
           <FILE id="XZLc7Q" name="Whitted.cpp" compile="1" resource="0" file="Source/Core/Tracer/Whitted.cpp"/>
         </GROUP>

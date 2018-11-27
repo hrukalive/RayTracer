@@ -10,7 +10,7 @@
 
 #pragma once
 
-#include "GeometricObject.h"
+#include "../GeometricObject.h"
 
 class Box : public GeometricObject
 {

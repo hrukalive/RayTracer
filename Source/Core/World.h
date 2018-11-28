@@ -32,6 +32,7 @@ public:
     void SetAmbient(std::shared_ptr<Light>& ambient);
     void AddLight(std::shared_ptr<Light>& light);
     void AddObject(std::shared_ptr<GeometricObject>& obj);
+    void Clear();
     BBox GetBoundingBox();
     FP_TYPE TotalLightPower();
 

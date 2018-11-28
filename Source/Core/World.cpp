@@ -41,6 +41,14 @@ BBox World::GetBoundingBox()
     return boundingBox;
 }
 
+void World::Clear()
+{
+    ambientLightPtr = nullptr;
+    objects.clear();
+    lights.clear();
+    boundingBox = BBox();
+}
+
 HitRecord World::HitObjects(const Ray& ray)
 {
     HitRecord record;

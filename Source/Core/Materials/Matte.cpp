@@ -98,9 +98,5 @@ void Matte::PhotonMapping(const HitRecord& record)
     if (rand.nextDouble() < pd)
         tracer->Trace(reflected, record.Depth + 1);
 
-    float power[3]{ (float)(f.x * record.Ray.Power.x), (float)(f.y * record.Ray.Power.y), (float)(f.z * record.Ray.Power.z) };
-    float pos[3]{ (float)record.HitPoint.x, (float)record.HitPoint.y, (float)record.HitPoint.z };
-    float dir[3]{ (float)record.Ray.Direction.x, (float)record.Ray.Direction.y, (float)record.Ray.Direction.z };
-    float planeNorm[3]{ (float)record.Normal.x, (float)record.Normal.y, (float)record.Normal.z };
-    storePhoton(photonMap, power, pos, dir, planeNorm);
+    storePhoton(photonMap, f, record);
 }

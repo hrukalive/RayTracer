@@ -8,6 +8,8 @@
 #ifndef PHOTONMAP_H
 #define PHOTONMAP_H
 
+#include "Utility.h"
+
 /* This is the photon
  * The power is not compressed so the
  * size is 28 bytes
@@ -51,11 +53,7 @@ typedef struct PhotonMap{
 } PhotonMap;
 
 PhotonMap *createPhotonMap(int max_photons);
-void storePhoton(PhotonMap *map,
-    const float power[3],          // photon power
-    const float pos[3],            // photon position
-    const float dir[3],            // photon direction
-    const float planeNorm[3]);     // normal at hit surface
+void storePhoton(PhotonMap *map, const RGBColor f, const HitRecord& record);
 
 void scalePhotonPower(PhotonMap *map,
 					const float scale );   // 1/(number of emitted photons)

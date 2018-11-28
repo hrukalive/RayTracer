@@ -114,13 +114,17 @@ static void photonDir(float *dir, const Photon *p)
 //***************************
 void storePhoton(
     PhotonMap *map,
-    const float power[3],
-    const float pos[3],
-    const float dir[3],
-    const float planeNorm[3])
+    const RGBColor f,
+    const HitRecord& record)
     //***************************
 {
     photonMapLock.enter();
+
+    const float power[3]{ (float)(f.x * record.Ray.Power.x), (float)(f.y * record.Ray.Power.y), (float)(f.z * record.Ray.Power.z) };
+    const float pos[3]{ (float)record.HitPoint.x, (float)record.HitPoint.y, (float)record.HitPoint.z };
+    const float dir[3]{ (float)record.Ray.Direction.x, (float)record.Ray.Direction.y, (float)record.Ray.Direction.z };
+    const float planeNorm[3]{ (float)record.Normal.x, (float)record.Normal.y, (float)record.Normal.z };
+
     int i;
     int theta, phi;
     Photon *node;

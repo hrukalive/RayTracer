@@ -19,6 +19,7 @@ typedef struct Photon {
   short plane;                  // splitting plane for kd-tree
   unsigned char theta, phi;     // incoming direction
   float power[3];               // photon power (uncompressed)
+  float planeNorm[3];
 } Photon;
 
 
@@ -53,7 +54,8 @@ PhotonMap *createPhotonMap(int max_photons);
 void storePhoton(PhotonMap *map,
     const float power[3],          // photon power
     const float pos[3],            // photon position
-    const float dir[3]);            // photon direction
+    const float dir[3],            // photon direction
+    const float planeNorm[3]);     // normal at hit surface
 
 void scalePhotonPower(PhotonMap *map,
 					const float scale );   // 1/(number of emitted photons)

@@ -13,8 +13,8 @@ MainComponent::MainComponent()
 {
     world.reset(new World());
     tracer.reset(new PhotonMapTrace(10));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 8, 4, false));
-    sampler.reset(new MultiJittered(viewPlane->NumPixelSamples));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 32, 4, false));
+    sampler.reset(new MultiJittered(128, 1024));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
     setupWorld();
@@ -344,16 +344,49 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<Matte>(boxMat1)->SetCd(RGBColor(1, 1, 1));
     //boxFront->SetMaterial(boxMat1);
 
-    std::shared_ptr<GeometricObject> sphere{ new Sphere(Point3D(18, -35, 20), 15) };
-    std::shared_ptr<Material> sphereMat{ new Transparent() };
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKa(0.0);
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKd(0.0);
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetCr(RGBColor(0.7, 0.7, 1.0));
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetCt(RGBColor(0.7, 0.7, 1.0));
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKr(0.1);
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetKt(0.9);
-    std::dynamic_pointer_cast<Transparent>(sphereMat)->SetIOR(1.3);
-    sphere->SetMaterial(sphereMat);
+    std::shared_ptr<GeometricObject> sphere1{ new Sphere(Point3D(20, -50+12, -30), 12) };
+    std::shared_ptr<Material> sphereMat1{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetKa(0.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetKd(0.2);
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetCr(RGBColor(1.0, 0.4, 0.2) * 1.3);
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetCt(RGBColor(1.0, 0.4, 0.2) * 1.3);
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetKr(0.1);
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetKt(1.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat1)->SetIOR(1.2);
+    sphere1->SetMaterial(sphereMat1);
+
+    std::shared_ptr<GeometricObject> sphere2{ new Sphere(Point3D(30, -50+10, 0), 10) };
+    std::shared_ptr<Material> sphereMat2{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetKa(0.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetKd(0.2);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetCr(RGBColor(0.7, 1.0, 0.2) * 1.7);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetCt(RGBColor(0.7, 1.0, 0.2) * 1.7);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetKr(0.1);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetKt(1.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat2)->SetIOR(1.3);
+    sphere2->SetMaterial(sphereMat2);
+
+    std::shared_ptr<GeometricObject> sphere3{ new Sphere(Point3D(35, -50 + 7, 20), 7) };
+    std::shared_ptr<Material> sphereMat3{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetKa(0.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetKd(0.2);
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetCr(RGBColor(0.2, 0.7, 1.0) * 1.7);
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetCt(RGBColor(0.2, 0.7, 1.0) * 1.7);
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetKr(0.1);
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetKt(1.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat3)->SetIOR(1.4);
+    sphere3->SetMaterial(sphereMat3);
+
+    std::shared_ptr<GeometricObject> sphere4{ new Sphere(Point3D(40, -50 + 5, 35), 5) };
+    std::shared_ptr<Material> sphereMat4{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetKa(0.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetKd(0.2);
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetCr(RGBColor(0.7, 0.2, 1.0) * 1.7);
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetCt(RGBColor(0.7, 0.2, 1.0) * 1.7);
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetKr(0.1);
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetKt(1.0);
+    std::dynamic_pointer_cast<Transparent>(sphereMat4)->SetIOR(1.5);
+    sphere4->SetMaterial(sphereMat4);
 
     std::shared_ptr<GeometricObject> boxBackOriginal{ new Box(Point3D(-15, -30, -15), Point3D(15, 30, 15)) };
     std::shared_ptr<GeometricObject> boxBack{ new Instance(boxBackOriginal) };
@@ -367,6 +400,67 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<Reflective>(boxMat2)->SetKr(0.8);
     boxBack->SetMaterial(boxMat2);
 
+    std::shared_ptr<GeometricObject> csg1box{ new Box(Point3D(-1, -1, -1), Point3D(1, 1, 1)) };
+    std::shared_ptr<GeometricObject> csg1sphere{ new Sphere(Point3D(0, 0, 0), 1.3) };
+    std::shared_ptr<GeometricObject> csg1cy1{ new Cylinder(Point3D(0, -2, 0), 0.65, 4) };
+    std::shared_ptr<GeometricObject> csg1cy2{ new Instance(csg1cy1) };
+    std::dynamic_pointer_cast<Instance>(csg1cy2)->RotateX(90 * PI_OVER_180);
+    std::shared_ptr<GeometricObject> csg1cy3{ new Instance(csg1cy1) };
+    std::dynamic_pointer_cast<Instance>(csg1cy3)->RotateZ(90 * PI_OVER_180);
+    std::shared_ptr<GeometricObject> csg1{ new CSG() };
+    std::dynamic_pointer_cast<CSG>(csg1)->addObject(csg1box);
+    std::dynamic_pointer_cast<CSG>(csg1)->addObject(csg1sphere);
+    std::dynamic_pointer_cast<CSG>(csg1)->addOperation(CSG::OpType::INTERSECTION);
+    std::dynamic_pointer_cast<CSG>(csg1)->addObject(csg1cy1);
+    std::dynamic_pointer_cast<CSG>(csg1)->addObject(csg1cy2);
+    std::dynamic_pointer_cast<CSG>(csg1)->addOperation(CSG::OpType::UNION);
+    std::dynamic_pointer_cast<CSG>(csg1)->addObject(csg1cy3);
+    std::dynamic_pointer_cast<CSG>(csg1)->addOperation(CSG::OpType::UNION);
+    std::dynamic_pointer_cast<CSG>(csg1)->addOperation(CSG::OpType::DIFFERENCE);
+    std::dynamic_pointer_cast<CSG>(csg1)->build();
+    std::shared_ptr<GeometricObject> csg1ins{ new Instance(csg1) };
+    std::dynamic_pointer_cast<Instance>(csg1ins)->Scale(12, 12, 12);
+    std::dynamic_pointer_cast<Instance>(csg1ins)->Translate(-32, -50 + 12, 20);
+    std::shared_ptr<Material> csgmat1{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetKa(0.05);
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetKd(0.05);
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetCd(RGBColor(1.0, 0.4, 0.8));
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetCr(RGBColor(1.0, 0.8, 0.8));
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetCt(RGBColor(1.0, 0.8, 0.8));
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetKr(0.4);
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetKt(1.0);
+    std::dynamic_pointer_cast<Transparent>(csgmat1)->SetIOR(1.2);
+    csg1ins->SetMaterial(csgmat1);
+
+    std::shared_ptr<GeometricObject> csg2box{ new Box(Point3D(-1, -1, -1), Point3D(1, 1, 1)) };
+    std::shared_ptr<GeometricObject> csg2torus1{ new Torus(1.2, 0.4) };
+    std::shared_ptr<GeometricObject> csg2torus2{ new Instance(csg2torus1) };
+    std::dynamic_pointer_cast<Instance>(csg2torus2)->RotateX(90 * PI_OVER_180);
+    std::shared_ptr<GeometricObject> csg2torus3{ new Instance(csg2torus1) };
+    std::dynamic_pointer_cast<Instance>(csg2torus3)->RotateZ(90 * PI_OVER_180);
+    std::shared_ptr<GeometricObject> csg2{ new CSG() };
+    std::dynamic_pointer_cast<CSG>(csg2)->addObject(csg2box);
+    std::dynamic_pointer_cast<CSG>(csg2)->addObject(csg2torus1);
+    std::dynamic_pointer_cast<CSG>(csg2)->addOperation(CSG::OpType::DIFFERENCE);
+    std::dynamic_pointer_cast<CSG>(csg2)->addObject(csg2torus2);
+    std::dynamic_pointer_cast<CSG>(csg2)->addOperation(CSG::OpType::DIFFERENCE);
+    std::dynamic_pointer_cast<CSG>(csg2)->addObject(csg2torus3);
+    std::dynamic_pointer_cast<CSG>(csg2)->addOperation(CSG::OpType::DIFFERENCE);
+    std::dynamic_pointer_cast<CSG>(csg2)->build();
+    std::shared_ptr<GeometricObject> csg2ins{ new Instance(csg2) };
+    std::dynamic_pointer_cast<Instance>(csg2ins)->Scale(12, 12, 12);
+    std::dynamic_pointer_cast<Instance>(csg2ins)->Translate(0, -50+12, 20);
+    std::shared_ptr<Material> csgmat2{ new Transparent() };
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetKa(0.05);
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetKd(0.05);
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetCd(RGBColor(0.4, 0.7, 1.0));
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetCr(RGBColor(0.4, 0.7, 1.0));
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetCt(RGBColor(0.4, 0.7, 1.0));
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetKr(0.3);
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetKt(1.4);
+    std::dynamic_pointer_cast<Transparent>(csgmat2)->SetIOR(1.3);
+    csg2ins->SetMaterial(csgmat2);
+
     std::shared_ptr<GeometricObject> comp{ new RayTracer::Grid() };
 
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(lightplane1);
@@ -375,8 +469,13 @@ void MainComponent::setupWorld()
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeBack);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeLeft);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(planeRight);
-    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere1);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere2);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere3);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(sphere4);
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(boxBack);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(csg1ins);
+    std::dynamic_pointer_cast<RayTracer::Grid>(comp)->AddObject(csg2ins);
 
     std::dynamic_pointer_cast<RayTracer::Grid>(comp)->Setup();
 

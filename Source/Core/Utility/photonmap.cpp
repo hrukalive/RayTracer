@@ -116,7 +116,8 @@ void storePhoton(
     PhotonMap *map,
     const float power[3],
     const float pos[3],
-    const float dir[3])
+    const float dir[3],
+    const float planeNorm[3])
     //***************************
 {
     photonMapLock.enter();
@@ -151,6 +152,7 @@ void storePhoton(
             map->bbox_max[i] = node->pos[i];
 
         node->power[i] = power[i];
+        node->planeNorm[i] = planeNorm[i];
     }
 
     theta = (int)(acos(dir[2])*(256.0 / M_PI));
@@ -578,11 +580,11 @@ void autoIrradianceEstimate
         // the photon_dir call and following if can be omitted (for speed)
         // if the scene does not have any thin surfaces
         photonDir(pdir, p);
-        if ((pdir[0] * normal[0] + pdir[1] * normal[1] + pdir[2] * normal[2]) < 0.0f) {
+        if ((pdir[0] * normal[0] + pdir[1] * normal[1] + pdir[2] * normal[2]) < 0.0f && 
+            p->planeNorm[0] * normal[0] + p->planeNorm[1] * normal[1] + p->planeNorm[2] * normal[2] > 0.0f) {
             irrad[0] += p->power[0];
             irrad[1] += p->power[1];
             irrad[2] += p->power[2];
-
         }
     }
 

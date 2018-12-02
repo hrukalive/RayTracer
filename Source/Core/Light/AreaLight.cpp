@@ -59,7 +59,7 @@ std::vector<Ray> AreaLight::EmitPhoton()
     std::vector<Ray> ret;
     int ne = GetPower() * TOTAL_PHOTON / world->TotalLightPower();
     auto backupSampler = sampler;
-    sampler.reset(new Hammersley());
+    sampler.reset(new Hammersley(128, 512));
     auto samples = ObjPtr->Sample(ne);
     auto dirs = sampler->SampleHemisphere(ne, 1);
     Random rand;

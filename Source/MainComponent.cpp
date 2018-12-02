@@ -13,7 +13,7 @@ MainComponent::MainComponent()
 {
     world.reset(new World());
     tracer.reset(new PhotonMapTrace(10));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 32, 4, false));
+    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 16, 4, false));
     sampler.reset(new MultiJittered(128, 1024));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     

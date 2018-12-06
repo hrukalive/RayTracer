@@ -15,14 +15,15 @@
 class ViewPlane
 {
 public:
-    bool isStereo;
+    bool isStereo = false;
     int Width = 512, Height = 512;
     FP_TYPE PixelSize = 1.0f;
 	int NumPixelSamples = 64, NumLensSamples = 1;
     int NumAreaLightSamples = 4;
     int NumGlossySamples = 4;
-	int SqrtNumSamplePixel, SqrtNumSampleLens;
-	std::shared_ptr<Image> RenderedImage;
+    int NumPhoton = TOTAL_PHOTON;
+    int NumNPhoton = N_PHOTON;
+	std::shared_ptr<Image> RenderedImage = nullptr;
 private:
 	CriticalSection criticalSection;
 	std::vector<std::vector<RGBColor>> renderedArray;
@@ -31,20 +32,20 @@ private:
     // For HDR conversion
     std::vector<FP_TYPE> logIntensityArray;
 
-    inline void initialize();
 public:
-    ViewPlane(bool isStereo = false);
-    ViewPlane(int width, int height, FP_TYPE pixelSize, bool isStereo = false);
-    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, bool isStereo = false);
-    ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens, bool isStereo = false);
+    ViewPlane();
+    ~ViewPlane() = default;
 
     inline Point2D GetPixelCenter(int x, int y)
     {
         return Point2D(PixelSize * (x - Width / 2.0), PixelSize * (Height / 2.0 - y));
     }
 
+    void initialize();
     void Reset();
     void SetPixel(int x, int y, RGBColor radiance);
+
+    static std::shared_ptr<ViewPlane> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 
     // TODO: Fix this conversion
     void ShowHDR(FP_TYPE targetContrast = log10(5.0), FP_TYPE gamma = 1.0);

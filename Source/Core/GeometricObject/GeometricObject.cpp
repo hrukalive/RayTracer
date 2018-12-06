@@ -72,3 +72,78 @@ std::vector<HitRecord> GeometricObject::getHitInterval(const Ray& ray)
     }
     return ret;
 }
+
+std::shared_ptr<GeometricObject> GeometricObject::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> Box::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> CSG::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+#include "Basic/Cylinder.h"
+std::shared_ptr<GeometricObject> Cylinder::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> Disk::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> OpenCylinder::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> RayTracer::Rectangle::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> Sphere::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> Torus::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+std::shared_ptr<GeometricObject> Triangle::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+#include "Compound.h"
+std::shared_ptr<GeometricObject> Compound::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+#include "Grid.h"
+std::shared_ptr<GeometricObject> RayTracer::Grid::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+#include "Instance.h"
+std::shared_ptr<GeometricObject> Instance::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}
+
+#include "Mesh.h"
+std::shared_ptr<GeometricObject> Mesh::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+
+}

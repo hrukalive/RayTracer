@@ -11,6 +11,7 @@
 #pragma once
 
 #include "../../../JuceLibraryCode/JuceHeader.h"
+#include <unordered_map>
 
 #define FP_TYPE double
 #define kEpsilon 0.0001

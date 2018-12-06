@@ -321,7 +321,7 @@ static void balance_segment(
  * is used for rendering.
  */
 //******************************
-BalancedPhotonMap * balancePhotonMap(PhotonMap *map)
+BalancedPhotonMap * balancePhotonMap(PhotonMap *& map)
 //******************************
 {
     BalancedPhotonMap *bmap;
@@ -372,6 +372,7 @@ BalancedPhotonMap * balancePhotonMap(PhotonMap *map)
     bmap->half_stored_photons = map->stored_photons / 2 - 1;
     bmap->photons = map->photons;
     free(map);
+    map = nullptr;
     return (BalancedPhotonMap*)bmap;
 }
 

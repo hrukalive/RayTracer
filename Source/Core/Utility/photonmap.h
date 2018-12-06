@@ -58,7 +58,7 @@ void storePhoton(PhotonMap *map, const RGBColor f, const HitRecord& record);
 void scalePhotonPower(PhotonMap *map,
 					const float scale );   // 1/(number of emitted photons)
 
-BalancedPhotonMap *balancePhotonMap(PhotonMap *map);  // balance the kd-tree
+BalancedPhotonMap *balancePhotonMap(PhotonMap *& map);  // balance the kd-tree
 
 void irradianceEstimate(
   BalancedPhotonMap *map,

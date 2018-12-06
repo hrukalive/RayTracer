@@ -12,8 +12,6 @@
 
 void ViewPlane::initialize()
 {
-    SqrtNumSamplePixel = (int)sqrt(NumPixelSamples);
-    SqrtNumSampleLens = (int)sqrt(NumLensSamples);
     auto realWidth = isStereo ? 2 * Width : Width;
 
     renderedArray.resize(Height);
@@ -34,22 +32,7 @@ void ViewPlane::initialize()
     }
 }
 
-ViewPlane::ViewPlane(bool isStereo) : isStereo(isStereo) { initialize(); }
-ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, bool isStereo)
-    : isStereo(isStereo), Width(width), Height(height), PixelSize(pixelSize)
-{
-    initialize();
-}
-ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, bool isStereo)
-    : isStereo(isStereo), Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels)
-{
-    initialize();
-}
-ViewPlane::ViewPlane(int width, int height, FP_TYPE pixelSize, int numSamplePixels, int numSampleLens, bool isStereo)
-    : isStereo(isStereo), Width(width), Height(height), PixelSize(pixelSize), NumPixelSamples(numSamplePixels), NumLensSamples(numSampleLens)
-{
-    initialize();
-}
+ViewPlane::ViewPlane() {}
 
 void ViewPlane::Reset()
 {
@@ -115,4 +98,21 @@ void ViewPlane::ShowClamped(FP_TYPE gamma)
         }
     }
     criticalSection.exit();
+}
+
+std::shared_ptr<ViewPlane> ViewPlane::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+    std::shared_ptr<ViewPlane> ret = nullptr;
+    ret.reset(new ViewPlane());
+    ret->Width = std::stoi(cmd[1].toStdString());
+    ret->Height = std::stoi(cmd[2].toStdString());
+    ret->PixelSize = std::stod(cmd[3].toStdString());
+    ret->NumPixelSamples = std::stoi(cmd[4].toStdString());
+    ret->NumLensSamples = std::stoi(cmd[5].toStdString());
+    ret->NumAreaLightSamples = std::stoi(cmd[6].toStdString());
+    ret->NumGlossySamples = std::stoi(cmd[7].toStdString());
+    ret->NumPhoton = std::stoi(cmd[8].toStdString());
+    ret->NumNPhoton = std::stoi(cmd[9].toStdString());
+    ret->isStereo = cmd[10] == "true";
+    return ret;
 }

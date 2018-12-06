@@ -32,5 +32,7 @@ namespace RayTracer
         virtual ~Grid() = default;
         void Setup();
         HitRecord Hit(const Ray& ray) override;
+
+        static std::shared_ptr<GeometricObject> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 	};
 }

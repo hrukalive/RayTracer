@@ -81,7 +81,7 @@ RGBColor Matte::PhotonShade(const HitRecord& record)
     float irrad[3], pos[3], normal[3];
     pos[0] = record.HitPoint.x; pos[1] = record.HitPoint.y; pos[2] = record.HitPoint.z;
     normal[0] = record.Normal.x; normal[1] = record.Normal.y; normal[2] = record.Normal.z;
-    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, N_PHOTON);
+    autoIrradianceEstimate(balancedPhotonMap, irrad, pos, normal, viewPlane->NumNPhoton);
     return RGBColor(irrad[0], irrad[1], irrad[2]);
 }
 

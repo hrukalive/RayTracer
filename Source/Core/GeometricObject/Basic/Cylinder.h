@@ -21,4 +21,6 @@ protected:
 public:
     Cylinder(Point3D bottomCenter, FP_TYPE radius, FP_TYPE height);
     virtual ~Cylinder() = default;
+
+    static std::shared_ptr<GeometricObject> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };

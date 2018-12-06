@@ -18,6 +18,7 @@
 #include "Core/Materials/Material.h"
 #include "Core/Globals.h"
 #include "Core/Utility/OBJParser.h"
+#include "Core/Utility/SceneParser.h"
 #include "Renderer.h"
 
 //==============================================================================
@@ -37,6 +38,8 @@ public:
         stopRender,
 		saveRender,
         showHDR,
+        openScene,
+        saveScene,
         settingWorld,
         settingLight,
         settingCamera,

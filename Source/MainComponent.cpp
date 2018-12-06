@@ -13,7 +13,7 @@ MainComponent::MainComponent()
 {
     world.reset(new World());
     tracer.reset(new PhotonMapTrace(10));
-    viewPlane.reset(new ViewPlane(vpWidth, vpHeight, (FP_TYPE)(1.0 / vpHeight), 16, 4, false));
+    viewPlane.reset(new ViewPlane());
     sampler.reset(new MultiJittered(128, 1024));
     photonMap = createPhotonMap(TOTAL_PHOTON);
     
@@ -39,6 +39,9 @@ MainComponent::MainComponent()
     setApplicationCommandManagerToWatch(&commandManager);
     commandManager.registerAllCommandsForTarget(this);
     addKeyListener(commandManager.getKeyMappings());
+
+    vpWidth = viewPlane->Width;
+    vpHeight = viewPlane->Height;
 #if JUCE_MAC
     setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, vpHeight));
 #else
@@ -57,11 +60,15 @@ MainComponent::~MainComponent()
     viewPlane = nullptr;
     camera = nullptr;
     if (balancedPhotonMap != nullptr)
+    {
         destroyPhotonMap(balancedPhotonMap);
-    else
+        balancedPhotonMap = nullptr;
+    }
+    else if (photonMap != nullptr)
     {
         free(photonMap->photons);
         free(photonMap);
+        photonMap = nullptr;
     }
 
 #if JUCE_MAC
@@ -987,7 +994,7 @@ void MainComponent::setupWorld()
 //==============================================================================
 StringArray MainComponent::getMenuBarNames()
 {
-    return { "Settings", "Render" };
+    return { "File", "Settings", "Render" };
 }
 
 PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuName*/)
@@ -995,6 +1002,11 @@ PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuNam
     PopupMenu menu;
     
     if (menuIndex == 0)
+    {
+        menu.addCommandItem(&commandManager, CommandIDs::openScene);
+        menu.addCommandItem(&commandManager, CommandIDs::saveScene);
+    }
+    else if (menuIndex == 1)
     {
         menu.addCommandItem(&commandManager, CommandIDs::settingWorld);
         menu.addCommandItem(&commandManager, CommandIDs::settingViewplane);
@@ -1004,7 +1016,7 @@ PopupMenu MainComponent::getMenuForIndex (int menuIndex, const String& /*menuNam
         menu.addCommandItem(&commandManager, CommandIDs::settingMaterial);
         menu.addCommandItem(&commandManager, CommandIDs::settingMesh);
     }
-    else if (menuIndex == 1)
+    else if (menuIndex == 2)
     {
         menu.addCommandItem(&commandManager, CommandIDs::startRender);
         menu.addCommandItem(&commandManager, CommandIDs::stopRender);
@@ -1026,6 +1038,8 @@ void MainComponent::getAllCommands (Array<CommandID>& c)
         CommandIDs::stopRender,
         CommandIDs::saveRender,
         CommandIDs::showHDR,
+        CommandIDs::openScene,
+        CommandIDs::saveScene,
         CommandIDs::settingMesh,
         CommandIDs::settingMaterial,
         CommandIDs::settingLight,
@@ -1040,6 +1054,12 @@ void MainComponent::getCommandInfo (CommandID commandID, ApplicationCommandInfo&
 {
     switch (commandID)
     {
+        case CommandIDs::openScene:
+            result.setInfo("Open Scene", "Open a scene file", "File", 0);
+            break;
+        case CommandIDs::saveScene:
+            result.setInfo("Save Scene", "Save a scene file", "File", 0);
+            break;
         case CommandIDs::startRender:
             result.setInfo ("Start", "Initiate the rendering process", "Render", 0);
 #if JUCE_MAC
@@ -1093,6 +1113,25 @@ bool MainComponent::perform (const InvocationInfo& info)
 {
     switch (info.commandID)
     {
+        case CommandIDs::openScene:
+        {
+            FileChooser chooser("Open", File(), "*.scene");
+            if (chooser.browseForFileToOpen())
+            {
+                File selectedFile = chooser.getResult();
+                SceneParser parser;
+                parser.parseScene(selectedFile);
+            }
+
+            vpWidth = viewPlane->Width;
+            vpHeight = viewPlane->Height;
+#if JUCE_MAC
+            setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, vpHeight));
+#else
+            setSize(std::max(100, viewPlane->isStereo ? 2 * vpWidth : vpWidth), std::max(100, vpHeight) + LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight());
+#endif
+            break;
+        }
         case CommandIDs::startRender:
 			progress = -1.0;
 			rendering = true;
@@ -1195,8 +1234,11 @@ void MainComponent::timerCallback()
 	if (++timerSkip % 3 == 0)
 	{
 		timerSkip = 0;
-		image->setImage(*viewPlane->RenderedImage);
-		image->repaint();
+        if (viewPlane->RenderedImage != nullptr)
+        {
+            image->setImage(*viewPlane->RenderedImage);
+            image->repaint();
+        }
 	}
 	if (renderFinished)
 	{

@@ -22,7 +22,7 @@ std::vector<Ray> PointLight::EmitPhoton()
 {
     std::vector<Ray> ret;
     Random rand;
-    int ne = round(GetPower() * TOTAL_PHOTON / world->TotalLightPower());
+    int ne = round(GetPower() * viewPlane->NumPhoton / world->TotalLightPower());
     for (int i = 0; i < ne; i++)
     {
         FP_TYPE x, y, z;

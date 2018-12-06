@@ -142,6 +142,8 @@
           <FILE id="pR9Sh1" name="OBJParser.h" compile="0" resource="0" file="Source/Core/Utility/OBJParser.h"/>
           <FILE id="znOQkR" name="photonmap.cpp" compile="1" resource="0" file="Source/Core/Utility/photonmap.cpp"/>
           <FILE id="cAGaeC" name="photonmap.h" compile="0" resource="0" file="Source/Core/Utility/photonmap.h"/>
+          <FILE id="UcttXv" name="SceneParser.cpp" compile="1" resource="0" file="Source/Core/Utility/SceneParser.cpp"/>
+          <FILE id="E0izc6" name="SceneParser.h" compile="0" resource="0" file="Source/Core/Utility/SceneParser.h"/>
           <FILE id="SLRmYw" name="Utility.cpp" compile="1" resource="0" file="Source/Core/Utility/Utility.cpp"/>
           <FILE id="MMMVkQ" name="Utility.h" compile="0" resource="0" file="Source/Core/Utility/Utility.h"/>
         </GROUP>

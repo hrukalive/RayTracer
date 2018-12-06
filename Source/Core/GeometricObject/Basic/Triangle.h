@@ -29,4 +29,6 @@ public:
     Vec3D getNormal();
 
     virtual HitRecord Hit(const Ray& ray) override;
+
+    static std::shared_ptr<GeometricObject> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };

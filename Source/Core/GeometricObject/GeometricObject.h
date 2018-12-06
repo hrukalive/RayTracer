@@ -28,6 +28,8 @@ public:
     virtual FP_TYPE pdf(const HitRecord& record);
 
     virtual std::vector<HitRecord> getHitInterval(const Ray& ray);
+
+    static std::shared_ptr<GeometricObject> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 #include "Basic/Box.h"

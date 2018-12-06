@@ -57,7 +57,7 @@ std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> AreaLight::GetWiAndL
 std::vector<Ray> AreaLight::EmitPhoton()
 {
     std::vector<Ray> ret;
-    int ne = GetPower() * TOTAL_PHOTON / world->TotalLightPower();
+    int ne = GetPower() * viewPlane->NumPhoton / world->TotalLightPower();
     auto backupSampler = sampler;
     sampler.reset(new Hammersley(128, 512));
     auto samples = ObjPtr->Sample(ne);

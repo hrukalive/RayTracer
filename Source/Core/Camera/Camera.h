@@ -30,6 +30,8 @@ public:
 
     virtual std::vector<Ray> CreateRay(int c, int r, FP_TYPE offset = 0) const = 0;
     virtual Ray CreateARay(int c, int r, FP_TYPE offset = 0) const = 0;
+
+    static std::shared_ptr<Camera> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class OrthographicCamera : public Camera
@@ -40,6 +42,8 @@ public:
 
     virtual std::vector<Ray> CreateRay(int c, int r, FP_TYPE offset = 0) const;
     virtual Ray CreateARay(int c, int r, FP_TYPE offset = 0) const;
+
+    static std::shared_ptr<Camera> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class PinholeCamera : public Camera
@@ -51,6 +55,8 @@ public:
 
     virtual std::vector<Ray> CreateRay(int c, int r, FP_TYPE offset = 0) const;
     virtual Ray CreateARay(int c, int r, FP_TYPE offset = 0) const;
+
+    static std::shared_ptr<Camera> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class ThinLensCamera : public Camera
@@ -64,6 +70,8 @@ public:
     
     virtual std::vector<Ray> CreateRay(int c, int r, FP_TYPE offset = 0) const;
     virtual Ray CreateARay(int c, int r, FP_TYPE offset = 0) const;
+
+    static std::shared_ptr<Camera> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class StereoCamera : public Camera
@@ -77,4 +85,6 @@ public:
 
     virtual std::vector<Ray> CreateRay(int c, int r, FP_TYPE offset = 0) const;
     virtual Ray CreateARay(int c, int r, FP_TYPE offset = 0) const;
+
+    static std::shared_ptr<Camera> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };

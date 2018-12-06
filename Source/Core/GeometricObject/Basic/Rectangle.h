@@ -36,5 +36,7 @@ namespace RayTracer
         Vec3D GetNormal(const Point3D p);
 
         virtual HitRecord Hit(const Ray& ray) override;
+
+        static std::shared_ptr<GeometricObject> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
     };
 }

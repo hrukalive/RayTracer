@@ -60,7 +60,7 @@ std::shared_ptr<Camera> Camera::parse(StringArray& cmd, std::unordered_map<Strin
     else if (cmd[2] == "StereoCamera")
         return StereoCamera::parse(cmd, env);
     else
-        throw std::invalid_argument("Invalid camera type.");
+        throw std::invalid_argument("[Camera] Type not found.");
 }
 
 std::shared_ptr<Camera> OrthographicCamera::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
@@ -98,7 +98,7 @@ std::shared_ptr<Camera> StereoCamera::parse(StringArray& cmd, std::unordered_map
 
     auto lc = env.find(cmd[11]), rc = env.find(cmd[12]);
     if (lc == env.end() || rc == env.end())
-        throw std::invalid_argument("Required camera pointer not found.");
+        throw std::invalid_argument("[Camera] Required camera pointer not found.");
 
     return std::make_shared<StereoCamera>(StereoCamera(eyepoint, lookat, Vec3D(sin(roll), cos(roll), 0.0),
         std::static_pointer_cast<Camera>(lc->second), std::static_pointer_cast<Camera>(rc->second),

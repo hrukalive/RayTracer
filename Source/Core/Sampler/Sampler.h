@@ -38,6 +38,8 @@ public:
     Point2D SampleSquareSingle();
     Point2D SampleCircleSingle();
     Point3D SampleHemisphereSingle(const FP_TYPE e);
+
+    static std::shared_ptr<Sampler> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class PreviewSampler : public Sampler

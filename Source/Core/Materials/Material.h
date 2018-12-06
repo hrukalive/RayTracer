@@ -22,6 +22,8 @@ public:
     virtual std::pair<bool, RGBColor> PathShade(const HitRecord& record);
     virtual RGBColor PhotonShade(const HitRecord &record);
     virtual void PhotonMapping(const HitRecord& record) {}
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class ConstColor : public Material
@@ -34,6 +36,8 @@ public:
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class NormalShade : public Material
@@ -43,6 +47,8 @@ public:
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Matte : public Material
@@ -59,6 +65,8 @@ public:
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
     void PhotonMapping(const HitRecord& record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Phong : public Material
@@ -78,6 +86,8 @@ public:
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
     void PhotonMapping(const HitRecord& record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Emissive : public Material
@@ -101,6 +111,8 @@ public:
     RGBColor Shade(const HitRecord& record) override;
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Reflective : public Matte
@@ -120,6 +132,8 @@ public:
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
     void PhotonMapping(const HitRecord& record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class GlossyReflector : public Matte
@@ -143,6 +157,8 @@ public:
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
     void PhotonMapping(const HitRecord& record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Transparent : public Matte
@@ -169,4 +185,6 @@ public:
     std::pair<bool, RGBColor> PathShade(const HitRecord& record) override;
     RGBColor PhotonShade(const HitRecord &record) override;
     void PhotonMapping(const HitRecord& record) override;
+
+    static std::shared_ptr<Material> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };

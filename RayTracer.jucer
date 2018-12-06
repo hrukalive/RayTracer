@@ -118,6 +118,7 @@
         <GROUP id="{EF26E0BE-804B-99EF-68AC-8BD0BC5C341A}" name="Light">
           <FILE id="eq7u9R" name="Ambient.cpp" compile="1" resource="0" file="Source/Core/Light/Ambient.cpp"/>
           <FILE id="Ya2sCw" name="AreaLight.cpp" compile="1" resource="0" file="Source/Core/Light/AreaLight.cpp"/>
+          <FILE id="KOMUba" name="Light.cpp" compile="1" resource="0" file="Source/Core/Light/Light.cpp"/>
           <FILE id="AoX2N0" name="Light.h" compile="0" resource="0" file="Source/Core/Light/Light.h"/>
           <FILE id="i3WMOb" name="Parallel.cpp" compile="1" resource="0" file="Source/Core/Light/Parallel.cpp"/>
           <FILE id="L5sgrW" name="PointLight.cpp" compile="1" resource="0" file="Source/Core/Light/PointLight.cpp"/>
@@ -133,6 +134,7 @@
           <FILE id="y7z1is" name="PathTrace.cpp" compile="1" resource="0" file="Source/Core/Tracer/PathTrace.cpp"/>
           <FILE id="OArRQY" name="PhotonTrace.cpp" compile="1" resource="0" file="Source/Core/Tracer/PhotonTrace.cpp"/>
           <FILE id="smNzZN" name="RayCast.cpp" compile="1" resource="0" file="Source/Core/Tracer/RayCast.cpp"/>
+          <FILE id="KkN4A6" name="Tracer.cpp" compile="1" resource="0" file="Source/Core/Tracer/Tracer.cpp"/>
           <FILE id="Tfh7lm" name="Tracer.h" compile="0" resource="0" file="Source/Core/Tracer/Tracer.h"/>
           <FILE id="XZLc7Q" name="Whitted.cpp" compile="1" resource="0" file="Source/Core/Tracer/Whitted.cpp"/>
         </GROUP>

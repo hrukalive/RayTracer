@@ -22,6 +22,8 @@ public:
     virtual bool InShadow(const Ray& ray, const HitRecord& objs) = 0;
     virtual std::vector<Ray> EmitPhoton() { return std::vector<Ray>(); }
     virtual FP_TYPE GetPower() = 0;
+
+    static std::shared_ptr<Light> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Ambient : public Light
@@ -36,6 +38,8 @@ public:
     RGBColor L(const HitRecord& record) override;
     bool InShadow(const Ray& ray, const HitRecord& objs) override;
     FP_TYPE GetPower() override;
+
+    static std::shared_ptr<Light> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class PointLight : public Light
@@ -66,6 +70,8 @@ public:
     }
     std::vector<Ray> EmitPhoton() override;
     bool InShadow(const Ray& ray, const HitRecord& record) override;
+
+    static std::shared_ptr<Light> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class ParallelLight : public Light
@@ -89,6 +95,8 @@ public:
         return (color * ls).lengthSquared();
     }
     bool InShadow(const Ray& ray, const HitRecord& record) override;
+
+    static std::shared_ptr<Light> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Emissive;
@@ -115,4 +123,6 @@ public:
     FP_TYPE GetPower() override;
 
     std::vector<std::pair<Point3D, std::pair<Vec3D, RGBColor>>> GetWiAndLGPDF(const HitRecord& record);
+
+    static std::shared_ptr<Light> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };

@@ -114,5 +114,6 @@ std::shared_ptr<ViewPlane> ViewPlane::parse(StringArray& cmd, std::unordered_map
     ret->NumPhoton = std::stoi(cmd[8].toStdString());
     ret->NumNPhoton = std::stoi(cmd[9].toStdString());
     ret->isStereo = cmd[10] == "true";
+    ret->initialize();
     return ret;
 }

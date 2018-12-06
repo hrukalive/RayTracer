@@ -19,6 +19,8 @@ public:
     virtual ~Tracer() = default;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray, int depth) const = 0;
     virtual std::pair<bool, RGBColor> Trace(const Ray& ray) const { return Trace(ray, 0); }
+
+    static std::shared_ptr<Tracer> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class RayCast : public Tracer

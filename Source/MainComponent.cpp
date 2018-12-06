@@ -12,12 +12,10 @@
 MainComponent::MainComponent()
 {
     world.reset(new World());
-    tracer.reset(new PhotonMapTrace(10));
+    tracer.reset(new RayCast());
     viewPlane.reset(new ViewPlane());
-    sampler.reset(new MultiJittered(128, 1024));
-    photonMap = createPhotonMap(TOTAL_PHOTON);
-    
-    setupWorld();
+    sampler.reset(new MultiJittered(64, 1));
+    camera.reset(new PinholeCamera(ZERO, -Z_DIR, Y_DIR, 1.0));
 
     menuBar.reset(new MenuBarComponent(this));
     image.reset(new ImageComponent());

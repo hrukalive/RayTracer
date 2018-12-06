@@ -47,6 +47,20 @@ void Renderer::Render(double& progress)
 {
     viewPlane->Reset();
     renderedCount = 0;
+
+    if (balancedPhotonMap != nullptr)
+    {
+        destroyPhotonMap(balancedPhotonMap);
+        balancedPhotonMap = nullptr;
+    }
+    else if (photonMap != nullptr)
+    {
+        free(photonMap->photons);
+        free(photonMap);
+        photonMap = nullptr;
+    }
+    photonMap = createPhotonMap(viewPlane->NumPhoton);
+
     Thread::launch([threadDim = threadDim, successCallback = successCallback,
         &pool = pool,
         &renderedCount = renderedCount,

@@ -19,6 +19,8 @@ class Texture
 public:
     virtual ~Texture() = default;
     virtual RGBColor getColor(const HitRecord& record) const { return BLACK; }
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class ConstTexture : public Texture
@@ -28,6 +30,8 @@ public:
     virtual ~ConstTexture() = default;
     void setColor(RGBColor color);
     RGBColor getColor(const HitRecord& record) const override;
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class Checker3D : public Texture
@@ -40,6 +44,8 @@ public:
     void setColor1(const RGBColor newColor1);
     void setColor2(const RGBColor newColor2);
     RGBColor getColor(const HitRecord& record) const override;
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 enum NoiseTextureType
@@ -68,6 +74,8 @@ public:
     void setLacunarity(int newLacunarity);
     void setType(NoiseTextureType newType);
     RGBColor getColor(const HitRecord& record) const override;
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class WrappedNoiseTexture : public NoiseTexture
@@ -78,6 +86,8 @@ public:
     virtual ~WrappedNoiseTexture() = default;
     void setExpansion(FP_TYPE newExpansion);
     RGBColor getColor(const HitRecord& record) const override;
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class RampNoiseTexture : public NoiseTexture
@@ -89,6 +99,8 @@ public:
     virtual ~RampNoiseTexture() = default;
     void setAmount(FP_TYPE newAmount);
     RGBColor getColor(const HitRecord& record) const override;
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };
 
 class TextureInstance : public Texture
@@ -107,4 +119,6 @@ public:
     void RotateZ(const FP_TYPE radian);
 
     RGBColor getColor(const HitRecord& record) const override;
+
+    static std::shared_ptr<Texture> parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env);
 };

@@ -122,3 +122,19 @@ std::vector<Point3D> PreviewSampler::SampleHemisphere(int count, const FP_TYPE e
     ret.push_back(Point3D(0.0, 0.0, 1.0));
     return ret;
 }
+
+std::shared_ptr<Sampler> Sampler::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
+{
+    int numSamples = std::stoi(cmd[2].toStdString());
+    int numSets = std::stoi(cmd[3].toStdString());
+    std::shared_ptr<Sampler> ret = nullptr;
+    if (cmd[1] == "PreviewSampler")
+        ret.reset(new PreviewSampler());
+    else if (cmd[1] == "MultiJittered")
+        ret.reset(new MultiJittered(numSamples, numSets));
+    else if (cmd[1] == "Hammersley")
+        ret.reset(new Hammersley(numSamples, numSets));
+    else
+        throw std::invalid_argument("[SAMPLER] Type not found.");
+    return ret;
+}

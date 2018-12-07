@@ -52,7 +52,6 @@ public:
     MainComponent();
     ~MainComponent();
 
-    void setupWorld();
     //==============================================================================
     StringArray getMenuBarNames() override;
     PopupMenu getMenuForIndex (int menuIndex, const String& /*menuName*/) override;

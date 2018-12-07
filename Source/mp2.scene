@@ -1,0 +1,73 @@
+C CREATE PinholeCamera cam1 0.2 0.7 0 2.7 145 70 0 1
+C SET cam1
+V 640 512 0.001953125 8 4 4 4 100000 200 false
+
+T ConstTexture texWhite 1 1 1
+T ConstTexture texBlack 0 0 0
+M GlossyReflector planeMat 0.1 0.4 0.4 texWhite 1 1 1 500
+G CREATE Rectangle plane -3 0 3 6 0 0 0 0 -6
+G MATERIAL plane planeMat
+
+T ConstTexture tex1 0 1 0.8
+T ConstTexture tex2 1 0 0.8
+T ConstTexture tex3 0 1 0.8
+T ConstTexture tex4 0.8 1 0
+
+M Reflective boxMat1 0.1 0.1 0.8 tex1 0.8 1 0.8 10
+M Transparent boxMat2 0.1 0.1 0.5 1 tex2 1 0.8 0.8 1 0.8 0.8 1.15
+M Reflective boxMat3 0.1 0.1 0.8 tex3 0.8 1 0.8 10
+M Transparent boxMat4 0.1 0.3 0.5 1 texBlack 0.7 1 0.7 0.8 1 0.8 1.1
+M Phong boxMatPhong 0.3 0.3 0.3 tex4 1 1 1 80
+
+M Reflective sphereMat1 0 0.3 0.8 texBlack 1 0.7 0.7 10
+M Transparent sphereMat2 0 0.3 0.5 0.9 texBlack 0.7 0.7 1 0.7 0.7 1 1.25
+
+G CREATE Box box1 -1 0 0 -0.7 1 0.3
+G CREATE Box box2 -0.43 0 0.1 -0.13 1 0.4
+G CREATE Box box3 0.13 0 0 0.43 1 0.3
+G CREATE Box box4 0.7 0 0.1 1 1 0.4
+G CREATE Box box5 -1 0 -2.5 -0.7 1 -2.2
+G CREATE Box box6 -0.43 0 -2.5 -0.13 1 -2.2
+G CREATE Box box7 0.13 0 -2.5 0.43 1 -2.2
+G CREATE Box box8 0.7 0 -2.5 1 1 -2.2
+
+G MATERIAL box1 boxMat1
+G MATERIAL box2 boxMat2
+G MATERIAL box3 boxMat3
+G MATERIAL box4 boxMat4
+G MATERIAL box5 boxMatPhong
+G MATERIAL box6 boxMatPhong
+G MATERIAL box7 boxMatPhong
+G MATERIAL box8 boxMatPhong
+
+G CREATE Sphere sphere1 -0.3 0.4 -0.55 0.4
+G CREATE Sphere sphere2 0.9 0.4 -0.55 0.4
+
+G MATERIAL sphere1 sphereMat1
+G MATERIAL sphere2 sphereMat2
+
+M Emissive lightMat1 30 1 1 1
+G CREATE Rectangle lightplane1 -0.3 0.5 1.5 0 0.5 0 0.6 0 0
+G MATERIAL lightplane1 lightMat1
+L AreaLight arealight1 lightplane1 lightMat1
+
+M Emissive lightMat2 25 1 1 0.5
+G CREATE Rectangle lightplane2 1.4 0.9 0 0 0 0.6 0 0.5 0
+G MATERIAL lightplane2 lightMat2
+L AreaLight arealight2 lightplane2 lightMat2
+
+M Emissive lightMat3 25 0.5 1 1
+G CREATE Rectangle lightplane3 -1.4 0.9 0 0 0.5 0 0 0 0.6
+G MATERIAL lightplane3 lightMat3
+L AreaLight arealight3 lightplane3 lightMat3
+
+G CREATE Grid comp plane box1 box2 box3 box4 box5 box6 box7 box8 sphere1 sphere2 lightplane1 lightplane2 lightplane3
+
+L Ambient ambient 0.2 1 1 1
+S MultiJittered 128 16
+A Whitted 4
+W AMBIENT ambient
+W LIGHT arealight1
+W LIGHT arealight2
+W LIGHT arealight3
+W OBJECT comp

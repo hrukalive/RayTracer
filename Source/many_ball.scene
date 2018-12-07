@@ -1,0 +1,417 @@
+C CREATE ThinLensCamera cam1 0 0 0 3.7 40 60 0 1 3 0.1
+C CREATE ThinLensCamera cam2 0 0 0 3.7 40 60 0 1 3 0.1
+C CREATE StereoCamera cam3 0 0 0 3.7 40 60 0 cam1 cam2 4 true
+C SET cam3
+V 512 512 0.001953125 4 4 4 4 100000 200 true
+T ConstTexture tex0 0.451517 0.913521 0.393722
+M Phong phong0 0.25 0.75 0.4 tex0 1 1 1 80
+G CREATE Sphere sphere0 0.421320 0.447242 -0.423314 0.062035
+G MATERIAL sphere0 phong0
+T ConstTexture tex1 0.616516 0.913927 0.064336
+M Phong phong1 0.25 0.75 0.4 tex1 1 1 1 80
+G CREATE Sphere sphere1 0.061745 -0.012009 -0.157159 0.062035
+G MATERIAL sphere1 phong1
+T ConstTexture tex2 0.723721 0.650911 0.403388
+M Phong phong2 0.25 0.75 0.4 tex2 1 1 1 80
+G CREATE Sphere sphere2 -0.587668 -0.389686 0.947444 0.062035
+G MATERIAL sphere2 phong2
+T ConstTexture tex3 0.011270 0.232544 0.744699
+M Phong phong3 0.25 0.75 0.4 tex3 1 1 1 80
+G CREATE Sphere sphere3 -0.797661 -0.830604 0.992879 0.062035
+G MATERIAL sphere3 phong3
+T ConstTexture tex4 0.272159 0.974741 0.144904
+M Phong phong4 0.25 0.75 0.4 tex4 1 1 1 80
+G CREATE Sphere sphere4 0.055356 -0.401688 0.147841 0.062035
+G MATERIAL sphere4 phong4
+T ConstTexture tex5 0.554716 0.951878 0.644041
+M Phong phong5 0.25 0.75 0.4 tex5 1 1 1 80
+G CREATE Sphere sphere5 0.493564 -0.697162 0.147099 0.062035
+G MATERIAL sphere5 phong5
+T ConstTexture tex6 0.400678 0.762201 0.040099
+M Phong phong6 0.25 0.75 0.4 tex6 1 1 1 80
+G CREATE Sphere sphere6 -0.962660 0.466530 0.371159 0.062035
+G MATERIAL sphere6 phong6
+T ConstTexture tex7 0.671626 0.874692 0.010131
+M Phong phong7 0.25 0.75 0.4 tex7 1 1 1 80
+G CREATE Sphere sphere7 -0.917027 0.173531 0.869811 0.062035
+G MATERIAL sphere7 phong7
+T ConstTexture tex8 0.683655 0.718018 0.075666
+M Phong phong8 0.25 0.75 0.4 tex8 1 1 1 80
+G CREATE Sphere sphere8 0.869037 -0.936328 -0.761302 0.062035
+G MATERIAL sphere8 phong8
+T ConstTexture tex9 0.983136 0.038250 0.606611
+M Phong phong9 0.25 0.75 0.4 tex9 1 1 1 80
+G CREATE Sphere sphere9 -0.506243 0.379303 0.926102 0.062035
+G MATERIAL sphere9 phong9
+T ConstTexture tex10 0.541172 0.085912 0.030345
+M Phong phong10 0.25 0.75 0.4 tex10 1 1 1 80
+G CREATE Sphere sphere10 0.935354 -0.939615 -0.642698 0.062035
+G MATERIAL sphere10 phong10
+T ConstTexture tex11 0.192820 0.343940 0.482171
+M Phong phong11 0.25 0.75 0.4 tex11 1 1 1 80
+G CREATE Sphere sphere11 -0.892091 0.662771 0.061946 0.062035
+G MATERIAL sphere11 phong11
+T ConstTexture tex12 0.490360 0.796770 0.820754
+M Phong phong12 0.25 0.75 0.4 tex12 1 1 1 80
+G CREATE Sphere sphere12 -0.759429 0.533512 0.992620 0.062035
+G MATERIAL sphere12 phong12
+T ConstTexture tex13 0.271317 0.861962 0.717035
+M Phong phong13 0.25 0.75 0.4 tex13 1 1 1 80
+G CREATE Sphere sphere13 -0.777539 -0.974201 0.954951 0.062035
+G MATERIAL sphere13 phong13
+T ConstTexture tex14 0.397004 0.329201 0.163185
+M Phong phong14 0.25 0.75 0.4 tex14 1 1 1 80
+G CREATE Sphere sphere14 0.956634 0.743190 0.558297 0.062035
+G MATERIAL sphere14 phong14
+T ConstTexture tex15 0.820830 0.146574 0.169446
+M Phong phong15 0.25 0.75 0.4 tex15 1 1 1 80
+G CREATE Sphere sphere15 -0.343184 -0.813159 0.255445 0.062035
+G MATERIAL sphere15 phong15
+T ConstTexture tex16 0.508842 0.078188 0.566096
+M Phong phong16 0.25 0.75 0.4 tex16 1 1 1 80
+G CREATE Sphere sphere16 0.780943 0.035108 0.734252 0.062035
+G MATERIAL sphere16 phong16
+T ConstTexture tex17 0.494638 0.983539 0.905575
+M Phong phong17 0.25 0.75 0.4 tex17 1 1 1 80
+G CREATE Sphere sphere17 -0.101654 0.859805 -0.730895 0.062035
+G MATERIAL sphere17 phong17
+T ConstTexture tex18 0.728043 0.338340 0.362854
+M Phong phong18 0.25 0.75 0.4 tex18 1 1 1 80
+G CREATE Sphere sphere18 -0.032081 -0.516726 -0.346618 0.062035
+G MATERIAL sphere18 phong18
+T ConstTexture tex19 0.184774 0.417655 0.890423
+M Phong phong19 0.25 0.75 0.4 tex19 1 1 1 80
+G CREATE Sphere sphere19 0.315386 -0.213587 0.120734 0.062035
+G MATERIAL sphere19 phong19
+T ConstTexture tex20 0.722149 0.813771 0.930736
+M Phong phong20 0.25 0.75 0.4 tex20 1 1 1 80
+G CREATE Sphere sphere20 0.276624 -0.925357 0.874237 0.062035
+G MATERIAL sphere20 phong20
+T ConstTexture tex21 0.643702 0.745773 0.594939
+M Phong phong21 0.25 0.75 0.4 tex21 1 1 1 80
+G CREATE Sphere sphere21 -0.882219 -0.364004 -0.786674 0.062035
+G MATERIAL sphere21 phong21
+T ConstTexture tex22 0.186781 0.368070 0.768904
+M Phong phong22 0.25 0.75 0.4 tex22 1 1 1 80
+G CREATE Sphere sphere22 -0.558400 -0.427386 0.582280 0.062035
+G MATERIAL sphere22 phong22
+T ConstTexture tex23 0.528065 0.902691 0.995334
+M Phong phong23 0.25 0.75 0.4 tex23 1 1 1 80
+G CREATE Sphere sphere23 0.237534 0.271887 0.892795 0.062035
+G MATERIAL sphere23 phong23
+T ConstTexture tex24 0.075429 0.072761 0.808098
+M Phong phong24 0.25 0.75 0.4 tex24 1 1 1 80
+G CREATE Sphere sphere24 -0.000969 -0.640775 -0.414447 0.062035
+G MATERIAL sphere24 phong24
+T ConstTexture tex25 0.033696 0.478892 0.423384
+M Phong phong25 0.25 0.75 0.4 tex25 1 1 1 80
+G CREATE Sphere sphere25 -0.975336 -0.272117 0.788508 0.062035
+G MATERIAL sphere25 phong25
+T ConstTexture tex26 0.476918 0.346070 0.265411
+M Phong phong26 0.25 0.75 0.4 tex26 1 1 1 80
+G CREATE Sphere sphere26 -0.835498 -0.244997 0.799161 0.062035
+G MATERIAL sphere26 phong26
+T ConstTexture tex27 0.304569 0.576992 0.399672
+M Phong phong27 0.25 0.75 0.4 tex27 1 1 1 80
+G CREATE Sphere sphere27 0.150892 -0.921196 -0.928968 0.062035
+G MATERIAL sphere27 phong27
+T ConstTexture tex28 0.234164 0.487145 0.840642
+M Phong phong28 0.25 0.75 0.4 tex28 1 1 1 80
+G CREATE Sphere sphere28 -0.852346 0.791058 0.810857 0.062035
+G MATERIAL sphere28 phong28
+T ConstTexture tex29 0.352418 0.096996 0.832991
+M Phong phong29 0.25 0.75 0.4 tex29 1 1 1 80
+G CREATE Sphere sphere29 -0.912433 0.544270 -0.494327 0.062035
+G MATERIAL sphere29 phong29
+T ConstTexture tex30 0.402639 0.392643 0.862307
+M Phong phong30 0.25 0.75 0.4 tex30 1 1 1 80
+G CREATE Sphere sphere30 0.894681 -0.068437 0.206901 0.062035
+G MATERIAL sphere30 phong30
+T ConstTexture tex31 0.010580 0.519506 0.295463
+M Phong phong31 0.25 0.75 0.4 tex31 1 1 1 80
+G CREATE Sphere sphere31 0.331575 -0.765866 0.743883 0.062035
+G MATERIAL sphere31 phong31
+T ConstTexture tex32 0.396777 0.928198 0.652130
+M Phong phong32 0.25 0.75 0.4 tex32 1 1 1 80
+G CREATE Sphere sphere32 0.269924 -0.380939 -0.810485 0.062035
+G MATERIAL sphere32 phong32
+T ConstTexture tex33 0.392090 0.183517 0.840929
+M Phong phong33 0.25 0.75 0.4 tex33 1 1 1 80
+G CREATE Sphere sphere33 0.707637 0.308329 0.751352 0.062035
+G MATERIAL sphere33 phong33
+T ConstTexture tex34 0.680148 0.848893 0.391434
+M Phong phong34 0.25 0.75 0.4 tex34 1 1 1 80
+G CREATE Sphere sphere34 0.527108 -0.925952 -0.132868 0.062035
+G MATERIAL sphere34 phong34
+T ConstTexture tex35 0.839243 0.705782 0.489475
+M Phong phong35 0.25 0.75 0.4 tex35 1 1 1 80
+G CREATE Sphere sphere35 -0.252717 0.645414 0.994551 0.062035
+G MATERIAL sphere35 phong35
+T ConstTexture tex36 0.242654 0.399553 0.880703
+M Phong phong36 0.25 0.75 0.4 tex36 1 1 1 80
+G CREATE Sphere sphere36 0.389580 0.889133 0.834810 0.062035
+G MATERIAL sphere36 phong36
+T ConstTexture tex37 0.585309 0.008181 0.878937
+M Phong phong37 0.25 0.75 0.4 tex37 1 1 1 80
+G CREATE Sphere sphere37 0.660018 -0.163933 -0.724029 0.062035
+G MATERIAL sphere37 phong37
+T ConstTexture tex38 0.856635 0.653560 0.008278
+M Phong phong38 0.25 0.75 0.4 tex38 1 1 1 80
+G CREATE Sphere sphere38 -0.126000 0.513473 0.329664 0.062035
+G MATERIAL sphere38 phong38
+T ConstTexture tex39 0.428641 0.276290 0.119332
+M Phong phong39 0.25 0.75 0.4 tex39 1 1 1 80
+G CREATE Sphere sphere39 -0.246717 -0.835046 -0.392123 0.062035
+G MATERIAL sphere39 phong39
+T ConstTexture tex40 0.304593 0.190612 0.443624
+M Phong phong40 0.25 0.75 0.4 tex40 1 1 1 80
+G CREATE Sphere sphere40 -0.723552 0.652579 0.546098 0.062035
+G MATERIAL sphere40 phong40
+T ConstTexture tex41 0.009397 0.606413 0.872382
+M Phong phong41 0.25 0.75 0.4 tex41 1 1 1 80
+G CREATE Sphere sphere41 -0.536690 -0.277539 -0.163177 0.062035
+G MATERIAL sphere41 phong41
+T ConstTexture tex42 0.874236 0.089367 0.987370
+M Phong phong42 0.25 0.75 0.4 tex42 1 1 1 80
+G CREATE Sphere sphere42 -0.476997 -0.628781 0.485383 0.062035
+G MATERIAL sphere42 phong42
+T ConstTexture tex43 0.628081 0.571708 0.518972
+M Phong phong43 0.25 0.75 0.4 tex43 1 1 1 80
+G CREATE Sphere sphere43 -0.776063 0.684038 0.874566 0.062035
+G MATERIAL sphere43 phong43
+T ConstTexture tex44 0.481479 0.186615 0.321037
+M Phong phong44 0.25 0.75 0.4 tex44 1 1 1 80
+G CREATE Sphere sphere44 0.804234 0.773110 0.007486 0.062035
+G MATERIAL sphere44 phong44
+T ConstTexture tex45 0.536125 0.084362 0.735135
+M Phong phong45 0.25 0.75 0.4 tex45 1 1 1 80
+G CREATE Sphere sphere45 0.175940 0.677489 -0.740433 0.062035
+G MATERIAL sphere45 phong45
+T ConstTexture tex46 0.727713 0.694133 0.265192
+M Phong phong46 0.25 0.75 0.4 tex46 1 1 1 80
+G CREATE Sphere sphere46 0.406339 0.561873 0.219801 0.062035
+G MATERIAL sphere46 phong46
+T ConstTexture tex47 0.829163 0.805865 0.244174
+M Phong phong47 0.25 0.75 0.4 tex47 1 1 1 80
+G CREATE Sphere sphere47 0.812929 0.877316 0.677635 0.062035
+G MATERIAL sphere47 phong47
+T ConstTexture tex48 0.052489 0.177999 0.471236
+M Phong phong48 0.25 0.75 0.4 tex48 1 1 1 80
+G CREATE Sphere sphere48 -0.330908 0.616143 -0.196088 0.062035
+G MATERIAL sphere48 phong48
+T ConstTexture tex49 0.285234 0.688719 0.180126
+M Phong phong49 0.25 0.75 0.4 tex49 1 1 1 80
+G CREATE Sphere sphere49 0.835046 0.650811 0.227191 0.062035
+G MATERIAL sphere49 phong49
+T ConstTexture tex50 0.294393 0.500065 0.118984
+M Phong phong50 0.25 0.75 0.4 tex50 1 1 1 80
+G CREATE Sphere sphere50 -0.303538 0.521676 -0.170057 0.062035
+G MATERIAL sphere50 phong50
+T ConstTexture tex51 0.999076 0.669891 0.726859
+M Phong phong51 0.25 0.75 0.4 tex51 1 1 1 80
+G CREATE Sphere sphere51 0.158416 0.145282 0.247131 0.062035
+G MATERIAL sphere51 phong51
+T ConstTexture tex52 0.418365 0.051687 0.283924
+M Phong phong52 0.25 0.75 0.4 tex52 1 1 1 80
+G CREATE Sphere sphere52 0.880409 -0.589961 0.677284 0.062035
+G MATERIAL sphere52 phong52
+T ConstTexture tex53 0.490354 0.900183 0.187851
+M Phong phong53 0.25 0.75 0.4 tex53 1 1 1 80
+G CREATE Sphere sphere53 -0.217162 -0.157193 0.962726 0.062035
+G MATERIAL sphere53 phong53
+T ConstTexture tex54 0.763632 0.726585 0.273167
+M Phong phong54 0.25 0.75 0.4 tex54 1 1 1 80
+G CREATE Sphere sphere54 0.438674 -0.396439 0.165347 0.062035
+G MATERIAL sphere54 phong54
+T ConstTexture tex55 0.113087 0.427727 0.703654
+M Phong phong55 0.25 0.75 0.4 tex55 1 1 1 80
+G CREATE Sphere sphere55 -0.715110 0.793007 0.982846 0.062035
+G MATERIAL sphere55 phong55
+T ConstTexture tex56 0.878337 0.880791 0.240611
+M Phong phong56 0.25 0.75 0.4 tex56 1 1 1 80
+G CREATE Sphere sphere56 -0.613590 0.637232 0.349648 0.062035
+G MATERIAL sphere56 phong56
+T ConstTexture tex57 0.304887 0.872943 0.636194
+M Phong phong57 0.25 0.75 0.4 tex57 1 1 1 80
+G CREATE Sphere sphere57 -0.532853 -0.278830 0.641981 0.062035
+G MATERIAL sphere57 phong57
+T ConstTexture tex58 0.160357 0.607671 0.597170
+M Phong phong58 0.25 0.75 0.4 tex58 1 1 1 80
+G CREATE Sphere sphere58 -0.061398 0.929362 -0.235532 0.062035
+G MATERIAL sphere58 phong58
+T ConstTexture tex59 0.211555 0.173484 0.459699
+M Phong phong59 0.25 0.75 0.4 tex59 1 1 1 80
+G CREATE Sphere sphere59 0.201549 -0.464018 0.570909 0.062035
+G MATERIAL sphere59 phong59
+T ConstTexture tex60 0.053003 0.156671 0.182759
+M Phong phong60 0.25 0.75 0.4 tex60 1 1 1 80
+G CREATE Sphere sphere60 -0.039125 -0.555909 -0.542842 0.062035
+G MATERIAL sphere60 phong60
+T ConstTexture tex61 0.963109 0.949773 0.474859
+M Phong phong61 0.25 0.75 0.4 tex61 1 1 1 80
+G CREATE Sphere sphere61 0.957202 0.746251 -0.145055 0.062035
+G MATERIAL sphere61 phong61
+T ConstTexture tex62 0.243450 0.184132 0.399270
+M Phong phong62 0.25 0.75 0.4 tex62 1 1 1 80
+G CREATE Sphere sphere62 -0.657681 -0.598108 0.880832 0.062035
+G MATERIAL sphere62 phong62
+T ConstTexture tex63 0.803839 0.875276 0.042938
+M Phong phong63 0.25 0.75 0.4 tex63 1 1 1 80
+G CREATE Sphere sphere63 0.757544 -0.960791 -0.741173 0.062035
+G MATERIAL sphere63 phong63
+T ConstTexture tex64 0.084010 0.728673 0.788479
+M Phong phong64 0.25 0.75 0.4 tex64 1 1 1 80
+G CREATE Sphere sphere64 -0.946584 -0.248305 -0.332117 0.062035
+G MATERIAL sphere64 phong64
+T ConstTexture tex65 0.068175 0.733273 0.426296
+M Phong phong65 0.25 0.75 0.4 tex65 1 1 1 80
+G CREATE Sphere sphere65 0.382451 -0.345184 0.729449 0.062035
+G MATERIAL sphere65 phong65
+T ConstTexture tex66 0.564570 0.634410 0.130627
+M Phong phong66 0.25 0.75 0.4 tex66 1 1 1 80
+G CREATE Sphere sphere66 0.079355 -0.445795 -0.771161 0.062035
+G MATERIAL sphere66 phong66
+T ConstTexture tex67 0.807310 0.627963 0.937154
+M Phong phong67 0.25 0.75 0.4 tex67 1 1 1 80
+G CREATE Sphere sphere67 0.187527 -0.626617 0.604703 0.062035
+G MATERIAL sphere67 phong67
+T ConstTexture tex68 0.480597 0.431829 0.527511
+M Phong phong68 0.25 0.75 0.4 tex68 1 1 1 80
+G CREATE Sphere sphere68 0.694431 -0.494417 0.898333 0.062035
+G MATERIAL sphere68 phong68
+T ConstTexture tex69 0.603936 0.288571 0.512419
+M Phong phong69 0.25 0.75 0.4 tex69 1 1 1 80
+G CREATE Sphere sphere69 -0.218445 0.860876 0.438103 0.062035
+G MATERIAL sphere69 phong69
+T ConstTexture tex70 0.696663 0.054371 0.092003
+M Phong phong70 0.25 0.75 0.4 tex70 1 1 1 80
+G CREATE Sphere sphere70 -0.116258 0.950455 0.527159 0.062035
+G MATERIAL sphere70 phong70
+T ConstTexture tex71 0.644227 0.178868 0.233741
+M Phong phong71 0.25 0.75 0.4 tex71 1 1 1 80
+G CREATE Sphere sphere71 0.466437 0.012236 -0.719955 0.062035
+G MATERIAL sphere71 phong71
+T ConstTexture tex72 0.441129 0.891640 0.501945
+M Phong phong72 0.25 0.75 0.4 tex72 1 1 1 80
+G CREATE Sphere sphere72 -0.252946 0.320870 0.697842 0.062035
+G MATERIAL sphere72 phong72
+T ConstTexture tex73 0.561397 0.491223 0.742527
+M Phong phong73 0.25 0.75 0.4 tex73 1 1 1 80
+G CREATE Sphere sphere73 0.440469 -0.196270 0.729418 0.062035
+G MATERIAL sphere73 phong73
+T ConstTexture tex74 0.583801 0.527274 0.482750
+M Phong phong74 0.25 0.75 0.4 tex74 1 1 1 80
+G CREATE Sphere sphere74 -0.034350 0.952369 0.478207 0.062035
+G MATERIAL sphere74 phong74
+T ConstTexture tex75 0.522588 0.275872 0.112745
+M Phong phong75 0.25 0.75 0.4 tex75 1 1 1 80
+G CREATE Sphere sphere75 -0.409457 -0.702108 -0.418264 0.062035
+G MATERIAL sphere75 phong75
+T ConstTexture tex76 0.654442 0.597581 0.186550
+M Phong phong76 0.25 0.75 0.4 tex76 1 1 1 80
+G CREATE Sphere sphere76 -0.187951 -0.339982 -0.663246 0.062035
+G MATERIAL sphere76 phong76
+T ConstTexture tex77 0.833356 0.316326 0.052737
+M Phong phong77 0.25 0.75 0.4 tex77 1 1 1 80
+G CREATE Sphere sphere77 0.702825 0.907334 0.856498 0.062035
+G MATERIAL sphere77 phong77
+T ConstTexture tex78 0.625090 0.849457 0.847433
+M Phong phong78 0.25 0.75 0.4 tex78 1 1 1 80
+G CREATE Sphere sphere78 -0.423870 0.827484 -0.304774 0.062035
+G MATERIAL sphere78 phong78
+T ConstTexture tex79 0.299103 0.716407 0.432938
+M Phong phong79 0.25 0.75 0.4 tex79 1 1 1 80
+G CREATE Sphere sphere79 0.212293 -0.833753 0.197423 0.062035
+G MATERIAL sphere79 phong79
+T ConstTexture tex80 0.981380 0.033267 0.157811
+M Phong phong80 0.25 0.75 0.4 tex80 1 1 1 80
+G CREATE Sphere sphere80 -0.082205 -0.376131 0.913673 0.062035
+G MATERIAL sphere80 phong80
+T ConstTexture tex81 0.262196 0.990793 0.060855
+M Phong phong81 0.25 0.75 0.4 tex81 1 1 1 80
+G CREATE Sphere sphere81 0.452633 -0.788379 -0.178463 0.062035
+G MATERIAL sphere81 phong81
+T ConstTexture tex82 0.485316 0.395506 0.660076
+M Phong phong82 0.25 0.75 0.4 tex82 1 1 1 80
+G CREATE Sphere sphere82 0.689859 0.399883 -0.725922 0.062035
+G MATERIAL sphere82 phong82
+T ConstTexture tex83 0.663275 0.148694 0.438714
+M Phong phong83 0.25 0.75 0.4 tex83 1 1 1 80
+G CREATE Sphere sphere83 -0.320443 0.352205 -0.530255 0.062035
+G MATERIAL sphere83 phong83
+T ConstTexture tex84 0.031134 0.441239 0.444678
+M Phong phong84 0.25 0.75 0.4 tex84 1 1 1 80
+G CREATE Sphere sphere84 -0.233814 0.442446 -0.111186 0.062035
+G MATERIAL sphere84 phong84
+T ConstTexture tex85 0.426014 0.400489 0.393007
+M Phong phong85 0.25 0.75 0.4 tex85 1 1 1 80
+G CREATE Sphere sphere85 0.998602 0.695350 0.211849 0.062035
+G MATERIAL sphere85 phong85
+T ConstTexture tex86 0.723595 0.318522 0.439288
+M Phong phong86 0.25 0.75 0.4 tex86 1 1 1 80
+G CREATE Sphere sphere86 -0.174264 0.731284 0.204852 0.062035
+G MATERIAL sphere86 phong86
+T ConstTexture tex87 0.691151 0.693200 0.018338
+M Phong phong87 0.25 0.75 0.4 tex87 1 1 1 80
+G CREATE Sphere sphere87 -0.534574 -0.715252 0.918490 0.062035
+G MATERIAL sphere87 phong87
+T ConstTexture tex88 0.480008 0.684154 0.146773
+M Phong phong88 0.25 0.75 0.4 tex88 1 1 1 80
+G CREATE Sphere sphere88 -0.243584 0.820350 -0.145214 0.062035
+G MATERIAL sphere88 phong88
+T ConstTexture tex89 0.917195 0.957398 0.249481
+M Phong phong89 0.25 0.75 0.4 tex89 1 1 1 80
+G CREATE Sphere sphere89 -0.068799 -0.168436 0.073030 0.062035
+G MATERIAL sphere89 phong89
+T ConstTexture tex90 0.148682 0.586824 0.409629
+M Phong phong90 0.25 0.75 0.4 tex90 1 1 1 80
+G CREATE Sphere sphere90 0.132578 -0.330046 0.628981 0.062035
+G MATERIAL sphere90 phong90
+T ConstTexture tex91 0.095609 0.312616 0.593606
+M Phong phong91 0.25 0.75 0.4 tex91 1 1 1 80
+G CREATE Sphere sphere91 -0.777257 0.434636 -0.894045 0.062035
+G MATERIAL sphere91 phong91
+T ConstTexture tex92 0.032001 0.641654 0.447199
+M Phong phong92 0.25 0.75 0.4 tex92 1 1 1 80
+G CREATE Sphere sphere92 -0.727689 -0.577528 -0.927043 0.062035
+G MATERIAL sphere92 phong92
+T ConstTexture tex93 0.505260 0.289219 0.507110
+M Phong phong93 0.25 0.75 0.4 tex93 1 1 1 80
+G CREATE Sphere sphere93 -0.322158 0.000724 -0.752696 0.062035
+G MATERIAL sphere93 phong93
+T ConstTexture tex94 0.345751 0.257808 0.315386
+M Phong phong94 0.25 0.75 0.4 tex94 1 1 1 80
+G CREATE Sphere sphere94 0.787104 -0.482992 -0.929419 0.062035
+G MATERIAL sphere94 phong94
+T ConstTexture tex95 0.747127 0.562789 0.585213
+M Phong phong95 0.25 0.75 0.4 tex95 1 1 1 80
+G CREATE Sphere sphere95 -0.741887 0.992695 -0.930558 0.062035
+G MATERIAL sphere95 phong95
+T ConstTexture tex96 0.191088 0.653521 0.097334
+M Phong phong96 0.25 0.75 0.4 tex96 1 1 1 80
+G CREATE Sphere sphere96 0.795044 -0.020919 -0.667166 0.062035
+G MATERIAL sphere96 phong96
+T ConstTexture tex97 0.682236 0.614756 0.004163
+M Phong phong97 0.25 0.75 0.4 tex97 1 1 1 80
+G CREATE Sphere sphere97 -0.051596 -0.966939 0.399996 0.062035
+G MATERIAL sphere97 phong97
+T ConstTexture tex98 0.074302 0.882839 0.552502
+M Phong phong98 0.25 0.75 0.4 tex98 1 1 1 80
+G CREATE Sphere sphere98 0.483802 -0.465714 -0.793711 0.062035
+G MATERIAL sphere98 phong98
+T ConstTexture tex99 0.254796 0.904861 0.481144
+M Phong phong99 0.25 0.75 0.4 tex99 1 1 1 80
+G CREATE Sphere sphere99 -0.906821 0.434445 0.495996 0.062035
+G MATERIAL sphere99 phong99
+G CREATE Grid comp sphere0 sphere1 sphere2 sphere3 sphere4 sphere5 sphere6 sphere7 sphere8 sphere9 sphere10 sphere11 sphere12 sphere13 sphere14 sphere15 sphere16 sphere17 sphere18 sphere19 sphere20 sphere21 sphere22 sphere23 sphere24 sphere25 sphere26 sphere27 sphere28 sphere29 sphere30 sphere31 sphere32 sphere33 sphere34 sphere35 sphere36 sphere37 sphere38 sphere39 sphere40 sphere41 sphere42 sphere43 sphere44 sphere45 sphere46 sphere47 sphere48 sphere49 sphere50 sphere51 sphere52 sphere53 sphere54 sphere55 sphere56 sphere57 sphere58 sphere59 sphere60 sphere61 sphere62 sphere63 sphere64 sphere65 sphere66 sphere67 sphere68 sphere69 sphere70 sphere71 sphere72 sphere73 sphere74 sphere75 sphere76 sphere77 sphere78 sphere79 sphere80 sphere81 sphere82 sphere83 sphere84 sphere85 sphere86 sphere87 sphere88 sphere89 sphere90 sphere91 sphere92 sphere93 sphere94 sphere95 sphere96 sphere97 sphere98 sphere99 
+L Ambient ambient 0.8 1 1 1
+L PointLight pointlight1 5 1 0 0 -2 1 0 0.2
+L PointLight pointlight2 5 0 1 0 2 1 0 0.2
+L PointLight pointlight3 5 0 0 1 0 1 2 0.2
+S MultiJittered 128 16
+A RayCast
+W AMBIENT ambient
+W LIGHT pointlight1
+W LIGHT pointlight2
+W LIGHT pointlight3
+W OBJECT comp

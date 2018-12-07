@@ -21,8 +21,10 @@ void SceneParser::parseScene(File file)
     world->Clear();
     for (String& s : strarr)
     {
+        if (s == "")
+            continue;
         StringArray linearr;
-        linearr.addTokens(s, false);
+        linearr.addTokens(s.trim(), false);
         if (linearr[0] == "C")
         {
             if (linearr[1] == "CREATE")

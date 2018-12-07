@@ -29,9 +29,9 @@ public:
     std::vector<std::shared_ptr<GeometricObject>>& GetObjects();
     std::vector<std::shared_ptr<Light>>& GetLights();
 
-    void SetAmbient(std::shared_ptr<Light>& ambient);
-    void AddLight(std::shared_ptr<Light>& light);
-    void AddObject(std::shared_ptr<GeometricObject>& obj);
+    void SetAmbient(const std::shared_ptr<Light>& ambient);
+    void AddLight(const std::shared_ptr<Light>& light);
+    void AddObject(const std::shared_ptr<GeometricObject>& obj);
     void Clear();
     BBox GetBoundingBox();
     FP_TYPE TotalLightPower();

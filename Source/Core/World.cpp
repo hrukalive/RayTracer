@@ -16,9 +16,9 @@ RGBColor& World::GetBackgroundColor() { return backgroundColor; }
 std::vector<std::shared_ptr<GeometricObject>>& World::GetObjects() { return objects; }
 std::vector<std::shared_ptr<Light>>& World::GetLights() { return lights; }
 
-void World::SetAmbient(std::shared_ptr<Light>& ambient) { ambientLightPtr = ambient; }
-void World::AddLight(std::shared_ptr<Light>& light) { lights.push_back(light); }
-void World::AddObject(std::shared_ptr<GeometricObject>& obj)
+void World::SetAmbient(const std::shared_ptr<Light>& ambient) { ambientLightPtr = ambient; }
+void World::AddLight(const std::shared_ptr<Light>& light) { lights.push_back(light); }
+void World::AddObject(const std::shared_ptr<GeometricObject>& obj)
 { 
     objects.push_back(obj);
 

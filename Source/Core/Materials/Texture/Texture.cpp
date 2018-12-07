@@ -100,8 +100,6 @@ void noiseTextureParseHelper(std::shared_ptr<NoiseTexture> ret, StringArray& cmd
 
 std::shared_ptr<Texture> NoiseTexture::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
 {
-    if (env.find(cmd[3]) == env.end())
-        throw std::invalid_argument("[NOISE TEXTURE] Required noise pointer not found.");
     std::shared_ptr<LatticeNoise> noise = nullptr;
     if (cmd[3] == "LinearNoise")
         noise = std::make_shared<LinearNoise>(LinearNoise());
@@ -114,8 +112,6 @@ std::shared_ptr<Texture> NoiseTexture::parse(StringArray& cmd, std::unordered_ma
 
 std::shared_ptr<Texture> WrappedNoiseTexture::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
 {
-    if (env.find(cmd[3]) == env.end())
-        throw std::invalid_argument("[NOISE TEXTURE] Required noise pointer not found.");
     std::shared_ptr<LatticeNoise> noise = nullptr;
     if (cmd[3] == "LinearNoise")
         noise = std::make_shared<LinearNoise>(LinearNoise());
@@ -129,8 +125,8 @@ std::shared_ptr<Texture> WrappedNoiseTexture::parse(StringArray& cmd, std::unord
 
 std::shared_ptr<Texture> RampNoiseTexture::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
 {
-    if (env.find(cmd[3]) == env.end() || env.find(cmd[cmd.size() - 2]) == env.end())
-        throw std::invalid_argument("[NOISE TEXTURE] Required noise pointer not found.");
+    if (env.find(cmd[cmd.size() - 2]) == env.end())
+        throw std::invalid_argument("[NOISE TEXTURE] Required ramp pointer not found.");
     std::shared_ptr<LatticeNoise> noise = nullptr;
     if (cmd[3] == "LinearNoise")
         noise = std::make_shared<LinearNoise>(LinearNoise());

@@ -1,0 +1,36 @@
+C CREATE PinholeCamera cam1 0.2 0.7 0 2.7 145 70 0 1
+C SET cam1
+V 640 512 0.001953125 8 4 4 4 100000 200 false
+
+T ConstTexture texWhite 1 1 1
+T ConstTexture texBlack 0 0 0
+M GlossyReflector planeMat 0.1 0.4 0.4 texWhite 1 1 1 500
+G CREATE Rectangle plane -3 0 3 6 0 0 0 0 -6
+G MATERIAL plane planeMat
+
+
+M Emissive lightMat1 25 1 1 1
+G CREATE Rectangle lightplane1 -0.3 1 1.8 0 0.5 0 0.6 0 0
+G MATERIAL lightplane1 lightMat1
+L AreaLight arealight1 lightplane1 lightMat1
+
+M Emissive lightMat2 10 1 1 0.5
+G CREATE Rectangle lightplane2 1.7 1 -0.2 0 0 0.6 0 0.5 0
+G MATERIAL lightplane2 lightMat2
+L AreaLight arealight2 lightplane2 lightMat2
+
+M Emissive lightMat3 10 0.5 1 1
+G CREATE Rectangle lightplane3 -1.7 1 -0.2 0 0.5 0 0 0 0.6
+G MATERIAL lightplane3 lightMat3
+L AreaLight arealight3 lightplane3 lightMat3
+
+G CREATE Grid comp plane box1 box2 box3 box4 box5 box6 box7 box8 sphere1 sphere2 lightplane1 lightplane2 lightplane3
+
+L Ambient ambient 0.2 1 1 1
+S MultiJittered 128 16
+A Whitted 4
+W AMBIENT ambient
+W LIGHT arealight1
+W LIGHT arealight2
+W LIGHT arealight3
+W OBJECT comp

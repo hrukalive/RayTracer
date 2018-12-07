@@ -1,0 +1,127 @@
+C CREATE PinholeCamera cam1 0 0.3 0 2.5 160 70 0 1
+C SET cam1
+V 640 512 0.001953125 8 4 4 4 100000 200 false
+
+M Emissive emissive0 4 1.000000 0.101961 0.101961
+G CREATE Disk disklight0 1.700000 2 0.000000 0.3 -0.259059 -0.904776 0.000000
+G MATERIAL disklight0 emissive0
+L Arealight arealight0 disklight0 emissive0
+M Emissive emissive1 4 1.000000 0.784314 0.101961
+G CREATE Disk disklight1 1.188898 2 1.215122 0.3 -0.181174 -0.904776 -0.185170
+G MATERIAL disklight1 emissive1
+L Arealight arealight1 disklight1 emissive1
+M Emissive emissive2 4 0.529412 1.000000 0.101961
+G CREATE Disk disklight2 -0.037085 2 1.699595 0.3 0.005651 -0.904776 -0.258998
+G MATERIAL disklight2 emissive2
+L Arealight arealight2 disklight2 emissive2
+M Emissive emissive3 4 0.101961 1.000000 0.352941
+G CREATE Disk disklight3 -1.240769 2 1.162107 0.3 0.189078 -0.904776 -0.177091
+G MATERIAL disklight3 emissive3
+L Arealight arealight3 disklight3 emissive3
+M Emissive emissive4 4 0.101961 0.960784 1.000000
+G CREATE Disk disklight4 -1.698382 2 -0.074153 0.3 0.258813 -0.904776 0.011300
+G MATERIAL disklight4 emissive4
+L Arealight arealight4 disklight4 emissive4
+M Emissive emissive5 4 0.101961 0.278431 1.000000
+G CREATE Disk disklight5 -1.134763 2 -1.265825 0.3 0.172924 -0.904776 0.192896
+G MATERIAL disklight5 emissive5
+L Arealight arealight5 disklight5 emissive5
+M Emissive emissive6 4 0.607843 0.101961 1.000000
+G CREATE Disk disklight6 0.111185 2 -1.696360 0.3 -0.016943 -0.904776 0.258505
+G MATERIAL disklight6 emissive6
+L Arealight arealight6 disklight6 emissive6
+M Emissive emissive7 4 1.000000 0.101961 0.709804
+G CREATE Disk disklight7 1.290278 2 -1.106879 0.3 -0.196623 -0.904776 0.168675
+G MATERIAL disklight7 emissive7
+L Arealight arealight7 disklight7 emissive7
+
+T ConstTexture texWhite 1 1 1
+T ConstTexture texBlack 0 0 0
+T Checker3D planeTex1Original 0.3 0.2 0.2 0.2 0.6 0.6 0.6
+M Matte planeMat1 0.2 0.8 planeTex1Original
+
+P rampWood1 IMAGE wood1.png true
+T RampNoiseTexture woodTexture1 CubicNoise BROWNIAN 1 1 1 6 0 1 0.5 2 rampWood1 0.02
+T TextureInstance woodTex1 woodTexture1 ROTATEX -73 ROTATEY 35 SCALE 0.3 0.25 0.4
+M Matte platMat1 0.2 0.8 woodTex1
+P rampWood2 IMAGE wood2.png true
+T RampNoiseTexture woodTexture2 CubicNoise BROWNIAN 1 1 1 6 0 1 0.5 2 rampWood2 0.021
+T TextureInstance woodTex2 woodTexture2 ROTATEX -64 ROTATEY 83 SCALE 0.35 0.254 0.42
+M Matte platMat2 0.2 0.8 woodTex2
+P rampWood3 IMAGE wood3.png true
+T RampNoiseTexture woodTexture3 CubicNoise BROWNIAN 1 1 1 6 0 1 0.5 2 rampWood3 0.019
+T TextureInstance woodTex3 woodTexture3 ROTATEX -71 ROTATEY 53 SCALE 0.38 0.254 0.43
+M Matte platMat3 0.2 0.8 woodTex3
+P rampWood4 IMAGE wood4.png true
+T RampNoiseTexture woodTexture4 CubicNoise BROWNIAN 1 1 1 6 0 1 0.5 2 rampWood4 0.02
+T TextureInstance woodTex4 woodTexture4 ROTATEX -69 ROTATEY 42 SCALE 0.35 0.253 0.41
+M Matte platMat4 0.2 0.8 woodTex4
+
+T ConstTexture ctex1 1 0.4 0.8
+M Transparent csgmat1 0.05 0.05 0.4 1 ctex1 1 0.8 0.8 1 0.8 0.8 1.2
+T ConstTexture ctex2 0.4 0.6 1
+M GlossyReflector csgmat2 0.1 0.4 0.4 ctex2 0.4 0.6 1 700
+T ConstTexture ctex3 0.9 0.7 0.3
+M Reflective meshMat1 0.1 0.1 0.8 ctex3 1 0.7 0.3
+T ConstTexture ctex4 0.4 0.7 1
+M Transparent meshMat2 0.05 0.05 0.3 1.4 ctex4 0.4 0.7 1 0.4 0.7 1 1.3
+
+G CREATE Rectangle plane -3 0 3 6 0 0 0 0 -6
+G MATERIAL plane planeMat1
+
+G CREATE Cylinder platCylinder1 0.3 -0.05 0 0.06 0.4
+G CREATE Cylinder platCylinder2 -0.3 -0.05 0 0.06 0.4
+G CREATE Cylinder platCylinder3 0 -0.05 0.3 0.06 0.4
+G CREATE Cylinder platCylinder4 0 -0.05 -0.3 0.06 0.4
+G CREATE Cylinder platCylinder5 0 -0.05 0 0.38 0.4
+G CREATE Box platBox -0.3 0 -0.3 0.3 0.2 0.3
+G CREATE CSG platform OBJ platBox OBJ platCylinder5 OP INTERSECTION OBJ platCylinder1 OP DIFFERENCE OBJ platCylinder2 OP DIFFERENCE OBJ platCylinder3 OP DIFFERENCE OBJ platCylinder4 OP DIFFERENCE
+
+G CREATE Instance platform1 platform SCALE 1.33 1.33 1.33 TRANSLATE 0.8645 0 0
+G CREATE Instance platform2 platform SCALE 1.33 1.33 1.33 TRANSLATE -0.8645 0 0
+G CREATE Instance platform3 platform SCALE 1.33 1.33 1.33 TRANSLATE 0 0 0.8645
+G CREATE Instance platform4 platform SCALE 1.33 1.33 1.33 TRANSLATE 0 0 -0.8645
+G MATERIAL platform1 woodTex1
+G MATERIAL platform2 woodTex2
+G MATERIAL platform3 woodTex3
+G MATERIAL platform4 woodTex4
+
+G CREATE Box csg1box -1 -1 -1 1 1 1
+G CREATE Sphere csg1sphere 0 0 0 1.3
+G CREATE Cylinder csg1cy1 0 -1 0 0.65 4
+G CREATE Instance csg1cy2 csg1cy1 ROTATEX 90
+G CREATE Instance csg1cy3 csg1cy1 ROTATEZ 90
+G CREATE CSG csg1 OBJ csg1box OBJ csg1sphere OP INTERSECTION OBJ csg1cy1 OBJ csg1cy2 OP UNION OBJ csg1cy3 OP UNION OP DIFFERENCE
+G CREATE Instance csg1ins csg1 SCALE 0.35 0.35 0.35 TRANSLATE 0 0.616 -0.8645
+G MATERIAL csg1ins csgmat1
+
+G CREATE Box csg2box -1 -1 -1 1 1 1
+G CREATE Torus csg2torus1 1.2 0.4
+G CREATE Instance csg2torus2 csg2torus1 ROTATEX 90
+G CREATE Instance csg2torus3 csg2torus1 ROTATEZ 90
+G CREATE CSG csg2 OBJ csg2box OBJ csg2torus1 OP DIFFERENCE OBJ csg2torus2 OP DIFFERENCE OBJ csg2torus3 OP DIFFERENCE
+G CREATE Instance csg2ins csg2 SCALE 0.35 0.35 0.35 TRANSLATE 0 0.616 0.8645
+G MATERIAL csg2ins csgmat2
+
+G CREATE MESH mesh1 bunny.obj
+G CREATE Instance mesh1ins mesh1 SCALE 0.7 0.7 0.7 ROTATEX -145 ROTATEZ 8 ROTATEY -145 TRANSLATE 0.8645 0.546 0
+G MATERIAL mesh1 meshMat1
+G CREATE MESH mesh2 dragon.obj
+G CREATE Instance mesh2ins mesh2 SCALE 0.65 0.65 0.65 ROTATEX -12 ROTATEZ 6 ROTATEY -50 TRANSLATE -0.8379 0.566 0
+G MATERIAL mesh2 meshMat2
+
+G CREATE Grid comp plane disklight0 disklight1 disklight2 disklight3 disklight4 disklight5 disklight6 disklight7 platform1 platform2 platform3 platform4 csg1ins csg2ins mesh1ins mesh2ins
+
+L Ambient ambient 0.2 1 1 1
+S MultiJittered 128 16
+A Whitted 4
+W AMBIENT ambient
+W LIGHT arealight0
+W LIGHT arealight1
+W LIGHT arealight2
+W LIGHT arealight3
+W LIGHT arealight4
+W LIGHT arealight5
+W LIGHT arealight6
+W LIGHT arealight7
+W OBJECT comp

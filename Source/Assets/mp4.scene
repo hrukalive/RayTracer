@@ -1,13 +1,53 @@
-C CREATE PinholeCamera cam1 0.2 0.7 0 2.7 145 70 0 1
+C CREATE PinholeCamera cam1 0 0.2 0 3.2 140 55 0 1
 C SET cam1
-V 640 512 0.001953125 8 4 4 4 100000 200 false
+V 512 512 0.001953125 1 4 4 4 100000 200 false
 
 T ConstTexture texWhite 1 1 1
 T ConstTexture texBlack 0 0 0
-M GlossyReflector planeMat 0.1 0.4 0.4 texWhite 1 1 1 500
+T Checker3D planeTex1Original 0.3 0.2 0.2 0.2 0.6 0.6 0.6
+M Matte planeMat 0.2 0.8 planeTex1Original
+T ConstTexture ctex1 0.8 0.6 1
+M Reflective csgmat1 0.1 0.1 0.8 ctex1 0.8 0.6 1
+T ConstTexture ctex2 1 0.4 0.8
+M Transparent csgmat2 0.05 0.05 0.5 1 ctex2 1 0.8 0.8 1 0.8 0.8 1.2
+
+P rampWood IMAGE 100 wood1.png
+T RampNoiseTexture woodTexture1 CubicNoise BROWNIAN 1 1 1 6 0 1 0.5 2 rampWood 0.01
+T TextureInstance woodTex1 woodTexture1 ROTATEX -75 SCALE 0.25 0.25 0.25
+M Matte cyMat1 0.2 0.8 woodTex1
+T NoiseTexture cyTex2Ori CubicNoise FRACTALSUM 0.27 0.55 0.79 8 0 1
+T TextureInstance cyTex2 cyTex2Ori SCALE 0.1 0.1 0.1
+M Matte cyMat2 0.2 0.8 cyTex2
+T WrappedNoiseTexture sphereTex1Original CubicNoise BROWNIAN 0.2 0.6 0.3 6 0 1 0.5 2 5
+T TextureInstance sphereTex1 sphereTex1Original SCALE 0.5 0.5 0.5
+M Matte sphereMat1 0.2 0.8 sphereTex1
+P ramp POINT 100 0 1 1 1 0.7 0.04314 0.17647 0.29412 1 0 0 0
+T RampNoiseTexture sphereTex2Original CubicNoise BROWNIAN 1 1 1 6 0 1 0.5 2 ramp 3.5
+T TextureInstance sphereTex2 sphereTex2Original SCALE 0.2 0.2 0.2
+M Matte sphereMat2 0.2 0.8 sphereTex2
+
 G CREATE Rectangle plane -3 0 3 6 0 0 0 0 -6
 G MATERIAL plane planeMat
 
+G CREATE Box csg1box -1 -1 -1 1 1 1
+G CREATE Sphere csg1sphere 0 0 0 1.3
+G CREATE Cylinder csg1cy1 0 -2 0 0.65 4
+G CREATE Instance csg1cy2 csg1cy1 ROTATEX 90
+G CREATE Instance csg1cy3 csg1cy1 ROTATEZ 90
+G CREATE CSG csg1 OBJ csg1box OBJ csg1sphere OP INTERSECTION OBJ csg1cy1 OBJ csg1cy2 OP UNION OBJ csg1cy3 OP UNION OP DIFFERENCE
+G CREATE Instance csgins1 csg1 SCALE 0.35 0.35 0.35 TRANSLATE 0 0.35 0.4
+G MATERIAL csgins1 csgmat1
+G CREATE Instance csgins2 csg1 SCALE 0.35 0.35 0.35 TRANSLATE 0 0.35 -0.5
+G MATERIAL csgins2 csgmat2
+
+G CREATE Cylinder cylinder1 -0.9 0 0.4 0.3 0.9
+G MATERIAL cylinder1 cyMat1
+G CREATE Cylinder cylinder2 -0.9 0 -0.5 0.3 0.9
+G MATERIAL cylinder2 cyMat2
+G CREATE Sphere sphere1 0.9 0.35 0.4 0.353
+G MATERIAL sphere1 sphereMat1
+G CREATE Sphere sphere2 0.9 0.35 -0.5 0.35
+G MATERIAL sphere2 sphereMat2
 
 M Emissive lightMat1 25 1 1 1
 G CREATE Rectangle lightplane1 -0.3 1 1.8 0 0.5 0 0.6 0 0
@@ -24,9 +64,9 @@ G CREATE Rectangle lightplane3 -1.7 1 -0.2 0 0.5 0 0 0 0.6
 G MATERIAL lightplane3 lightMat3
 L AreaLight arealight3 lightplane3 lightMat3
 
-G CREATE Grid comp plane box1 box2 box3 box4 box5 box6 box7 box8 sphere1 sphere2 lightplane1 lightplane2 lightplane3
+G CREATE Grid comp lightplane1 lightplane2 lightplane3 plane csgins1 csgins2 cylinder1 cylinder2 sphere1 sphere2
 
-L Ambient ambient 0.2 1 1 1
+L Ambient ambient 1 1 1 1
 S MultiJittered 128 16
 A Whitted 4
 W AMBIENT ambient

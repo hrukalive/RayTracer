@@ -15,6 +15,8 @@ void SceneParser::parseScene(File file)
 {
     std::unordered_map<String, std::shared_ptr<void>> env;
 
+    env["SceneFile"] = std::make_shared<File>(file);
+
     StringArray strarr;
     file.readLines(strarr);
 
@@ -79,7 +81,9 @@ void SceneParser::parseScene(File file)
             }
             else if (linearr[2] == "IMAGE")
             {
-                ramp->buildFromImage(ImageCache::getFromFile(File(linearr[4])), linearr[5] == "true");
+                if (!file.getChildFile("../" + linearr[4]).exists())
+                    throw std::invalid_argument("[RAMP] Ramp file not found.");
+                ramp->buildFromImage(ImageCache::getFromFile(file.getChildFile("../" + linearr[4])), linearr[5] == "true");
             }
             env[linearr[1]] = ramp;
         }

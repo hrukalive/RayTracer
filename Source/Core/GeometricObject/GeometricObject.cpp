@@ -317,7 +317,7 @@ std::shared_ptr<GeometricObject> Instance::parse(StringArray& cmd, std::unordere
 
 std::shared_ptr<GeometricObject> Mesh::parse(StringArray& cmd, std::unordered_map<String, std::shared_ptr<void>>& env)
 {
-    File file(cmd[4]);
+    File file = std::static_pointer_cast<File>(env["SceneFile"])->getChildFile("../" + cmd[4]);
     if (!file.exists())
         throw std::invalid_argument("[MESH] Mesh file not found.");
     StringArray strarr;
